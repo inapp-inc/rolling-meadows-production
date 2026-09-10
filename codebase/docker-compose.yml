@@ -1,0 +1,50 @@
+# Rolling Meadows — local Docker stack (React + FastAPI + PostgreSQL)
+
+services:
+  postgres:
+    image: postgres:16
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: rolling_meadows
+      POSTGRES_PASSWORD: rolling_meadows
+      POSTGRES_DB: rolling_meadows
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U rolling_meadows -d rolling_meadows"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql+asyncpg://rolling_meadows:rolling_meadows@postgres:5432/rolling_meadows
+      API_ENABLED_MODULES: health,auth,admin,platform,clients,catalog,cases,enrollments,liaison,workflow,documents,reports
+      JWT_SECRET: ${JWT_SECRET:-dev-change-me-in-production}
+      JWT_EXPIRES_MINUTES: ${JWT_EXPIRES_MINUTES:-480}
+      CORS_ORIGINS: http://localhost:8081,http://localhost:5173
+      SEED_USER_PASSWORD: ${SEED_USER_PASSWORD:-ChangeMe123!}
+      DEFAULT_TENANT_ID: tenant-rolling-meadows
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  web:
+    build:
+      context: ./web
+      args:
+        VITE_API_BASE_URL: "/api"
+        VITE_USE_MOCK_AUTH: "false"
+    ports:
+      - "8081:80"
+    depends_on:
+      - api
+
+volumes:
+  postgres_data:

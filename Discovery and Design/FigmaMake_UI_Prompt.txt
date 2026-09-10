@@ -1,0 +1,33 @@
+You are Figma Make. Create a complete UI for the project "rolling-meadows".
+
+## Output expectations
+- Provide high-fidelity UI screens with components, auto-layout, and reusable styles.
+- Use a modern, enterprise SaaS aesthetic: clean, dense-but-readable, accessible.
+- Include empty/loading/error states, validation, and permissions-aware UI where relevant.
+- Make the UI production-oriented: consistent spacing, typographic scale, and tokens.
+
+## Core screens (create all)
+1) Authentication: sign-in, forgot password (if applicable).
+2) Primary dashboard: KPIs + overview cards + key alerts.
+3) Main workspace: list + detail + create/edit flows for core entities.
+4) Settings: org/project settings, user management (if in scope), integrations.
+5) Activity/audit/logs (if applicable) and sync status views.
+
+## UX requirements
+- Global nav with clear IA; breadcrumbs where needed; command palette optional.
+- Tables: sticky header, filtering, sorting, pagination, bulk actions.
+- Forms: inline help, required indicators, field-level errors, confirm destructive actions.
+- Notifications: toast + inline banners; clear retry paths for failures.
+- Accessibility: WCAG AA contrast, keyboard focus states, sensible aria labels.
+
+## Component system (create as a library)
+- Tokens: color (light+dark), type scale, spacing, radius, shadow.
+- Components: buttons, inputs, selects, date pickers, modals, drawers, tabs, badges, tooltips, toasts, data table, cards, charts placeholders, empty states.
+
+## Architecture/integration cues (for UI)
+- Reflect async states for integrations (connect/sync/status/errors/retry).
+- Assume API-driven app with role-based access; design for multi-tenant where applicable.
+
+## Deliverables
+- A clickable prototype with happy path + key error paths.
+- A component library page with variants and guidelines.

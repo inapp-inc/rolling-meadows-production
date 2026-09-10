@@ -1,0 +1,987 @@
+{
+  "defaultWorkflow": {
+    "subcategoryId": "default",
+    "id": "wf-default",
+    "name": "Case Management Workflow",
+    "description": "Standard eight-stage case management process.",
+    "exampleProgram": "Generic case management",
+    "focusAreas": [],
+    "stages": [
+      {
+        "stage": 1,
+        "tabId": "intake",
+        "label": "Referral & Intake",
+        "shortLabel": "Referral & Intake",
+        "deliverable": "Referral record and consent on file"
+      },
+      {
+        "stage": 2,
+        "tabId": "assessment",
+        "label": "Comprehensive Assessment",
+        "shortLabel": "Comprehensive Assessment",
+        "deliverable": "Holistic assessment summary"
+      },
+      {
+        "stage": 3,
+        "tabId": "risk",
+        "label": "Risk Identification & Prioritization",
+        "shortLabel": "Risk Identification & Prioritization",
+        "deliverable": "Prioritized risk profile"
+      },
+      {
+        "stage": 4,
+        "tabId": "careplan",
+        "label": "Care / Service Plan Development",
+        "shortLabel": "Care / Service Plan Development",
+        "deliverable": "Individualized care plan"
+      },
+      {
+        "stage": 5,
+        "tabId": "services",
+        "label": "Service Coordination",
+        "shortLabel": "Service Coordination",
+        "deliverable": "Service enrollments and CBO referrals"
+      },
+      {
+        "stage": 6,
+        "tabId": "followup",
+        "label": "Ongoing Monitoring & Follow-Up",
+        "shortLabel": "Ongoing Monitoring & Follow-Up",
+        "deliverable": "Contact notes and follow-up cadence"
+      },
+      {
+        "stage": 7,
+        "tabId": "reassessment",
+        "label": "Reassessment",
+        "shortLabel": "Reassessment",
+        "deliverable": "Updated risk ratings and plan adjustments"
+      },
+      {
+        "stage": 8,
+        "tabId": "closure",
+        "label": "Case Resolution / Closure",
+        "shortLabel": "Case Resolution / Closure",
+        "deliverable": "Closure summary and outcomes"
+      }
+    ]
+  },
+  "workflows": [
+    {
+      "subcategoryId": "sub-seniors-at-risk",
+      "id": "wf-senior-at-risk",
+      "name": "Seniors at Risk Case Management",
+      "description": "Identify safety and wellbeing risks for older adults and coordinate protective services.",
+      "exampleProgram": "Hospital or community referral for falls, isolation, or self-neglect concerns",
+      "focusAreas": [
+        "Fall prevention",
+        "Medication safety",
+        "Social isolation",
+        "Abuse or neglect screening"
+      ],
+      "stages": [
+        {
+          "stage": 1,
+          "tabId": "intake",
+          "label": "Referral & Intake",
+          "shortLabel": "Referral & Intake",
+          "deliverable": "Referral record and consent on file"
+        },
+        {
+          "stage": 2,
+          "tabId": "assessment",
+          "label": "Comprehensive Assessment",
+          "shortLabel": "Comprehensive Assessment",
+          "deliverable": "Holistic assessment summary"
+        },
+        {
+          "stage": 3,
+          "tabId": "risk",
+          "label": "Risk Identification & Prioritization",
+          "shortLabel": "Risk Identification & Prioritization",
+          "deliverable": "Prioritized risk profile"
+        },
+        {
+          "stage": 4,
+          "tabId": "careplan",
+          "label": "Care / Service Plan Development",
+          "shortLabel": "Care / Service Plan Development",
+          "deliverable": "Individualized care plan"
+        },
+        {
+          "stage": 5,
+          "tabId": "services",
+          "label": "Service Coordination",
+          "shortLabel": "Service Coordination",
+          "deliverable": "Service enrollments and CBO referrals"
+        },
+        {
+          "stage": 6,
+          "tabId": "followup",
+          "label": "Ongoing Monitoring & Follow-Up",
+          "shortLabel": "Ongoing Monitoring & Follow-Up",
+          "deliverable": "Contact notes and follow-up cadence"
+        },
+        {
+          "stage": 7,
+          "tabId": "reassessment",
+          "label": "Reassessment",
+          "shortLabel": "Reassessment",
+          "deliverable": "Updated risk ratings and plan adjustments"
+        },
+        {
+          "stage": 8,
+          "tabId": "closure",
+          "label": "Case Resolution / Closure",
+          "shortLabel": "Case Resolution / Closure",
+          "deliverable": "Closure summary and outcomes"
+        }
+      ]
+    },
+    {
+      "subcategoryId": "sub-in-home-support",
+      "id": "wf-in-home-support",
+      "name": "In-Home Support Workflow",
+      "description": "Support aging adults to remain safely at home through coordinated in-home services.",
+      "exampleProgram": "Physician referral for ADL support and home safety",
+      "focusAreas": [
+        "Activities of daily living",
+        "Caregiver support",
+        "Home modifications",
+        "Equipment needs"
+      ],
+      "stages": [
+        {
+          "stage": 1,
+          "tabId": "intake",
+          "label": "Referral & Intake",
+          "shortLabel": "Referral & Intake",
+          "deliverable": "Referral and home support eligibility"
+        },
+        {
+          "stage": 2,
+          "tabId": "assessment",
+          "label": "In-Home Needs Assessment",
+          "shortLabel": "In-Home Needs Assessment",
+          "deliverable": "Functional and home environment summary"
+        },
+        {
+          "stage": 3,
+          "tabId": "risk",
+          "label": "Safety & Independence Review",
+          "shortLabel": "Safety & Independence Review",
+          "deliverable": "Prioritized support needs"
+        },
+        {
+          "stage": 4,
+          "tabId": "careplan",
+          "label": "In-Home Care Plan",
+          "shortLabel": "In-Home Care Plan",
+          "deliverable": "Personal care and equipment plan"
+        },
+        {
+          "stage": 5,
+          "tabId": "services",
+          "label": "Provider Coordination",
+          "shortLabel": "Provider Coordination",
+          "deliverable": "Home care and equipment referrals"
+        },
+        {
+          "stage": 6,
+          "tabId": "followup",
+          "label": "Home Visit Monitoring",
+          "shortLabel": "Home Visit Monitoring",
+          "deliverable": "Visit notes and caregiver coordination"
+        },
+        {
+          "stage": 7,
+          "tabId": "reassessment",
+          "label": "Functional Reassessment",
+          "shortLabel": "Functional Reassessment",
+          "deliverable": "Updated independence goals"
+        },
+        {
+          "stage": 8,
+          "tabId": "closure",
+          "label": "Transition / Closure",
+          "shortLabel": "Transition / Closure",
+          "deliverable": "Transition to alternate level of care or graduation"
+        }
+      ]
+    },
+    {
+      "subcategoryId": "sub-nutrition-programs",
+      "id": "wf-nutrition-programs",
+      "name": "Nutrition Program Workflow",
+      "description": "Connect seniors to meal programs and monitor nutritional wellbeing.",
+      "exampleProgram": "Community referral for food insecurity or malnutrition risk",
+      "focusAreas": [
+        "Food access",
+        "Meal delivery",
+        "Dietary restrictions",
+        "Social dining engagement"
+      ],
+      "stages": [
+        {
+          "stage": 1,
+          "tabId": "intake",
+          "label": "Referral & Intake",
+          "shortLabel": "Referral & Intake",
+          "deliverable": "Nutrition program referral record"
+        },
+        {
+          "stage": 2,
+          "tabId": "assessment",
+          "label": "Nutritional Screening",
+          "shortLabel": "Nutritional Screening",
+          "deliverable": "Dietary and food access assessment"
+        },
+        {
+          "stage": 3,
+          "tabId": "risk",
+          "label": "Nutrition Risk Prioritization",
+          "shortLabel": "Nutrition Risk Prioritization",
+          "deliverable": "Priority level for meal services"
+        },
+        {
+          "stage": 4,
+          "tabId": "careplan",
+          "label": "Nutrition Support Plan",
+          "shortLabel": "Nutrition Support Plan",
+          "deliverable": "Meal service and dietary goals"
+        },
+        {
+          "stage": 5,
+          "tabId": "services",
+          "label": "Meal Program Enrollment",
+          "shortLabel": "Meal Program Enrollment",
+          "deliverable": "Meals on Wheels or congregate dining enrollment"
+        },
+        {
+          "stage": 6,
+          "tabId": "followup",
+          "label": "Nutrition Monitoring",
+          "shortLabel": "Nutrition Monitoring",
+          "deliverable": "Weight, appetite, and meal delivery tracking"
+        },
+        {
+          "stage": 7,
+          "tabId": "reassessment",
+          "label": "Quarterly Nutrition Review",
+          "shortLabel": "Quarterly Nutrition Review",
+          "deliverable": "Updated dietary plan"
+        },
+        {
+          "stage": 8,
+          "tabId": "closure",
+          "label": "Program Graduation / Closure",
+          "shortLabel": "Program Graduation / Closure",
+          "deliverable": "Transition to self-sufficiency or alternate program"
+        }
+      ]
+    },
+    {
+      "subcategoryId": "sub-youth-empowerment",
+      "id": "wf-youth-empowerment",
+      "name": "School Attendance Support Workflow",
+      "description": "Support families when school attendance or youth engagement is at risk.",
+      "exampleProgram": "School referral for chronic absenteeism",
+      "focusAreas": [
+        "School attendance",
+        "Transportation barriers",
+        "Childcare challenges",
+        "Family-school communication"
+      ],
+      "stages": [
+        {
+          "stage": 1,
+          "tabId": "intake",
+          "label": "School Referral & Intake",
+          "shortLabel": "School Referral & Intake",
+          "deliverable": "School referral record assigned"
+        },
+        {
+          "stage": 2,
+          "tabId": "assessment",
+          "label": "Family & Attendance Assessment",
+          "shortLabel": "Family & Attendance Assessment",
+          "deliverable": "Barriers to attendance identified"
+        },
+        {
+          "stage": 3,
+          "tabId": "risk",
+          "label": "Attendance Risk Prioritization",
+          "shortLabel": "Attendance Risk Prioritization",
+          "deliverable": "Priority barriers ranked"
+        },
+        {
+          "stage": 4,
+          "tabId": "careplan",
+          "label": "Attendance Support Plan",
+          "shortLabel": "Attendance Support Plan",
+          "deliverable": "Goals for attendance and family-school engagement"
+        },
+        {
+          "stage": 5,
+          "tabId": "services",
+          "label": "Resource Referrals",
+          "shortLabel": "Resource Referrals",
+          "deliverable": "Transportation, childcare, and school counselor links"
+        },
+        {
+          "stage": 6,
+          "tabId": "followup",
+          "label": "Monthly Attendance Review",
+          "shortLabel": "Monthly Attendance Review",
+          "deliverable": "Attendance tracking and coaching notes"
+        },
+        {
+          "stage": 7,
+          "tabId": "reassessment",
+          "label": "Progress Review",
+          "shortLabel": "Progress Review",
+          "deliverable": "Attendance trend and plan adjustments"
+        },
+        {
+          "stage": 8,
+          "tabId": "closure",
+          "label": "Case Resolution / Closure",
+          "shortLabel": "Case Resolution / Closure",
+          "deliverable": "Family self-sufficient in managing attendance"
+        }
+      ]
+    },
+    {
+      "subcategoryId": "sub-family-resource",
+      "id": "wf-family-resource-center",
+      "name": "Family Resource Center Workflow",
+      "description": "Connect families to community resources through a family resource center model.",
+      "exampleProgram": "Self-referral or agency referral to a family resource center",
+      "focusAreas": [
+        "Parenting support",
+        "Child development",
+        "Community resources",
+        "Family relationships"
+      ],
+      "stages": [
+        {
+          "stage": 1,
+          "tabId": "intake",
+          "label": "Referral & Intake",
+          "shortLabel": "Referral & Intake",
+          "deliverable": "Referral record received and assigned"
+        },
+        {
+          "stage": 2,
+          "tabId": "assessment",
+          "label": "Intake & Enrollment",
+          "shortLabel": "Intake & Enrollment",
+          "deliverable": "Family profile and eligibility verified"
+        },
+        {
+          "stage": 3,
+          "tabId": "risk",
+          "label": "Needs Assessment",
+          "shortLabel": "Needs Assessment",
+          "deliverable": "Needs assessment summary"
+        },
+        {
+          "stage": 4,
+          "tabId": "careplan",
+          "label": "Goal Setting & Service Planning",
+          "shortLabel": "Goal Setting & Service Planning",
+          "deliverable": "Individualized family support plan"
+        },
+        {
+          "stage": 5,
+          "tabId": "services",
+          "label": "Service Coordination & Referrals",
+          "shortLabel": "Service Coordination & Referrals",
+          "deliverable": "Referral tracking and activated services"
+        },
+        {
+          "stage": 6,
+          "tabId": "followup",
+          "label": "Ongoing Support & Monitoring",
+          "shortLabel": "Ongoing Support & Monitoring",
+          "deliverable": "Case notes and updated action items"
+        },
+        {
+          "stage": 7,
+          "tabId": "reassessment",
+          "label": "Progress Review",
+          "shortLabel": "Progress Review",
+          "deliverable": "Updated support plan and progress report"
+        },
+        {
+          "stage": 8,
+          "tabId": "closure",
+          "label": "Case Resolution / Closure",
+          "shortLabel": "Case Resolution / Closure",
+          "deliverable": "Outcome summary and exit documentation"
+        }
+      ]
+    },
+    {
+      "subcategoryId": "sub-parent-education",
+      "id": "wf-parenting-skills",
+      "name": "Parenting Skills Program Workflow",
+      "description": "Build parenting confidence through coaching, groups, and counseling referrals.",
+      "exampleProgram": "Referral for child behavior challenges",
+      "focusAreas": [
+        "Behavior management",
+        "Parent-child interactions",
+        "Parental stress",
+        "Support groups"
+      ],
+      "stages": [
+        {
+          "stage": 1,
+          "tabId": "intake",
+          "label": "Referral & Intake",
+          "shortLabel": "Referral & Intake",
+          "deliverable": "Parenting program referral received"
+        },
+        {
+          "stage": 2,
+          "tabId": "assessment",
+          "label": "Parenting & Family Assessment",
+          "shortLabel": "Parenting & Family Assessment",
+          "deliverable": "Behavior management and stress factors identified"
+        },
+        {
+          "stage": 3,
+          "tabId": "risk",
+          "label": "Family Stress & Priority Review",
+          "shortLabel": "Family Stress & Priority Review",
+          "deliverable": "High-stress areas prioritized"
+        },
+        {
+          "stage": 4,
+          "tabId": "careplan",
+          "label": "Parent Coaching Plan",
+          "shortLabel": "Parent Coaching Plan",
+          "deliverable": "Goals for interactions and stress reduction"
+        },
+        {
+          "stage": 5,
+          "tabId": "services",
+          "label": "Coaching & Group Referrals",
+          "shortLabel": "Coaching & Group Referrals",
+          "deliverable": "Parent coaching, support groups, counseling"
+        },
+        {
+          "stage": 6,
+          "tabId": "followup",
+          "label": "Skill Implementation Tracking",
+          "shortLabel": "Skill Implementation Tracking",
+          "deliverable": "Parenting skill practice documentation"
+        },
+        {
+          "stage": 7,
+          "tabId": "reassessment",
+          "label": "Progress Review",
+          "shortLabel": "Progress Review",
+          "deliverable": "Behavior incident and confidence review"
+        },
+        {
+          "stage": 8,
+          "tabId": "closure",
+          "label": "Case Resolution / Closure",
+          "shortLabel": "Case Resolution / Closure",
+          "deliverable": "Parent confident managing challenges independently"
+        }
+      ]
+    },
+    {
+      "subcategoryId": "sub-crisis-response",
+      "id": "wf-crisis-response",
+      "name": "Crisis Response Workflow",
+      "description": "Rapid response for mental health crises with safety planning and stabilization.",
+      "exampleProgram": "Crisis hotline or ER referral requiring immediate triage",
+      "focusAreas": [
+        "Suicide/homicide risk",
+        "Safety planning",
+        "Crisis stabilization",
+        "Warm handoff"
+      ],
+      "stages": [
+        {
+          "stage": 1,
+          "tabId": "intake",
+          "label": "Crisis Referral & Triage",
+          "shortLabel": "Crisis Referral & Triage",
+          "deliverable": "Crisis referral logged and assigned"
+        },
+        {
+          "stage": 2,
+          "tabId": "assessment",
+          "label": "Safety & Crisis Assessment",
+          "shortLabel": "Safety & Crisis Assessment",
+          "deliverable": "Immediate safety and risk evaluation"
+        },
+        {
+          "stage": 3,
+          "tabId": "risk",
+          "label": "Acuity Prioritization",
+          "shortLabel": "Acuity Prioritization",
+          "deliverable": "Crisis acuity level documented"
+        },
+        {
+          "stage": 4,
+          "tabId": "careplan",
+          "label": "Stabilization Plan",
+          "shortLabel": "Stabilization Plan",
+          "deliverable": "Safety plan and immediate interventions"
+        },
+        {
+          "stage": 5,
+          "tabId": "services",
+          "label": "Crisis Resource Linkage",
+          "shortLabel": "Crisis Resource Linkage",
+          "deliverable": "Crisis bed, mobile team, or outpatient link"
+        },
+        {
+          "stage": 6,
+          "tabId": "followup",
+          "label": "Crisis Monitoring",
+          "shortLabel": "Crisis Monitoring",
+          "deliverable": "24–72 hour follow-up contacts"
+        },
+        {
+          "stage": 7,
+          "tabId": "reassessment",
+          "label": "Stabilization Review",
+          "shortLabel": "Stabilization Review",
+          "deliverable": "Readiness for step-down care"
+        },
+        {
+          "stage": 8,
+          "tabId": "closure",
+          "label": "Crisis Discharge / Closure",
+          "shortLabel": "Crisis Discharge / Closure",
+          "deliverable": "Warm handoff to ongoing services"
+        }
+      ]
+    },
+    {
+      "subcategoryId": "sub-outpatient-counseling",
+      "id": "wf-outpatient-counseling",
+      "name": "Outpatient Counseling Workflow",
+      "description": "Outpatient mental health case management from intake through treatment planning.",
+      "exampleProgram": "Healthcare or self-referral for outpatient counseling",
+      "focusAreas": [
+        "Clinical assessment",
+        "Treatment planning",
+        "Therapy engagement",
+        "Medication coordination"
+      ],
+      "stages": [
+        {
+          "stage": 1,
+          "tabId": "intake",
+          "label": "Referral & Intake",
+          "shortLabel": "Referral & Intake",
+          "deliverable": "Counseling referral and consent"
+        },
+        {
+          "stage": 2,
+          "tabId": "assessment",
+          "label": "Clinical Intake Assessment",
+          "shortLabel": "Clinical Intake Assessment",
+          "deliverable": "Biopsychosocial assessment summary"
+        },
+        {
+          "stage": 3,
+          "tabId": "risk",
+          "label": "Clinical Risk Screening",
+          "shortLabel": "Clinical Risk Screening",
+          "deliverable": "Risk factors and acuity documented"
+        },
+        {
+          "stage": 4,
+          "tabId": "careplan",
+          "label": "Treatment Plan Development",
+          "shortLabel": "Treatment Plan Development",
+          "deliverable": "Goals, modalities, and frequency"
+        },
+        {
+          "stage": 5,
+          "tabId": "services",
+          "label": "Therapy Coordination",
+          "shortLabel": "Therapy Coordination",
+          "deliverable": "Session scheduling and ancillary referrals"
+        },
+        {
+          "stage": 6,
+          "tabId": "followup",
+          "label": "Treatment Monitoring",
+          "shortLabel": "Treatment Monitoring",
+          "deliverable": "Session notes and engagement tracking"
+        },
+        {
+          "stage": 7,
+          "tabId": "reassessment",
+          "label": "Treatment Plan Review",
+          "shortLabel": "Treatment Plan Review",
+          "deliverable": "Goal progress and plan updates"
+        },
+        {
+          "stage": 8,
+          "tabId": "closure",
+          "label": "Discharge Planning",
+          "shortLabel": "Discharge Planning",
+          "deliverable": "Step-down or successful completion summary"
+        }
+      ]
+    },
+    {
+      "subcategoryId": "sub-peer-support",
+      "id": "wf-peer-support",
+      "name": "Peer Support Workflow",
+      "description": "Peer-led recovery support with goal setting and community connection.",
+      "exampleProgram": "Referral to certified peer support specialist program",
+      "focusAreas": [
+        "Recovery goals",
+        "Peer mentoring",
+        "Community integration",
+        "Relapse prevention"
+      ],
+      "stages": [
+        {
+          "stage": 1,
+          "tabId": "intake",
+          "label": "Referral & Enrollment",
+          "shortLabel": "Referral & Enrollment",
+          "deliverable": "Peer support enrollment record"
+        },
+        {
+          "stage": 2,
+          "tabId": "assessment",
+          "label": "Recovery Needs Assessment",
+          "shortLabel": "Recovery Needs Assessment",
+          "deliverable": "Recovery goals and strengths identified"
+        },
+        {
+          "stage": 3,
+          "tabId": "risk",
+          "label": "Support Needs Prioritization",
+          "shortLabel": "Support Needs Prioritization",
+          "deliverable": "Priority recovery domains ranked"
+        },
+        {
+          "stage": 4,
+          "tabId": "careplan",
+          "label": "Peer Recovery Plan",
+          "shortLabel": "Peer Recovery Plan",
+          "deliverable": "Peer-defined goals and action steps"
+        },
+        {
+          "stage": 5,
+          "tabId": "services",
+          "label": "Peer Service Linkage",
+          "shortLabel": "Peer Service Linkage",
+          "deliverable": "Groups, coaching, and community connections"
+        },
+        {
+          "stage": 6,
+          "tabId": "followup",
+          "label": "Peer Check-ins",
+          "shortLabel": "Peer Check-ins",
+          "deliverable": "Recovery progress and barrier documentation"
+        },
+        {
+          "stage": 7,
+          "tabId": "reassessment",
+          "label": "Recovery Progress Review",
+          "shortLabel": "Recovery Progress Review",
+          "deliverable": "Goal achievement review"
+        },
+        {
+          "stage": 8,
+          "tabId": "closure",
+          "label": "Graduation / Closure",
+          "shortLabel": "Graduation / Closure",
+          "deliverable": "Transition to self-directed recovery supports"
+        }
+      ]
+    },
+    {
+      "subcategoryId": "sub-housing-assistance",
+      "id": "wf-family-stability",
+      "name": "Family Stability Program Workflow",
+      "description": "Stabilize housing and basic needs for families facing financial hardship.",
+      "exampleProgram": "Family request for assistance due to financial hardship",
+      "focusAreas": [
+        "Housing stability",
+        "Employment",
+        "Affordable childcare",
+        "Financial literacy"
+      ],
+      "stages": [
+        {
+          "stage": 1,
+          "tabId": "intake",
+          "label": "Referral & Intake",
+          "shortLabel": "Referral & Intake",
+          "deliverable": "Housing stability referral received"
+        },
+        {
+          "stage": 2,
+          "tabId": "assessment",
+          "label": "Stability Assessment",
+          "shortLabel": "Stability Assessment",
+          "deliverable": "Employment, housing, and childcare findings"
+        },
+        {
+          "stage": 3,
+          "tabId": "risk",
+          "label": "Instability Risk Review",
+          "shortLabel": "Instability Risk Review",
+          "deliverable": "Eviction and crisis risk prioritized"
+        },
+        {
+          "stage": 4,
+          "tabId": "careplan",
+          "label": "Stability Support Plan",
+          "shortLabel": "Stability Support Plan",
+          "deliverable": "Employment, housing, and childcare goals"
+        },
+        {
+          "stage": 5,
+          "tabId": "services",
+          "label": "Housing & Benefit Referrals",
+          "shortLabel": "Housing & Benefit Referrals",
+          "deliverable": "Workforce, housing, and subsidy applications"
+        },
+        {
+          "stage": 6,
+          "tabId": "followup",
+          "label": "Monthly Progress Meetings",
+          "shortLabel": "Monthly Progress Meetings",
+          "deliverable": "Progress notes and barrier tracking"
+        },
+        {
+          "stage": 7,
+          "tabId": "reassessment",
+          "label": "Stability Progress Review",
+          "shortLabel": "Stability Progress Review",
+          "deliverable": "Housing and income outcome review"
+        },
+        {
+          "stage": 8,
+          "tabId": "closure",
+          "label": "Case Resolution / Closure",
+          "shortLabel": "Case Resolution / Closure",
+          "deliverable": "Stable housing and long-term supports connected"
+        }
+      ]
+    },
+    {
+      "subcategoryId": "sub-employment-support",
+      "id": "wf-employment-support",
+      "name": "Employment Support Workflow",
+      "description": "Help clients secure and maintain employment through workforce development services.",
+      "exampleProgram": "Community agency referral for job search and retention support",
+      "focusAreas": [
+        "Job readiness",
+        "Skills training",
+        "Job placement",
+        "Retention support"
+      ],
+      "stages": [
+        {
+          "stage": 1,
+          "tabId": "intake",
+          "label": "Referral & Intake",
+          "shortLabel": "Referral & Intake",
+          "deliverable": "Employment program referral record"
+        },
+        {
+          "stage": 2,
+          "tabId": "assessment",
+          "label": "Workforce Assessment",
+          "shortLabel": "Workforce Assessment",
+          "deliverable": "Skills, barriers, and job readiness summary"
+        },
+        {
+          "stage": 3,
+          "tabId": "risk",
+          "label": "Employment Barrier Review",
+          "shortLabel": "Employment Barrier Review",
+          "deliverable": "Priority barriers to employment"
+        },
+        {
+          "stage": 4,
+          "tabId": "careplan",
+          "label": "Employment Action Plan",
+          "shortLabel": "Employment Action Plan",
+          "deliverable": "Job search goals and training steps"
+        },
+        {
+          "stage": 5,
+          "tabId": "services",
+          "label": "Workforce Referrals",
+          "shortLabel": "Workforce Referrals",
+          "deliverable": "Training, job placement, and support services"
+        },
+        {
+          "stage": 6,
+          "tabId": "followup",
+          "label": "Job Search Monitoring",
+          "shortLabel": "Job Search Monitoring",
+          "deliverable": "Application and interview tracking"
+        },
+        {
+          "stage": 7,
+          "tabId": "reassessment",
+          "label": "Employment Progress Review",
+          "shortLabel": "Employment Progress Review",
+          "deliverable": "Job retention and income review"
+        },
+        {
+          "stage": 8,
+          "tabId": "closure",
+          "label": "Employment Closure",
+          "shortLabel": "Employment Closure",
+          "deliverable": "Stable employment and follow-up resources"
+        }
+      ]
+    },
+    {
+      "subcategoryId": "sub-general-intake",
+      "id": "wf-general-intake",
+      "name": "Community Intake Workflow",
+      "description": "General community social services intake connecting clients to appropriate programs.",
+      "exampleProgram": "Walk-in or partner agency referral for undetermined service needs",
+      "focusAreas": [
+        "Eligibility screening",
+        "Program routing",
+        "Basic needs",
+        "Warm referrals"
+      ],
+      "stages": [
+        {
+          "stage": 1,
+          "tabId": "intake",
+          "label": "Referral & Intake",
+          "shortLabel": "Referral & Intake",
+          "deliverable": "Referral record received and assigned"
+        },
+        {
+          "stage": 2,
+          "tabId": "assessment",
+          "label": "Intake & Enrollment",
+          "shortLabel": "Intake & Enrollment",
+          "deliverable": "Family profile and eligibility verified"
+        },
+        {
+          "stage": 3,
+          "tabId": "risk",
+          "label": "Needs Assessment",
+          "shortLabel": "Needs Assessment",
+          "deliverable": "Needs assessment summary"
+        },
+        {
+          "stage": 4,
+          "tabId": "careplan",
+          "label": "Goal Setting & Service Planning",
+          "shortLabel": "Goal Setting & Service Planning",
+          "deliverable": "Individualized family support plan"
+        },
+        {
+          "stage": 5,
+          "tabId": "services",
+          "label": "Service Coordination & Referrals",
+          "shortLabel": "Service Coordination & Referrals",
+          "deliverable": "Referral tracking and activated services"
+        },
+        {
+          "stage": 6,
+          "tabId": "followup",
+          "label": "Ongoing Support & Monitoring",
+          "shortLabel": "Ongoing Support & Monitoring",
+          "deliverable": "Case notes and updated action items"
+        },
+        {
+          "stage": 7,
+          "tabId": "reassessment",
+          "label": "Progress Review",
+          "shortLabel": "Progress Review",
+          "deliverable": "Updated support plan and progress report"
+        },
+        {
+          "stage": 8,
+          "tabId": "closure",
+          "label": "Case Resolution / Closure",
+          "shortLabel": "Case Resolution / Closure",
+          "deliverable": "Outcome summary and exit documentation"
+        }
+      ]
+    }
+  ],
+  "familyBySubcategory": {
+    "sub-seniors-at-risk": "senior",
+    "sub-in-home-support": "in_home",
+    "sub-nutrition-programs": "nutrition",
+    "sub-youth-empowerment": "parenting",
+    "sub-family-resource": "parenting",
+    "sub-parent-education": "parenting",
+    "sub-housing-assistance": "parenting",
+    "sub-crisis-response": "mental_health",
+    "sub-outpatient-counseling": "mental_health",
+    "sub-peer-support": "mental_health",
+    "sub-employment-support": "employment",
+    "sub-general-intake": "general"
+  },
+  "domainsByFamily": {
+    "senior": [
+      "falls",
+      "nutrition",
+      "isolation",
+      "housing",
+      "abuseRisk"
+    ],
+    "in_home": [
+      "adlSupport",
+      "homeSafety",
+      "caregiverSupport",
+      "mobility",
+      "medicationManagement"
+    ],
+    "nutrition": [
+      "foodAccess",
+      "mealDelivery",
+      "dietaryNeeds",
+      "weightMonitoring",
+      "socialDining"
+    ],
+    "parenting": [
+      "attendance",
+      "transportation",
+      "childcare",
+      "familyStress",
+      "schoolEngagement"
+    ],
+    "mental_health": [
+      "suicideRisk",
+      "selfHarm",
+      "substanceUse",
+      "safetyPlan",
+      "supportSystem"
+    ],
+    "employment": [
+      "jobReadiness",
+      "skillsGap",
+      "transportation",
+      "childcare",
+      "incomeStability"
+    ],
+    "general": [
+      "basicNeeds",
+      "housing",
+      "employment",
+      "health",
+      "supportNetwork"
+    ]
+  }
+}

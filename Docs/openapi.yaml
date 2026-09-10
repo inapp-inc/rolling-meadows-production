@@ -1,0 +1,910 @@
+openapi: 3.0.3
+info:
+  title: Rolling Meadows Case Management API
+  version: 0.1.0
+  description: |
+    Canonical API contract for the Rolling Meadows multi-tenant case management platform.
+    Stack: React frontend + Python FastAPI backend + MongoDB.
+    Edit this file before changing API shapes.
+
+servers:
+  - url: http://localhost:8000
+    description: Local FastAPI (Docker or direct)
+  - url: http://localhost:3000/api
+    description: Local via web dev proxy
+
+tags:
+  - name: health
+    description: Liveness and readiness
+  - name: auth
+    description: Authentication and session
+  - name: clients
+    description: Client registration, search, duplicates
+  - name: catalog
+    description: Case category and workflow catalog
+  - name: cases
+    description: Case lifecycle — creation, workspace, intake
+
+paths:
+  /health:
+    get:
+      tags: [health]
+      summary: Liveness check
+      operationId: getHealth
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+
+  /auth/login:
+    post:
+      tags: [auth]
+      summary: Authenticate with email and password
+      operationId: login
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Authentication successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/me:
+    get:
+      tags: [auth]
+      summary: Current authenticated user
+      operationId: getCurrentUser
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+      responses:
+        '200':
+          description: Current user profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+        '401':
+          description: Not authenticated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/logout:
+    post:
+      tags: [auth]
+      summary: End session (client discards token; server may denylist in future)
+      operationId: logout
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+      responses:
+        '204':
+          description: Logged out
+
+  /clients:
+    get:
+      tags: [clients]
+      summary: Search clients within tenant
+      operationId: listClients
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+        - in: query
+          name: q
+          schema:
+            type: string
+          description: Search by name, phone, or address (fuzzy name)
+      responses:
+        '200':
+          description: Client list
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items]
+                properties:
+                  items:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ClientSummary'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+    post:
+      tags: [clients]
+      summary: Register a new client
+      operationId: createClient
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateClientRequest'
+      responses:
+        '201':
+          description: Client created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientDetail'
+        '409':
+          description: Duplicate threshold exceeded without confirm
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DedupConflictResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /clients/dedup-check:
+    post:
+      tags: [clients]
+      summary: Inline duplicate detection while typing
+      operationId: checkClientDuplicates
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DedupCheckRequest'
+      responses:
+        '200':
+          description: Duplicate matches
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DedupCheckResponse'
+
+  /clients/duplicates:
+    get:
+      tags: [clients]
+      summary: Duplicate queue for supervisors
+      operationId: listDuplicatePairs
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+      responses:
+        '200':
+          description: Duplicate pairs
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [pairs]
+                properties:
+                  pairs:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DuplicatePair'
+
+  /clients/merge:
+    post:
+      tags: [clients]
+      summary: Merge duplicate clients (supervisor or tenant admin)
+      operationId: mergeClients
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MergeClientsRequest'
+      responses:
+        '200':
+          description: Survivor client after merge
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientDetail'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /clients/{clientId}:
+    get:
+      tags: [clients]
+      summary: Client 360 profile
+      operationId: getClient
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+        - in: path
+          name: clientId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Client detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClientDetail'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /catalog/case-categories:
+    get:
+      tags: [catalog]
+      summary: List case categories and subcategories
+      operationId: listCaseCategories
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+      responses:
+        '200':
+          description: Category catalog
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CaseCategoryListResponse'
+
+  /catalog/workflows/{subcategoryId}:
+    get:
+      tags: [catalog]
+      summary: Workflow preview for a subcategory
+      operationId: getWorkflowForSubcategory
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+        - in: path
+          name: subcategoryId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Workflow definition
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Workflow'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /cases:
+    get:
+      tags: [cases]
+      summary: List cases (caseload-scoped for case managers)
+      operationId: listCases
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+        - in: query
+          name: q
+          schema:
+            type: string
+          description: Filter by case number, client name, or phone
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum: [active, closed]
+      responses:
+        '200':
+          description: Case summaries
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CaseListResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+    post:
+      tags: [cases]
+      summary: Open a new case for a client
+      operationId: createCase
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCaseRequest'
+      responses:
+        '201':
+          description: Case created; returns workspace snapshot
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CaseWorkspace'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /cases/{caseId}/workspace:
+    get:
+      tags: [cases]
+      summary: Case workspace with stepper and stage statuses
+      operationId: getCaseWorkspace
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+        - in: path
+          name: caseId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Workspace payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CaseWorkspace'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /cases/{caseId}/intake:
+    put:
+      tags: [cases]
+      summary: Save referral and intake data (stage 1–2)
+      operationId: saveCaseIntake
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/CorrelationId'
+        - in: path
+          name: caseId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SaveIntakeRequest'
+      responses:
+        '200':
+          description: Updated workspace
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CaseWorkspace'
+        '400':
+          description: Case closed (read-only)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT access token from POST /auth/login
+
+  parameters:
+    CorrelationId:
+      in: header
+      name: x-correlation-id
+      schema:
+        type: string
+      required: false
+
+  schemas:
+    HealthResponse:
+      type: object
+      required: [ok, service]
+      properties:
+        ok:
+          type: boolean
+        service:
+          type: string
+        correlationId:
+          type: string
+
+    LoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+          example: case.manager@demo.rmhs.app
+        password:
+          type: string
+          format: password
+          minLength: 8
+
+    LoginResponse:
+      type: object
+      required: [accessToken, tokenType, expiresIn, user]
+      properties:
+        accessToken:
+          type: string
+        tokenType:
+          type: string
+          enum: [bearer]
+        expiresIn:
+          type: integer
+          description: Token lifetime in seconds
+        user:
+          $ref: '#/components/schemas/UserProfile'
+
+    UserProfile:
+      type: object
+      required: [id, email, name, role, tenantId, status]
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+          format: email
+        name:
+          type: string
+        role:
+          $ref: '#/components/schemas/UserRole'
+        tenantId:
+          type: string
+          description: Tenant resolved server-side; never supplied by client on data queries
+        programId:
+          type: string
+          nullable: true
+        status:
+          type: string
+          enum: [Active, Inactive]
+        landingPath:
+          type: string
+          description: Role-specific post-login route per BRD §5.2
+
+    UserRole:
+      type: string
+      enum:
+        - platform_admin
+        - tenant_admin
+        - supervisor
+        - case_manager
+        - cross_program_liaison
+        - auditor
+
+    ErrorResponse:
+      type: object
+      required: [error, message]
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+        correlationId:
+          type: string
+
+    ClientSummary:
+      type: object
+      required: [id, name, phone, address, status]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        phone:
+          type: string
+        address:
+          type: string
+        dob:
+          type: string
+          nullable: true
+        status:
+          type: string
+        crossProgramActive:
+          type: boolean
+          description: Active engagement in another program within tenant
+
+    ClientDetail:
+      allOf:
+        - $ref: '#/components/schemas/ClientSummary'
+        - type: object
+          properties:
+            registeredAt:
+              type: string
+              format: date
+            registrationSource:
+              type: string
+            contactReason:
+              type: string
+              nullable: true
+            screeningNotes:
+              type: string
+              nullable: true
+
+    CreateClientRequest:
+      type: object
+      required: [name, phone, address]
+      properties:
+        name:
+          type: string
+        phone:
+          type: string
+        address:
+          type: string
+        dob:
+          type: string
+          format: date
+          nullable: true
+        contactReason:
+          type: string
+        screeningNotes:
+          type: string
+        emergencyTrigger:
+          type: string
+        serviceNeed:
+          type: boolean
+        confirmDespiteDuplicates:
+          type: boolean
+          default: false
+
+    DedupCheckRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        phone:
+          type: string
+        dob:
+          type: string
+        excludeClientId:
+          type: string
+
+    DedupMatch:
+      type: object
+      required: [client, score, matchedFields]
+      properties:
+        client:
+          $ref: '#/components/schemas/ClientSummary'
+        score:
+          type: integer
+        matchedFields:
+          type: array
+          items:
+            type: string
+
+    DedupCheckResponse:
+      type: object
+      required: [matches, threshold]
+      properties:
+        matches:
+          type: array
+          items:
+            $ref: '#/components/schemas/DedupMatch'
+        threshold:
+          type: integer
+
+    DedupConflictResponse:
+      type: object
+      required: [error, message, matches]
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+        matches:
+          type: array
+          items:
+            $ref: '#/components/schemas/DedupMatch'
+
+    DuplicatePair:
+      type: object
+      required: [clientA, clientB, score, matchedFields]
+      properties:
+        clientA:
+          $ref: '#/components/schemas/ClientSummary'
+        clientB:
+          $ref: '#/components/schemas/ClientSummary'
+        score:
+          type: integer
+        matchedFields:
+          type: array
+          items:
+            type: string
+
+    MergeClientsRequest:
+      type: object
+      required: [survivorId, duplicateId]
+      properties:
+        survivorId:
+          type: string
+        duplicateId:
+          type: string
+
+    CaseSubcategory:
+      type: object
+      required: [id, label]
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+
+    CaseCategory:
+      type: object
+      required: [id, label, programId, subcategories]
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+        programId:
+          type: string
+        subcategories:
+          type: array
+          items:
+            $ref: '#/components/schemas/CaseSubcategory'
+
+    CaseCategoryListResponse:
+      type: object
+      required: [categories]
+      properties:
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/CaseCategory'
+
+    WorkflowStage:
+      type: object
+      required: [tabId, stage, label, deliverable]
+      properties:
+        tabId:
+          type: string
+        stage:
+          type: integer
+          nullable: true
+        label:
+          type: string
+        deliverable:
+          type: string
+
+    Workflow:
+      type: object
+      required: [id, name, description, stages]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        stages:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkflowStage'
+
+    CaseSummary:
+      type: object
+      required: [id, caseNumber, clientId, status]
+      properties:
+        id:
+          type: string
+        caseNumber:
+          type: string
+        clientId:
+          type: string
+        clientName:
+          type: string
+        programId:
+          type: string
+        caseCategoryId:
+          type: string
+        caseSubcategoryId:
+          type: string
+        caseManagerId:
+          type: string
+        status:
+          type: string
+          enum: [active, closed]
+        incompleteIntake:
+          type: boolean
+        currentStage:
+          type: integer
+        openDate:
+          type: string
+          format: date
+
+    CaseListResponse:
+      type: object
+      required: [items]
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CaseSummary'
+
+    CreateCaseRequest:
+      type: object
+      required: [clientId, categoryId, subcategoryId]
+      properties:
+        clientId:
+          type: string
+        categoryId:
+          type: string
+        subcategoryId:
+          type: string
+        caseManagerId:
+          type: string
+          description: Supervisor may assign; case manager defaults to self
+
+    StageStatus:
+      type: object
+      required: [tabId, label, status]
+      properties:
+        tabId:
+          type: string
+        stage:
+          type: integer
+          nullable: true
+        label:
+          type: string
+        deliverable:
+          type: string
+        status:
+          type: string
+          enum: [pending, in_progress, complete, available]
+
+    ReferralPayload:
+      type: object
+      properties:
+        source:
+          type: string
+        reason:
+          type: string
+        referrerName:
+          type: string
+        dateReceived:
+          type: string
+          format: date
+
+    IntakePayload:
+      type: object
+      properties:
+        consentOnFile:
+          type: boolean
+        livingArrangement:
+          type: string
+        medicalHistory:
+          type: string
+        comprehensiveAssessmentNotes:
+          type: string
+        completeness:
+          type: string
+          enum: [incomplete, complete]
+
+    SaveIntakeRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        dob:
+          type: string
+          format: date
+        phone:
+          type: string
+        address:
+          type: string
+        referral:
+          type: object
+          properties:
+            source:
+              type: string
+            reason:
+              type: string
+            referrerName:
+              type: string
+        intake:
+          type: object
+          properties:
+            consentOnFile:
+              type: boolean
+            livingArrangement:
+              type: string
+            medicalHistory:
+              type: string
+            comprehensiveAssessmentNotes:
+              type: string
+
+    CaseWorkspace:
+      type: object
+      required: [case, client, workflow, stageStatuses, currentStage, readOnly]
+      properties:
+        case:
+          $ref: '#/components/schemas/CaseSummary'
+        client:
+          $ref: '#/components/schemas/ClientSummary'
+        workflow:
+          $ref: '#/components/schemas/Workflow'
+        stageStatuses:
+          type: array
+          items:
+            $ref: '#/components/schemas/StageStatus'
+        currentStage:
+          type: integer
+        referral:
+          $ref: '#/components/schemas/ReferralPayload'
+          nullable: true
+        intake:
+          $ref: '#/components/schemas/IntakePayload'
+          nullable: true
+        readOnly:
+          type: boolean
+
+  responses:
+    Unauthorized:
+      description: Not authenticated
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'

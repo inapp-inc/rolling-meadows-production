@@ -1,0 +1,21 @@
+schema: spec-driven
+
+context: |
+  Project: Rolling Meadows Case Management Platform (multi-tenant human services)
+  BRD: Docs/project.md (BRD-RM-6.1)
+  FSD: Docs/FSD-Rolling-Meadows.md
+  UI reference (operational screens): Docs/ui/ (Demo v8 prototype — layouts, fields, validations)
+  Production code target: codebase/ (React + FastAPI + MongoDB, Docker)
+  OpenAPI (design phase): Docs/openapi.yaml
+  Languages: English and Spanish
+  Spec-driven workflow: .cursor/skills/spec-driven-development/
+
+# Per-artifact rules (optional)
+# Add custom rules for specific artifacts.
+# Example:
+#   rules:
+#     proposal:
+#       - Keep proposals under 500 words
+#       - Always include a "Non-goals" section
+#     tasks:
+#       - Break tasks into chunks of max 2 hours

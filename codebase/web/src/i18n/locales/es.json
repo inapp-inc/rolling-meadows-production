@@ -1,0 +1,2975 @@
+{
+  "nav": {
+    "dashboard": "Inicio",
+    "caseSearch": "Búsqueda de casos",
+    "caseCreation": "Creación de casos",
+    "clientSearch": "Búsqueda de clientes",
+    "clientRegistration": "Registro de clientes",
+    "adminDuplicates": "Detección de duplicados",
+    "liaisonLookup": "Consulta entre programas",
+    "documentsHub": "Bóveda de documentos",
+    "workflowHub": "Tablero de tareas y traspasos",
+    "servicesHub": "Coordinación de servicios",
+    "bulkEnroll": "Asignación masiva de servicios",
+    "reports": "Informes",
+    "standardReports": "Informes estándar",
+    "reportsExecutive": "Informes ejecutivos",
+    "reportsOperational": "Informes operativos",
+    "reportsIntegrity": "Integridad y auditoría",
+    "reportsCaseload": "Informes de carga y programas",
+    "customReports": "Informes personalizados",
+    "reportBuilder": "Constructor de informes",
+    "auditReports": "Informes de auditoría del programa",
+    "referralIntake": "Referencia e ingreso",
+    "platformTenants": "Inquilinos",
+    "platformTranslations": "Traducciones",
+    "platformSettings": "Configuración de plataforma",
+    "adminDashboard": "Panel",
+    "adminUsers": "Usuarios",
+    "adminConfig": "Configuración del inquilino",
+    "adminLabels": "Etiquetas locales",
+    "adminAudit": "Registro de auditoría"
+  },
+  "module": {
+    "cases": "Casos",
+    "casesShort": "Casos",
+    "clients": "Gestión de clientes",
+    "clientsShort": "Clientes",
+    "documents": "Gestión de documentos",
+    "documentsShort": "Documentos",
+    "workflow": "Gestión de flujo de trabajo",
+    "workflowShort": "Flujo",
+    "services": "Servicios",
+    "servicesShort": "Servicios",
+    "analytics": "Analítica",
+    "analyticsShort": "Analítica",
+    "platform": "Plataforma",
+    "administration": "Administración"
+  },
+  "shell": {
+    "signOut": "Cerrar sesión",
+    "builtByFoundry": "Creado por InApp Foundry",
+    "builtByFoundryTitle": "Creado por InApp Foundry",
+    "modulesHeading": "Módulos",
+    "homeAria": "Inicio",
+    "moduleNavAria": "Navegación de módulos",
+    "notifications": "Notificaciones",
+    "noAlerts": "No hay alertas en este momento",
+    "navFooterCopy": "© City of Rolling Meadows",
+    "language": "Idioma",
+    "platformScope": "Ámbito de plataforma"
+  },
+  "role": {
+    "platform_admin": "Administrador de plataforma",
+    "tenant_admin": "Administrador del inquilino",
+    "organization_admin": "Administrador de la organización",
+    "case_manager": "Gestor de casos",
+    "supervisor": "Supervisor / Admin. depto.",
+    "cross_program_liaison": "Enlace entre programas",
+    "auditor": "Auditor",
+    "auditorSignIn": "Auditor (solo informes agregados)"
+  },
+  "signIn": {
+    "pageTitle": "Iniciar sesión — Rolling Meadows",
+    "title": "Iniciar sesión",
+    "subtitle": "Seleccione su rol para continuar",
+    "subtitleCredentials": "Ingrese sus credenciales para continuar",
+    "roleLabel": "Su rol",
+    "emailLabel": "Correo electrónico",
+    "passwordLabel": "Contraseña",
+    "organizationCodeLabel": "Código de organización",
+    "organizationCodeHint": "Requerido si su correo se usa en varias organizaciones",
+    "signInButton": "Iniciar sesión",
+    "signingIn": "Iniciando sesión…",
+    "loginFailed": "Error al iniciar sesión. Verifique sus credenciales.",
+    "continue": "Continuar",
+    "welcomeAria": "Bienvenido",
+    "heroTitle": "Plataforma de gestión de casos",
+    "heroTagline": "Registros unificados de clientes, espacio de trabajo por flujos e informes autoservicio para Rolling Meadows Human Services.",
+    "feature1": "Identidad única del cliente con detección de duplicados",
+    "feature2": "Ciclo de vida de ocho etapas en 12 flujos de programa",
+    "feature3": "Seguimiento por riesgo y consulta de enlace entre programas",
+    "builtByFoundry": "Creado por InApp Foundry",
+    "seedError": "No se pudieron cargar los datos de demostración. Actualice la página o contacte al administrador.",
+    "userMissing": "No se pudo iniciar sesión con el rol seleccionado. Actualice la página e inténtelo de nuevo."
+  },
+  "dashboard": {
+    "programImpact": "Impacto del programa",
+    "programOverview": "Resumen del programa",
+    "riskMix": "Mezcla de riesgo",
+    "fullCaseload": "Carga de casos completa",
+    "searchAll": "Buscar todos",
+    "servicesConnected": "Servicios conectados",
+    "careGoalsActive": "Metas de atención activas",
+    "riskImprovements": "Mejoras de riesgo",
+    "activeCaseload": "Carga activa",
+    "overdueFollowUps": "Seguimientos vencidos",
+    "incompleteIntakes": "Ingresos incompletos",
+    "intakesComplete": "Ingresos completos",
+    "followUpsOnTrack": "Seguimientos al día",
+    "receivingServices": "Recibiendo servicios",
+    "cboPartnersConfirmed": "Socios CBO confirmados",
+    "totalActive": "Total activos",
+    "highRisk": "Riesgo alto",
+    "needFollowUp": "Requieren seguimiento",
+    "incompleteIntake": "Ingreso incompleto",
+    "caseloadByRisk": "Carga de casos por nivel de riesgo",
+    "filterCaseload": "Filtrar carga de casos",
+    "filterAll": "Todos ({count})",
+    "filterOverdue": "Seguimientos vencidos ({count})",
+    "filterIncomplete": "Ingresos incompletos ({count})",
+    "successTitle": "Buenos resultados en toda la carga de casos",
+    "successLead": "Los clientes están conectados a servicios, los planes de atención están activos y las reevaluaciones documentadas muestran mejoras medibles del riesgo.",
+    "activeEnrollments": "{count} inscripciones activas en servicios",
+    "activeGoals": "{count} metas del plan de atención en progreso",
+    "riskImprovementCount": "{count} mejora documentada del riesgo",
+    "riskImprovementCountPlural": "{count} mejoras documentadas del riesgo",
+    "clientsReceivingServices": "Clientes recibiendo servicios",
+    "donutActive": "Activos",
+    "noRiskData": "Sin datos de riesgo",
+    "noRiskDataHint": "Complete evaluaciones para llenar esta vista.",
+    "noData": "Sin datos",
+    "noActiveClients": "No hay clientes activos.",
+    "noOverdue": "Sin seguimientos vencidos",
+    "noOverdueHint": "Todos los seguimientos están al día — buen trabajo.",
+    "noIncomplete": "Sin ingresos incompletos",
+    "noIncompleteHint": "Todos los ingresos activos tienen consentimiento y fecha de nacimiento.",
+    "noActiveCases": "Sin casos activos",
+    "noActiveCasesHint": "Las nuevas referencias aparecerán aquí.",
+    "tableName": "Nombre",
+    "tableDob": "F. nac.",
+    "tableProcessStage": "Etapa del proceso",
+    "tableRisk": "Riesgo",
+    "tableFollowUp": "Seguimiento",
+    "tableIntakeStatus": "Estado del ingreso",
+    "programImpactAria": "Resumen del impacto del programa",
+    "viewCaseAria": "Ver resumen del caso de {name}",
+    "showStatInCaseloadTable": "Mostrar {label} en la tabla de carga de casos"
+  },
+  "export": {
+    "downloadImage": "Descargar imagen",
+    "downloadXlsx": "Descargar XLSX",
+    "caseloadRiskDetailTitle": "Carga de casos por riesgo — detalle de clientes",
+    "caseloadRiskDetailSheet": "Detalle de riesgo",
+    "fullCaseloadDetailTitle": "Carga completa — detalle de clientes",
+    "fullCaseloadDetailSheet": "Carga de casos"
+  },
+  "common": {
+    "openCase": "Abrir caso",
+    "noPhone": "Sin teléfono",
+    "noClients": "Sin clientes",
+    "search": "Buscar",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "continue": "Continuar",
+    "client": "Cliente",
+    "phone": "Teléfono",
+    "status": "Estado",
+    "date": "Fecha",
+    "riskLevel": "Nivel de riesgo",
+    "caseManager": "Gestor de casos",
+    "processStage": "Etapa del proceso",
+    "intakeStatus": "Estado del ingreso",
+    "compositeScore": "Puntuación compuesta",
+    "followUpStatus": "Estado del seguimiento",
+    "loading": "Cargando…",
+    "edit": "Editar",
+    "yes": "Sí",
+    "no": "No"
+  },
+  "fallback": {
+    "Caseload by Risk Level": "Carga de casos por nivel de riesgo",
+    "Clients Enrolled in Event": "Clientes inscritos en el evento",
+    "Overdue Follow-ups": "Seguimientos vencidos",
+    "Open CBO Referrals": "Referencias CBO abiertas",
+    "Enrollments by Program": "Inscripciones por programa",
+    "Overdue Follow-ups Summary": "Resumen de seguimientos vencidos",
+    "Open CBO Referrals Summary": "Resumen de referencias CBO abiertas",
+    "Program / event": "Programa / evento",
+    "Event for enrollment report": "Evento para informe de inscripción",
+    "Search all": "Buscar todos",
+    "Search clients": "Buscar clientes",
+    "Search cases": "Buscar casos",
+    "No enrollments": "Sin inscripciones",
+    "No overdue follow-ups": "Sin seguimientos vencidos",
+    "No open CBO referrals": "Sin referencias CBO abiertas",
+    "All follow-ups are current.": "Todos los seguimientos están al día.",
+    "All referrals confirmed.": "Todas las referencias confirmadas.",
+    "Risk Level": "Nivel de riesgo",
+    "Count": "Cantidad",
+    "Days Overdue": "Días de retraso",
+    "Date Enrolled": "Fecha de inscripción",
+    "Event": "Evento",
+    "Cadence": "Cadencia",
+    "CBO": "CBO",
+    "High": "Alto",
+    "Medium": "Medio",
+    "Moderate": "Moderado",
+    "Low": "Bajo",
+    "Unknown": "Desconocido",
+    "Incomplete intake": "Ingreso incompleto",
+    "Open case": "Abrir caso",
+    "Preview": "Vista previa",
+    "Upload": "Subir",
+    "Add sample document": "Agregar documento de ejemplo",
+    "Document Vault": "Bóveda de documentos",
+    "No documents yet": "Aún no hay documentos",
+    "Case Creation": "Creación de casos",
+    "Case Search": "Búsqueda de casos",
+    "Client Search": "Búsqueda de clientes",
+    "Bulk Service Allocation": "Asignación masiva de servicios",
+    "Service Coordination": "Coordinación de servicios",
+    "Task & Handoff Board": "Tablero de tareas y traspasos",
+    "Duplicate Detection": "Detección de duplicados",
+    "Cross-Program Lookup": "Consulta entre programas",
+    "Referral & Intake": "Referencia e ingreso",
+    "Reset Demo": "Restablecer demo",
+    "Sign out": "Cerrar sesión",
+    "Download image": "Descargar imagen",
+    "Download XLSX": "Descargar XLSX",
+    "Senior Social Services": "Servicios sociales para personas mayores",
+    "Parenting Support Programs": "Programas de apoyo a la crianza",
+    "Mental Health Services": "Servicios de salud mental",
+    "Community Social Services": "Servicios sociales comunitarios",
+    "Seniors at Risk": "Personas mayores en riesgo",
+    "In-Home Support": "Apoyo en el hogar",
+    "Nutrition Programs": "Programas de nutrición",
+    "Youth Empowerment Groups": "Grupos de empoderamiento juvenil",
+    "Family Resource Center": "Centro de recursos familiares",
+    "Parent Education": "Educación para padres",
+    "Crisis Response": "Respuesta a crisis",
+    "Outpatient Counseling": "Consejería ambulatoria",
+    "Peer Support": "Apoyo entre pares",
+    "Housing Assistance": "Asistencia de vivienda",
+    "Employment Support": "Apoyo de empleo",
+    "General Intake": "Ingreso general",
+    "Case category": "Categoría del caso",
+    "Subcategory": "Subcategoría",
+    "All categories": "Todas las categorías",
+    "All subcategories": "Todas las subcategorías",
+    "Category": "Categoría"
+  },
+  "category": {
+    "cat-senior-services": "Servicios sociales para personas mayores",
+    "cat-parenting-support": "Programas de apoyo a la crianza",
+    "cat-mental-health": "Servicios de salud mental",
+    "cat-community-services": "Servicios sociales comunitarios"
+  },
+  "subcategory": {
+    "sub-seniors-at-risk": "Personas mayores en riesgo",
+    "sub-in-home-support": "Apoyo en el hogar",
+    "sub-nutrition-programs": "Programas de nutrición",
+    "sub-youth-empowerment": "Grupos de empoderamiento juvenil",
+    "sub-family-resource": "Centro de recursos familiares",
+    "sub-parent-education": "Educación para padres",
+    "sub-crisis-response": "Respuesta a crisis",
+    "sub-outpatient-counseling": "Consejería ambulatoria",
+    "sub-peer-support": "Apoyo entre pares",
+    "sub-housing-assistance": "Asistencia de vivienda",
+    "sub-employment-support": "Apoyo de empleo",
+    "sub-general-intake": "Ingreso general"
+  },
+  "case": {
+    "caseCategory": "Categoría del caso",
+    "subcategory": "Subcategoría",
+    "allCategories": "Todas las categorías",
+    "allSubcategories": "Todas las subcategorías",
+    "continueReferral": "Continuar a referencia e ingreso",
+    "selectSubcategoryPreview": "Seleccione una subcategoría para previsualizar el flujo de trabajo.",
+    "categoryBanner": "Categoría del caso:",
+    "subcategoryBanner": "Subcategoría:"
+  },
+  "workflow": {
+    "tabs": {
+      "documents": "Documentos",
+      "activity": "Actividad"
+    },
+    "default": {
+      "name": "Flujo de gestión de casos",
+      "description": "Proceso estándar de gestión de casos en ocho etapas.",
+      "exampleProgram": "Gestión de casos genérica",
+      "stages": {
+        "intake": {
+          "label": "Referencia e ingreso",
+          "deliverable": "Registro de referencia y consentimiento en archivo"
+        },
+        "assessment": {
+          "label": "Evaluación integral",
+          "deliverable": "Resumen de evaluación holística"
+        },
+        "risk": {
+          "label": "Identificación y priorización de riesgo",
+          "deliverable": "Perfil de riesgo priorizado"
+        },
+        "careplan": {
+          "label": "Desarrollo del plan de atención/servicios",
+          "deliverable": "Plan de atención individualizado"
+        },
+        "services": {
+          "label": "Coordinación de servicios",
+          "deliverable": "Inscripciones en servicios y referencias CBO"
+        },
+        "followup": {
+          "label": "Monitoreo y seguimiento continuo",
+          "deliverable": "Notas de contacto y cadencia de seguimiento"
+        },
+        "reassessment": {
+          "label": "Reevaluación",
+          "deliverable": "Calificaciones de riesgo y ajustes del plan actualizados"
+        },
+        "closure": {
+          "label": "Resolución / cierre del caso",
+          "deliverable": "Resumen de cierre y resultados"
+        }
+      }
+    },
+    "sub-seniors-at-risk": {
+      "name": "Gestión de casos para personas mayores en riesgo",
+      "description": "Identificar riesgos de seguridad y bienestar en adultos mayores y coordinar servicios de protección.",
+      "exampleProgram": "Referencia hospitalaria o comunitaria por caídas, aislamiento o autoabandono",
+      "stages": {
+        "intake": {
+          "label": "Referencia e ingreso",
+          "deliverable": "Registro de referencia recibido y asignado"
+        },
+        "assessment": {
+          "label": "Evaluación integral",
+          "deliverable": "Resumen de evaluación holística"
+        },
+        "risk": {
+          "label": "Identificación y priorización de riesgo",
+          "deliverable": "Perfil de riesgo priorizado"
+        },
+        "careplan": {
+          "label": "Desarrollo del plan de atención/servicios",
+          "deliverable": "Plan de atención individualizado"
+        },
+        "services": {
+          "label": "Coordinación de servicios",
+          "deliverable": "Inscripciones en servicios y referencias CBO"
+        },
+        "followup": {
+          "label": "Monitoreo y seguimiento continuo",
+          "deliverable": "Notas de contacto y cadencia de seguimiento"
+        },
+        "reassessment": {
+          "label": "Reevaluación",
+          "deliverable": "Calificaciones de riesgo y ajustes del plan actualizados"
+        },
+        "closure": {
+          "label": "Resolución / cierre del caso",
+          "deliverable": "Resumen de cierre y resultados"
+        }
+      },
+      "focusAreas": {
+        "0": "Prevención de caídas",
+        "1": "Seguridad de medicamentos",
+        "2": "Aislamiento social",
+        "3": "Detección de abuso o negligencia"
+      }
+    },
+    "sub-in-home-support": {
+      "name": "Flujo de apoyo en el hogar",
+      "description": "Apoyar a adultos mayores para permanecer de forma segura en casa mediante servicios coordinados.",
+      "exampleProgram": "Referencia médica por apoyo en AVD y seguridad en el hogar",
+      "stages": {
+        "intake": {
+          "label": "Referencia e ingreso",
+          "deliverable": "Referencia y elegibilidad para apoyo en el hogar"
+        },
+        "assessment": {
+          "label": "Evaluación de necesidades en el hogar",
+          "deliverable": "Resumen funcional y del entorno del hogar"
+        },
+        "risk": {
+          "label": "Revisión de seguridad e independencia",
+          "deliverable": "Necesidades de apoyo priorizadas"
+        },
+        "careplan": {
+          "label": "Plan de atención en el hogar",
+          "deliverable": "Plan de cuidado personal y equipamiento"
+        },
+        "services": {
+          "label": "Coordinación de proveedores",
+          "deliverable": "Referencias de cuidado en el hogar y equipamiento"
+        },
+        "followup": {
+          "label": "Monitoreo de visitas al hogar",
+          "deliverable": "Notas de visita y coordinación con cuidadores"
+        },
+        "reassessment": {
+          "label": "Reevaluación funcional",
+          "deliverable": "Metas de independencia actualizadas"
+        },
+        "closure": {
+          "label": "Transición / cierre",
+          "deliverable": "Transición a otro nivel de atención o graduación"
+        }
+      },
+      "focusAreas": {
+        "0": "Actividades de la vida diaria",
+        "1": "Apoyo al cuidador",
+        "2": "Modificaciones del hogar",
+        "3": "Necesidades de equipamiento"
+      }
+    },
+    "sub-nutrition-programs": {
+      "name": "Flujo de programas de nutrición",
+      "description": "Conectar a personas mayores con programas de comidas y monitorear su bienestar nutricional.",
+      "exampleProgram": "Referencia comunitaria por inseguridad alimentaria o riesgo de malnutrición",
+      "stages": {
+        "intake": {
+          "label": "Referencia e ingreso",
+          "deliverable": "Registro de referencia al programa de nutrición"
+        },
+        "assessment": {
+          "label": "Detección nutricional",
+          "deliverable": "Evaluación dietética y de acceso a alimentos"
+        },
+        "risk": {
+          "label": "Priorización de riesgo nutricional",
+          "deliverable": "Nivel de prioridad para servicios de comidas"
+        },
+        "careplan": {
+          "label": "Plan de apoyo nutricional",
+          "deliverable": "Metas de servicio de comidas y dieta"
+        },
+        "services": {
+          "label": "Inscripción en programa de comidas",
+          "deliverable": "Inscripción en Comidas a Domicilio o comedor comunitario"
+        },
+        "followup": {
+          "label": "Monitoreo nutricional",
+          "deliverable": "Seguimiento de peso, apetito y entrega de comidas"
+        },
+        "reassessment": {
+          "label": "Revisión nutricional trimestral",
+          "deliverable": "Plan dietético actualizado"
+        },
+        "closure": {
+          "label": "Graduación / cierre del programa",
+          "deliverable": "Transición a autosuficiencia u otro programa"
+        }
+      },
+      "focusAreas": {
+        "0": "Acceso a alimentos",
+        "1": "Entrega de comidas",
+        "2": "Restricciones dietéticas",
+        "3": "Participación en comidas sociales"
+      }
+    },
+    "sub-youth-empowerment": {
+      "name": "Flujo de apoyo a la asistencia escolar",
+      "description": "Apoyar a familias cuando la asistencia escolar o el compromiso juvenil está en riesgo.",
+      "exampleProgram": "Referencia escolar por ausentismo crónico",
+      "stages": {
+        "intake": {
+          "label": "Referencia e ingreso escolar",
+          "deliverable": "Registro de referencia escolar asignado"
+        },
+        "assessment": {
+          "label": "Evaluación familiar y de asistencia",
+          "deliverable": "Barreras de asistencia identificadas"
+        },
+        "risk": {
+          "label": "Priorización de riesgo de asistencia",
+          "deliverable": "Barreras prioritarias clasificadas"
+        },
+        "careplan": {
+          "label": "Plan de apoyo a la asistencia",
+          "deliverable": "Metas de asistencia y compromiso familia-escuela"
+        },
+        "services": {
+          "label": "Referencias de recursos",
+          "deliverable": "Enlaces de transporte, cuidado infantil y consejería escolar"
+        },
+        "followup": {
+          "label": "Revisión mensual de asistencia",
+          "deliverable": "Seguimiento de asistencia y notas de coaching"
+        },
+        "reassessment": {
+          "label": "Revisión de progreso",
+          "deliverable": "Tendencia de asistencia y ajustes del plan"
+        },
+        "closure": {
+          "label": "Resolución / cierre del caso",
+          "deliverable": "Familia autosuficiente en la gestión de la asistencia"
+        }
+      },
+      "focusAreas": {
+        "0": "Asistencia escolar",
+        "1": "Barreras de transporte",
+        "2": "Desafíos de cuidado infantil",
+        "3": "Comunicación familia-escuela"
+      }
+    },
+    "sub-family-resource": {
+      "name": "Flujo del centro de recursos familiares",
+      "description": "Conectar familias con recursos comunitarios mediante un modelo de centro de recursos familiares.",
+      "exampleProgram": "Autorreferencia o referencia de agencia a un centro de recursos familiares",
+      "stages": {
+        "intake": {
+          "label": "Referencia e ingreso",
+          "deliverable": "Registro de referencia recibido y asignado"
+        },
+        "assessment": {
+          "label": "Ingreso e inscripción",
+          "deliverable": "Perfil familiar y elegibilidad verificados"
+        },
+        "risk": {
+          "label": "Evaluación de necesidades",
+          "deliverable": "Resumen de evaluación de necesidades"
+        },
+        "careplan": {
+          "label": "Definición de metas y planificación de servicios",
+          "deliverable": "Plan de apoyo familiar individualizado"
+        },
+        "services": {
+          "label": "Coordinación y referencias de servicios",
+          "deliverable": "Seguimiento de referencias y servicios activados"
+        },
+        "followup": {
+          "label": "Apoyo y monitoreo continuo",
+          "deliverable": "Notas del caso y elementos de acción actualizados"
+        },
+        "reassessment": {
+          "label": "Revisión de progreso",
+          "deliverable": "Plan de apoyo e informe de progreso actualizados"
+        },
+        "closure": {
+          "label": "Resolución / cierre del caso",
+          "deliverable": "Resumen de resultados y documentación de salida"
+        }
+      },
+      "focusAreas": {
+        "0": "Apoyo a la crianza",
+        "1": "Desarrollo infantil",
+        "2": "Recursos comunitarios",
+        "3": "Relaciones familiares"
+      }
+    },
+    "sub-parent-education": {
+      "name": "Flujo del programa de habilidades parentales",
+      "description": "Fortalecer la confianza parental mediante coaching, grupos y referencias a consejería.",
+      "exampleProgram": "Referencia por desafíos de conducta infantil",
+      "stages": {
+        "intake": {
+          "label": "Referencia e ingreso",
+          "deliverable": "Referencia al programa de crianza recibida"
+        },
+        "assessment": {
+          "label": "Evaluación parental y familiar",
+          "deliverable": "Factores de conducta y estrés identificados"
+        },
+        "risk": {
+          "label": "Revisión de estrés y prioridades familiares",
+          "deliverable": "Áreas de alto estrés priorizadas"
+        },
+        "careplan": {
+          "label": "Plan de coaching parental",
+          "deliverable": "Metas de interacción y reducción de estrés"
+        },
+        "services": {
+          "label": "Referencias de coaching y grupos",
+          "deliverable": "Coaching parental, grupos de apoyo, consejería"
+        },
+        "followup": {
+          "label": "Seguimiento de implementación de habilidades",
+          "deliverable": "Documentación de práctica de habilidades parentales"
+        },
+        "reassessment": {
+          "label": "Revisión de progreso",
+          "deliverable": "Revisión de incidentes de conducta y confianza"
+        },
+        "closure": {
+          "label": "Resolución / cierre del caso",
+          "deliverable": "Padre/madre gestiona desafíos de forma independiente"
+        }
+      },
+      "focusAreas": {
+        "0": "Manejo de la conducta",
+        "1": "Interacciones padre-hijo",
+        "2": "Estrés parental",
+        "3": "Grupos de apoyo"
+      }
+    },
+    "sub-crisis-response": {
+      "name": "Flujo de respuesta a crisis",
+      "description": "Respuesta rápida a crisis de salud mental con planificación de seguridad y estabilización.",
+      "exampleProgram": "Referencia de línea de crisis o urgencias que requiere triage inmediato",
+      "stages": {
+        "intake": {
+          "label": "Referencia y triage de crisis",
+          "deliverable": "Referencia de crisis registrada y asignada"
+        },
+        "assessment": {
+          "label": "Evaluación de seguridad y crisis",
+          "deliverable": "Evaluación inmediata de seguridad y riesgo"
+        },
+        "risk": {
+          "label": "Priorización de agudeza",
+          "deliverable": "Nivel de agudeza de crisis documentado"
+        },
+        "careplan": {
+          "label": "Plan de estabilización",
+          "deliverable": "Plan de seguridad e intervenciones inmediatas"
+        },
+        "services": {
+          "label": "Vinculación de recursos de crisis",
+          "deliverable": "Cama de crisis, equipo móvil o enlace ambulatorio"
+        },
+        "followup": {
+          "label": "Monitoreo de crisis",
+          "deliverable": "Contactos de seguimiento en 24–72 horas"
+        },
+        "reassessment": {
+          "label": "Revisión de estabilización",
+          "deliverable": "Preparación para atención de menor intensidad"
+        },
+        "closure": {
+          "label": "Alta / cierre de crisis",
+          "deliverable": "Traspaso cálido a servicios continuos"
+        }
+      },
+      "focusAreas": {
+        "0": "Riesgo de suicidio/homicidio",
+        "1": "Planificación de seguridad",
+        "2": "Estabilización de crisis",
+        "3": "Traspaso cálido"
+      }
+    },
+    "sub-outpatient-counseling": {
+      "name": "Flujo de consejería ambulatoria",
+      "description": "Gestión de casos de salud mental ambulatoria desde el ingreso hasta la planificación del tratamiento.",
+      "exampleProgram": "Referencia de salud o autorreferencia para consejería ambulatoria",
+      "stages": {
+        "intake": {
+          "label": "Referencia e ingreso",
+          "deliverable": "Referencia de consejería y consentimiento"
+        },
+        "assessment": {
+          "label": "Evaluación clínica de ingreso",
+          "deliverable": "Resumen de evaluación biopsicosocial"
+        },
+        "risk": {
+          "label": "Detección clínica de riesgo",
+          "deliverable": "Factores de riesgo y agudeza documentados"
+        },
+        "careplan": {
+          "label": "Desarrollo del plan de tratamiento",
+          "deliverable": "Metas, modalidades y frecuencia"
+        },
+        "services": {
+          "label": "Coordinación de terapia",
+          "deliverable": "Programación de sesiones y referencias auxiliares"
+        },
+        "followup": {
+          "label": "Monitoreo del tratamiento",
+          "deliverable": "Notas de sesión y seguimiento de participación"
+        },
+        "reassessment": {
+          "label": "Revisión del plan de tratamiento",
+          "deliverable": "Progreso de metas y actualizaciones del plan"
+        },
+        "closure": {
+          "label": "Planificación del alta",
+          "deliverable": "Resumen de reducción de intensidad o finalización exitosa"
+        }
+      },
+      "focusAreas": {
+        "0": "Evaluación clínica",
+        "1": "Planificación del tratamiento",
+        "2": "Participación en terapia",
+        "3": "Coordinación de medicamentos"
+      }
+    },
+    "sub-peer-support": {
+      "name": "Flujo de apoyo entre pares",
+      "description": "Apoyo de recuperación liderado por pares con definición de metas y conexión comunitaria.",
+      "exampleProgram": "Referencia a programa certificado de especialista en apoyo entre pares",
+      "stages": {
+        "intake": {
+          "label": "Referencia e inscripción",
+          "deliverable": "Registro de inscripción en apoyo entre pares"
+        },
+        "assessment": {
+          "label": "Evaluación de necesidades de recuperación",
+          "deliverable": "Metas y fortalezas de recuperación identificadas"
+        },
+        "risk": {
+          "label": "Priorización de necesidades de apoyo",
+          "deliverable": "Dominios de recuperación prioritarios clasificados"
+        },
+        "careplan": {
+          "label": "Plan de recuperación entre pares",
+          "deliverable": "Metas definidas por pares y pasos de acción"
+        },
+        "services": {
+          "label": "Vinculación de servicios entre pares",
+          "deliverable": "Grupos, coaching y conexiones comunitarias"
+        },
+        "followup": {
+          "label": "Check-ins entre pares",
+          "deliverable": "Progreso de recuperación y documentación de barreras"
+        },
+        "reassessment": {
+          "label": "Revisión de progreso de recuperación",
+          "deliverable": "Revisión del logro de metas"
+        },
+        "closure": {
+          "label": "Graduación / cierre",
+          "deliverable": "Transición a apoyos de recuperación autodirigidos"
+        }
+      },
+      "focusAreas": {
+        "0": "Metas de recuperación",
+        "1": "Mentoría entre pares",
+        "2": "Integración comunitaria",
+        "3": "Prevención de recaídas"
+      }
+    },
+    "sub-housing-assistance": {
+      "name": "Flujo del programa de estabilidad familiar",
+      "description": "Estabilizar vivienda y necesidades básicas para familias en dificultades financieras.",
+      "exampleProgram": "Solicitud familiar de asistencia por dificultades financieras",
+      "stages": {
+        "intake": {
+          "label": "Referencia e ingreso",
+          "deliverable": "Referencia de estabilidad de vivienda recibida"
+        },
+        "assessment": {
+          "label": "Evaluación de estabilidad",
+          "deliverable": "Hallazgos de empleo, vivienda y cuidado infantil"
+        },
+        "risk": {
+          "label": "Revisión de riesgo de inestabilidad",
+          "deliverable": "Riesgo de desalojo y crisis priorizado"
+        },
+        "careplan": {
+          "label": "Plan de apoyo a la estabilidad",
+          "deliverable": "Metas de empleo, vivienda y cuidado infantil"
+        },
+        "services": {
+          "label": "Referencias de vivienda y beneficios",
+          "deliverable": "Solicitudes de fuerza laboral, vivienda y subsidios"
+        },
+        "followup": {
+          "label": "Reuniones mensuales de progreso",
+          "deliverable": "Notas de progreso y seguimiento de barreras"
+        },
+        "reassessment": {
+          "label": "Revisión de progreso de estabilidad",
+          "deliverable": "Revisión de resultados de vivienda e ingresos"
+        },
+        "closure": {
+          "label": "Resolución / cierre del caso",
+          "deliverable": "Vivienda estable y apoyos a largo plazo conectados"
+        }
+      },
+      "focusAreas": {
+        "0": "Estabilidad de vivienda",
+        "1": "Empleo",
+        "2": "Cuidado infantil asequible",
+        "3": "Alfabetización financiera"
+      }
+    },
+    "sub-employment-support": {
+      "name": "Flujo de apoyo de empleo",
+      "description": "Ayudar a clientes a conseguir y mantener empleo mediante servicios de desarrollo laboral.",
+      "exampleProgram": "Referencia de agencia comunitaria para búsqueda y retención de empleo",
+      "stages": {
+        "intake": {
+          "label": "Referencia e ingreso",
+          "deliverable": "Registro de referencia al programa de empleo"
+        },
+        "assessment": {
+          "label": "Evaluación de fuerza laboral",
+          "deliverable": "Resumen de habilidades, barreras y preparación laboral"
+        },
+        "risk": {
+          "label": "Revisión de barreras de empleo",
+          "deliverable": "Barreras prioritarias para el empleo"
+        },
+        "careplan": {
+          "label": "Plan de acción de empleo",
+          "deliverable": "Metas de búsqueda de empleo y pasos de capacitación"
+        },
+        "services": {
+          "label": "Referencias de fuerza laboral",
+          "deliverable": "Capacitación, colocación laboral y servicios de apoyo"
+        },
+        "followup": {
+          "label": "Monitoreo de búsqueda de empleo",
+          "deliverable": "Seguimiento de solicitudes y entrevistas"
+        },
+        "reassessment": {
+          "label": "Revisión de progreso de empleo",
+          "deliverable": "Revisión de retención laboral e ingresos"
+        },
+        "closure": {
+          "label": "Cierre de empleo",
+          "deliverable": "Empleo estable y recursos de seguimiento"
+        }
+      },
+      "focusAreas": {
+        "0": "Preparación laboral",
+        "1": "Capacitación en habilidades",
+        "2": "Colocación laboral",
+        "3": "Apoyo a la retención"
+      }
+    },
+    "sub-general-intake": {
+      "name": "Flujo de ingreso comunitario",
+      "description": "Ingreso general de servicios sociales comunitarios que conecta clientes con programas adecuados.",
+      "exampleProgram": "Referencia sin cita o de agencia socia para necesidades de servicio no determinadas",
+      "stages": {
+        "intake": {
+          "label": "Referencia e ingreso",
+          "deliverable": "Registro de referencia recibido y asignado"
+        },
+        "assessment": {
+          "label": "Ingreso e inscripción",
+          "deliverable": "Perfil familiar y elegibilidad verificados"
+        },
+        "risk": {
+          "label": "Evaluación de necesidades",
+          "deliverable": "Resumen de evaluación de necesidades"
+        },
+        "careplan": {
+          "label": "Definición de metas y planificación de servicios",
+          "deliverable": "Plan de apoyo familiar individualizado"
+        },
+        "services": {
+          "label": "Coordinación y referencias de servicios",
+          "deliverable": "Seguimiento de referencias y servicios activados"
+        },
+        "followup": {
+          "label": "Apoyo y monitoreo continuo",
+          "deliverable": "Notas del caso y elementos de acción actualizados"
+        },
+        "reassessment": {
+          "label": "Revisión de progreso",
+          "deliverable": "Plan de apoyo e informe de progreso actualizados"
+        },
+        "closure": {
+          "label": "Resolución / cierre del caso",
+          "deliverable": "Resumen de resultados y documentación de salida"
+        }
+      },
+      "focusAreas": {
+        "0": "Detección de elegibilidad",
+        "1": "Enrutamiento de programas",
+        "2": "Necesidades básicas",
+        "3": "Referencias cálidas"
+      }
+    }
+  },
+  "forms": {
+    "base": {
+      "referralSectionTitle": "Referencia",
+      "intakeSectionTitle": "Ingreso",
+      "screeningSectionTitle": "Preguntas de detección",
+      "livingLabel": "Situación de vivienda",
+      "backgroundLabel": "Antecedentes / preocupaciones actuales"
+    },
+    "domains": {
+      "falls": "Riesgo de caídas",
+      "nutrition": "Nutrición",
+      "isolation": "Aislamiento social",
+      "housing": "Estabilidad de vivienda",
+      "abuseRisk": "Abuso o negligencia",
+      "adlSupport": "Actividades de la vida diaria",
+      "homeSafety": "Seguridad en el hogar",
+      "caregiverSupport": "Apoyo del cuidador",
+      "mobility": "Movilidad",
+      "medicationManagement": "Gestión de medicamentos",
+      "foodAccess": "Acceso a alimentos",
+      "mealDelivery": "Adecuación al programa de comidas",
+      "dietaryNeeds": "Necesidades dietéticas",
+      "weightMonitoring": "Monitoreo de peso / apetito",
+      "socialDining": "Participación en comidas sociales",
+      "attendance": "Asistencia escolar",
+      "transportation": "Transporte",
+      "childcare": "Acceso a cuidado infantil",
+      "familyStress": "Estrés familiar",
+      "schoolEngagement": "Participación escolar",
+      "suicideRisk": "Riesgo de suicidio",
+      "selfHarm": "Riesgo de autolesión",
+      "substanceUse": "Uso de sustancias",
+      "safetyPlan": "Planificación de seguridad",
+      "supportSystem": "Red de apoyo",
+      "jobReadiness": "Preparación laboral",
+      "skillsGap": "Brecha de habilidades",
+      "incomeStability": "Estabilidad de ingresos",
+      "basicNeeds": "Necesidades básicas",
+      "health": "Acceso a la salud",
+      "supportNetwork": "Red de apoyo"
+    },
+    "common": {
+      "select": "Seleccionar…",
+      "referralSource": "Fuente de referencia",
+      "reason": "Motivo",
+      "referredBy": "Referido por",
+      "clientName": "Nombre del cliente",
+      "dateOfBirth": "Fecha de nacimiento",
+      "phone": "Teléfono",
+      "address": "Dirección",
+      "consentOnFile": "Consentimiento en archivo",
+      "deliverable": "Entregable:",
+      "focusAreas": "Áreas de enfoque:",
+      "domain": "Dominio",
+      "status": "Estado",
+      "saveContinue": "Guardar y continuar a {next}",
+      "save": "Guardar",
+      "openInWorkspace": "Abrir en el espacio de trabajo",
+      "finalRiskScore": "Puntuación final de riesgo",
+      "compositeScore": "Puntuación compuesta",
+      "overallRiskLevel": "Nivel de riesgo general",
+      "assessed": "Evaluado el {date}",
+      "riskScorePending": "Complete todas las calificaciones de dominio para calcular la puntuación compuesta y el nivel de riesgo general.",
+      "documentsTitle": "Documentos",
+      "documentsDeliverable": "Formularios de consentimiento y archivos de respaldo en el expediente",
+      "riskGuideTitle": "Cómo se asigna el nivel de riesgo del caso",
+      "riskGuideIntro": "Califique cada dominio arriba como Bajo, Medio o Alto. El sistema promedia esas calificaciones para producir una puntuación compuesta y un nivel de riesgo general del caso.",
+      "riskGuideRule1": "Bajo = 1 · Medio = 2 · Alto = 3",
+      "riskGuideRule2": "Puntuación compuesta = promedio de calificación × 25 (redondeado)",
+      "riskGuideRule3": "Alto si el promedio ≥ 2.5 · Medio si el promedio ≥ 1.5 · de lo contrario Bajo",
+      "riskGuideNote": "La nota de anulación opcional es solo para documentación; no cambia el nivel de riesgo calculado."
+    },
+    "families": {
+      "senior": {
+        "livingLabel": "Situación de vivienda",
+        "backgroundLabel": "Historial médico / preocupaciones actuales",
+        "sources": [
+          "Family",
+          "Hospital",
+          "Physician",
+          "Police",
+          "Neighbor",
+          "Community agency",
+          "Self"
+        ],
+        "reasons": [
+          "Self-neglect",
+          "Isolation",
+          "Cognitive decline",
+          "Falls",
+          "Medication issues",
+          "Food insecurity",
+          "Elder abuse",
+          "Unsafe living conditions",
+          "Welfare check"
+        ],
+        "intakeQuestions": [
+          {
+            "key": "livesWith",
+            "fieldId": "q-lives",
+            "label": "¿Con quién vive?"
+          },
+          {
+            "key": "mealPrep",
+            "fieldId": "q-meals",
+            "label": "Preparación de comidas"
+          },
+          {
+            "key": "transportation",
+            "fieldId": "q-transport",
+            "label": "Transporte"
+          },
+          {
+            "key": "medication",
+            "fieldId": "q-meds",
+            "label": "Gestión de medicamentos"
+          }
+        ],
+        "assessmentNoteLabel": "Resumen de evaluación holística",
+        "assessmentNotePlaceholder": "Documente el estado funcional, el entorno del hogar, los apoyos del cuidador y las preocupaciones inmediatas.",
+        "assessmentSummaryBackgroundLabel": "Historial médico",
+        "riskOverrideLabel": "Nota de anulación clínica (opcional)",
+        "carePlanIssueLabel": "Problema",
+        "carePlanGoalLabel": "Objetivo",
+        "carePlanServiceLabel": "Servicio",
+        "carePlanListTitle": "Elementos del plan de atención",
+        "servicesTitle": "Coordinación de servicios",
+        "cboTitle": "Referencias a organizaciones comunitarias",
+        "followupCadenceTitle": "Cadencia de seguimiento",
+        "followupMonitoringTitle": "Monitoreo y seguimiento continuo",
+        "noteTypes": [
+          "phone call",
+          "home visit",
+          "provider coordination"
+        ],
+        "reassessmentTriggers": [
+          "Manual",
+          "6-month timer",
+          "Hospitalization",
+          "Post-PT progress"
+        ],
+        "closureServicesLabel": "Servicios proporcionados",
+        "closureOutcomesLabel": "Resultados alcanzados",
+        "closureRisksLabel": "Riesgos restantes",
+        "closureReferralLabel": "Información de referencia posterior"
+      },
+      "in_home": {
+        "livingLabel": "Entorno del hogar",
+        "backgroundLabel": "Estado funcional / necesidades de apoyo en el hogar",
+        "screeningSectionTitle": "Preguntas de detección en el hogar",
+        "sources": [
+          "Hospital",
+          "Physician",
+          "Family",
+          "Home health agency",
+          "Self",
+          "Community agency"
+        ],
+        "reasons": [
+          "ADL decline",
+          "Home safety concern",
+          "Caregiver burnout",
+          "Equipment need",
+          "Fall history",
+          "Hospital discharge",
+          "Medication management"
+        ],
+        "intakeQuestions": [
+          {
+            "key": "livesWith",
+            "fieldId": "q-lives",
+            "label": "¿Quién vive en el hogar?"
+          },
+          {
+            "key": "mealPrep",
+            "fieldId": "q-meals",
+            "label": "Preparación de comidas y nutrición en el hogar"
+          },
+          {
+            "key": "transportation",
+            "fieldId": "q-transport",
+            "label": "Movilidad y transporte en el hogar"
+          },
+          {
+            "key": "medication",
+            "fieldId": "q-meds",
+            "label": "Rutinas de cuidado personal y medicamentos"
+          }
+        ],
+        "assessmentNoteLabel": "Resumen de evaluación de necesidades en el hogar",
+        "assessmentNotePlaceholder": "Resuma las AVD, el entorno del hogar, las necesidades de equipamiento y la capacidad del cuidador.",
+        "assessmentSummaryBackgroundLabel": "Antecedentes funcionales",
+        "riskOverrideLabel": "Anulación de prioridad de apoyo (opcional)",
+        "carePlanIssueLabel": "Necesidad de apoyo",
+        "carePlanGoalLabel": "Objetivo de independencia",
+        "carePlanServiceLabel": "Servicio en el hogar",
+        "carePlanListTitle": "Elementos del plan de atención en el hogar",
+        "servicesTitle": "Coordinación de proveedores",
+        "cboTitle": "Referencias a proveedores comunitarios",
+        "followupCadenceTitle": "Cadencia de visitas al hogar",
+        "followupMonitoringTitle": "Monitoreo de visitas al hogar",
+        "noteTypes": [
+          "phone call",
+          "home visit",
+          "caregiver coordination",
+          "provider coordination"
+        ],
+        "reassessmentTriggers": [
+          "Manual",
+          "Quarterly review",
+          "Hospitalization",
+          "Functional change"
+        ],
+        "closureServicesLabel": "Apoyos en el hogar proporcionados",
+        "closureOutcomesLabel": "Resultados de independencia",
+        "closureRisksLabel": "Preocupaciones restantes de seguridad en el hogar",
+        "closureReferralLabel": "Información de transición / traspaso"
+      },
+      "nutrition": {
+        "livingLabel": "Contexto del hogar / comidas",
+        "backgroundLabel": "Historial nutricional / preocupaciones dietéticas",
+        "screeningSectionTitle": "Preguntas de detección nutricional",
+        "sources": [
+          "Hospital",
+          "Physician",
+          "Community agency",
+          "Congregate meal site",
+          "Self",
+          "Family"
+        ],
+        "reasons": [
+          "Food insecurity",
+          "Weight loss",
+          "Malnutrition risk",
+          "Meal delivery need",
+          "Dietary restrictions",
+          "Social isolation at meals"
+        ],
+        "intakeQuestions": [
+          {
+            "key": "livesWith",
+            "fieldId": "q-lives",
+            "label": "Apoyos del hogar y preparación de comidas"
+          },
+          {
+            "key": "mealPrep",
+            "fieldId": "q-meals",
+            "label": "Comidas habituales y acceso a alimentos"
+          },
+          {
+            "key": "transportation",
+            "fieldId": "q-transport",
+            "label": "Acceso a supermercados o sitios de comidas"
+          },
+          {
+            "key": "medication",
+            "fieldId": "q-meds",
+            "label": "Apetito, peso o restricciones dietéticas observadas"
+          }
+        ],
+        "assessmentNoteLabel": "Resumen de detección nutricional",
+        "assessmentNotePlaceholder": "Documente las necesidades dietéticas, el acceso a alimentos, las preocupaciones de peso/apetito y la elegibilidad para programas de comidas.",
+        "assessmentSummaryBackgroundLabel": "Antecedentes nutricionales",
+        "riskOverrideLabel": "Anulación de prioridad nutricional (opcional)",
+        "carePlanIssueLabel": "Necesidad nutricional",
+        "carePlanGoalLabel": "Objetivo nutricional",
+        "carePlanServiceLabel": "Programa de comidas / servicio",
+        "carePlanListTitle": "Elementos del plan de apoyo nutricional",
+        "servicesTitle": "Inscripción en programas de comidas",
+        "cboTitle": "Referencias nutricionales comunitarias",
+        "followupCadenceTitle": "Cadencia de seguimiento nutricional",
+        "followupMonitoringTitle": "Monitoreo nutricional",
+        "noteTypes": [
+          "phone call",
+          "meal site check-in",
+          "home visit",
+          "provider coordination"
+        ],
+        "reassessmentTriggers": [
+          "Manual",
+          "Quarterly nutrition review",
+          "Weight change",
+          "Program change"
+        ],
+        "closureServicesLabel": "Servicios nutricionales proporcionados",
+        "closureOutcomesLabel": "Resultados nutricionales",
+        "closureRisksLabel": "Riesgos nutricionales restantes",
+        "closureReferralLabel": "Graduación del programa / traspaso"
+      },
+      "parenting": {
+        "livingLabel": "Composición del hogar",
+        "backgroundLabel": "Antecedentes familiares / preocupaciones actuales",
+        "screeningSectionTitle": "Preguntas de detección familiar",
+        "sources": [
+          "School",
+          "Family",
+          "Physician",
+          "Community agency",
+          "Self-referral",
+          "CBO partner",
+          "Police"
+        ],
+        "reasons": [
+          "Chronic absenteeism",
+          "Behavior concerns",
+          "Parenting stress",
+          "Housing instability",
+          "Childcare barriers",
+          "Family conflict",
+          "Financial hardship",
+          "School engagement"
+        ],
+        "intakeQuestions": [
+          {
+            "key": "livesWith",
+            "fieldId": "q-lives",
+            "label": "Composición del hogar"
+          },
+          {
+            "key": "mealPrep",
+            "fieldId": "q-meals",
+            "label": "Acceso a alimentos y rutinas de comidas"
+          },
+          {
+            "key": "transportation",
+            "fieldId": "q-transport",
+            "label": "Transporte y desplazamiento escolar"
+          },
+          {
+            "key": "medication",
+            "fieldId": "q-meds",
+            "label": "Patrones de asistencia o barreras observadas"
+          }
+        ],
+        "assessmentNoteLabel": "Resumen de evaluación familiar y de necesidades",
+        "assessmentNotePlaceholder": "Resuma las fortalezas familiares, las barreras de asistencia, las preocupaciones de crianza y los hallazgos de elegibilidad.",
+        "assessmentSummaryBackgroundLabel": "Antecedentes familiares",
+        "riskOverrideLabel": "Nota de anulación de prioridad (opcional)",
+        "carePlanIssueLabel": "Barrera o necesidad",
+        "carePlanGoalLabel": "Objetivo familiar",
+        "carePlanServiceLabel": "Intervención o referencia",
+        "carePlanListTitle": "Elementos del plan de apoyo",
+        "servicesTitle": "Coordinación de recursos y referencias",
+        "cboTitle": "Referencias a socios comunitarios",
+        "followupCadenceTitle": "Cadencia de seguimiento",
+        "followupMonitoringTitle": "Apoyo y monitoreo continuo",
+        "noteTypes": [
+          "phone call",
+          "home visit",
+          "school meeting",
+          "case conference"
+        ],
+        "reassessmentTriggers": [
+          "Manual",
+          "Quarterly review",
+          "School report",
+          "Plan milestone"
+        ],
+        "closureServicesLabel": "Apoyos entregados",
+        "closureOutcomesLabel": "Resultados familiares",
+        "closureRisksLabel": "Preocupaciones restantes",
+        "closureReferralLabel": "Información de traspaso cálido"
+      },
+      "mental_health": {
+        "livingLabel": "Situación de vivienda",
+        "backgroundLabel": "Antecedentes clínicos / preocupaciones actuales",
+        "screeningSectionTitle": "Preguntas de detección clínica",
+        "sources": [
+          "Hospital",
+          "ER",
+          "Physician",
+          "Crisis line",
+          "Self",
+          "Family",
+          "Probation",
+          "Community agency"
+        ],
+        "reasons": [
+          "Crisis presentation",
+          "Depression/anxiety",
+          "Substance use",
+          "Safety concern",
+          "Medication non-adherence",
+          "Hospital discharge",
+          "Peer referral"
+        ],
+        "intakeQuestions": [
+          {
+            "key": "livesWith",
+            "fieldId": "q-lives",
+            "label": "Situación de vivienda y apoyos"
+          },
+          {
+            "key": "mealPrep",
+            "fieldId": "q-meals",
+            "label": "Funcionamiento diario y autocuidado"
+          },
+          {
+            "key": "transportation",
+            "fieldId": "q-transport",
+            "label": "Acceso a citas y servicios"
+          },
+          {
+            "key": "medication",
+            "fieldId": "q-meds",
+            "label": "Adherencia a medicamentos o tratamiento"
+          }
+        ],
+        "assessmentNoteLabel": "Resumen de evaluación clínica",
+        "assessmentNotePlaceholder": "Documente las preocupaciones actuales, el estado de seguridad, los apoyos y el historial de tratamiento.",
+        "assessmentSummaryBackgroundLabel": "Antecedentes clínicos",
+        "riskOverrideLabel": "Nota de anulación de agudeza (opcional)",
+        "carePlanIssueLabel": "Problema clínico",
+        "carePlanGoalLabel": "Objetivo de tratamiento",
+        "carePlanServiceLabel": "Modalidad o servicio",
+        "carePlanListTitle": "Elementos del plan de tratamiento",
+        "servicesTitle": "Vinculación con terapia y recursos de crisis",
+        "cboTitle": "Referencias auxiliares",
+        "followupCadenceTitle": "Cadencia de contacto",
+        "followupMonitoringTitle": "Monitoreo del tratamiento",
+        "noteTypes": [
+          "phone call",
+          "session note",
+          "crisis contact",
+          "care coordination"
+        ],
+        "reassessmentTriggers": [
+          "Manual",
+          "Treatment plan review",
+          "Hospitalization",
+          "Safety event"
+        ],
+        "closureServicesLabel": "Tratamiento proporcionado",
+        "closureOutcomesLabel": "Resultados de estabilización",
+        "closureRisksLabel": "Riesgos clínicos restantes",
+        "closureReferralLabel": "Traspaso de reducción de intensidad o alta"
+      },
+      "employment": {
+        "livingLabel": "Hogar / dependientes",
+        "backgroundLabel": "Antecedentes laborales / barreras",
+        "screeningSectionTitle": "Preguntas de detección de fuerza laboral",
+        "sources": [
+          "Workforce center",
+          "Community agency",
+          "Self",
+          "Family",
+          "Employer",
+          "School"
+        ],
+        "reasons": [
+          "Job search",
+          "Job retention",
+          "Skills training",
+          "Income support",
+          "Transportation barrier",
+          "Childcare barrier"
+        ],
+        "intakeQuestions": [
+          {
+            "key": "livesWith",
+            "fieldId": "q-lives",
+            "label": "Hogar y dependientes"
+          },
+          {
+            "key": "mealPrep",
+            "fieldId": "q-meals",
+            "label": "Indicadores de estabilidad financiera"
+          },
+          {
+            "key": "transportation",
+            "fieldId": "q-transport",
+            "label": "Desplazamiento y transporte"
+          },
+          {
+            "key": "medication",
+            "fieldId": "q-meds",
+            "label": "Historial laboral y barreras"
+          }
+        ],
+        "assessmentNoteLabel": "Resumen de evaluación de fuerza laboral",
+        "assessmentNotePlaceholder": "Resuma habilidades, historial laboral, barreras y preparación para el empleo.",
+        "assessmentSummaryBackgroundLabel": "Antecedentes laborales",
+        "riskOverrideLabel": "Nota de anulación de barrera (opcional)",
+        "carePlanIssueLabel": "Barrera de empleo",
+        "carePlanGoalLabel": "Objetivo de empleo",
+        "carePlanServiceLabel": "Servicio de fuerza laboral",
+        "carePlanListTitle": "Elementos del plan de acción de empleo",
+        "servicesTitle": "Referencias de fuerza laboral",
+        "cboTitle": "Referencias a agencias asociadas",
+        "followupCadenceTitle": "Cadencia de búsqueda de empleo",
+        "followupMonitoringTitle": "Monitoreo de empleo",
+        "noteTypes": [
+          "phone call",
+          "job coaching",
+          "employer contact",
+          "training check-in"
+        ],
+        "reassessmentTriggers": [
+          "Manual",
+          "90-day review",
+          "Job placement",
+          "Job loss"
+        ],
+        "closureServicesLabel": "Servicios de fuerza laboral proporcionados",
+        "closureOutcomesLabel": "Resultados de empleo",
+        "closureRisksLabel": "Barreras restantes",
+        "closureReferralLabel": "Apoyos de retención y referencias"
+      },
+      "general": {
+        "sources": [
+          "Walk-in",
+          "Community agency",
+          "Family",
+          "Hospital",
+          "Self",
+          "Partner referral"
+        ],
+        "reasons": [
+          "Basic needs",
+          "Program routing",
+          "Eligibility screening",
+          "Housing",
+          "Utilities",
+          "Benefits enrollment",
+          "Unknown service need"
+        ],
+        "intakeQuestions": [
+          {
+            "key": "livesWith",
+            "fieldId": "q-lives",
+            "label": "Información del hogar"
+          },
+          {
+            "key": "mealPrep",
+            "fieldId": "q-meals",
+            "label": "Alimentos y necesidades básicas"
+          },
+          {
+            "key": "transportation",
+            "fieldId": "q-transport",
+            "label": "Transporte"
+          },
+          {
+            "key": "medication",
+            "fieldId": "q-meds",
+            "label": "Necesidades inmediatas identificadas"
+          }
+        ],
+        "assessmentNoteLabel": "Resumen de evaluación de ingreso",
+        "assessmentNotePlaceholder": "Resuma la elegibilidad, las necesidades y el enrutamiento de programas recomendado.",
+        "assessmentSummaryBackgroundLabel": "Antecedentes",
+        "riskOverrideLabel": "Nota de anulación de prioridad (opcional)",
+        "carePlanIssueLabel": "Necesidad",
+        "carePlanGoalLabel": "Objetivo",
+        "carePlanServiceLabel": "Referencia o servicio",
+        "carePlanListTitle": "Elementos del plan de servicios",
+        "servicesTitle": "Coordinación de programas",
+        "cboTitle": "Referencias externas",
+        "followupCadenceTitle": "Cadencia de seguimiento",
+        "followupMonitoringTitle": "Monitoreo del caso",
+        "noteTypes": [
+          "phone call",
+          "home visit",
+          "provider coordination"
+        ],
+        "reassessmentTriggers": [
+          "Manual",
+          "6-month timer",
+          "Program change",
+          "Needs change"
+        ],
+        "closureServicesLabel": "Servicios proporcionados",
+        "closureOutcomesLabel": "Resultados alcanzados",
+        "closureRisksLabel": "Necesidades restantes",
+        "closureReferralLabel": "Información de referencia posterior"
+      }
+    }
+  },
+  "cadence": {
+    "Weekly": "Semanal",
+    "Monthly": "Mensual",
+    "Quarterly": "Trimestral"
+  },
+  "events": {
+    "evt-meals": "Programa Comidas a Domicilio",
+    "evt-holiday": "Programa de comidas festivas",
+    "evt-safety": "Taller de seguridad en el hogar",
+    "evt-food-pantry": "Despensa de alimentos",
+    "evt-therapy": "Sesiones de terapia",
+    "evt-court-advocacy": "Defensa judicial",
+    "evt-crisis-counseling": "Consejería de crisis",
+    "evt-flu-awareness": "Concientización sobre la gripe"
+  },
+  "programs": {
+    "prog-senior-services": "Servicios sociales para personas mayores",
+    "prog-parenting-support": "Programas de apoyo a la crianza",
+    "prog-mental-health": "Servicios de salud mental",
+    "prog-community-services": "Servicios sociales comunitarios",
+    "prog-seniors-at-risk": "Servicios sociales para personas mayores",
+    "prog-police-ss": "Servicios sociales comunitarios"
+  },
+  "risk": {
+    "High": "Alto",
+    "Medium": "Medio",
+    "Moderate": "Moderado",
+    "Low": "Bajo",
+    "Unknown": "Desconocido",
+    "riskLevelAria": "Nivel de riesgo {level}"
+  },
+  "stepStatus": {
+    "complete": "Completo",
+    "in_progress": "En progreso",
+    "not_started": "No iniciado",
+    "legendComplete": "Completo",
+    "legendInProgress": "En progreso",
+    "legendNotStarted": "No iniciado",
+    "deliverablePrefix": "Entregable:"
+  },
+  "components": {
+    "noActivityTitle": "Aún no hay actividad",
+    "noActivityMessage": "Las acciones del caso, anulaciones y cargas aparecen aquí.",
+    "noDataExport": "No hay datos para exportar.",
+    "spreadsheetUnavailable": "Biblioteca de hojas de cálculo no disponible — se exportó CSV en su lugar.",
+    "exportSpreadsheetFailed": "No se pudo exportar la hoja de cálculo.",
+    "exportImageFailed": "No se pudo exportar la imagen.",
+    "nothingToDownload": "Nada que descargar.",
+    "nothingToExport": "Nada que exportar en esta vista.",
+    "noClientsTitle": "Sin clientes",
+    "noClientsAtRisk": "No hay clientes en este nivel de riesgo.",
+    "processStageTitle": "Etapa del proceso",
+    "caseCategoryTitle": "Categoría del caso",
+    "incompleteIntake": "Ingreso incompleto",
+    "closed": "Cerrado",
+    "openCaseWorkspace": "Abrir espacio de trabajo del caso",
+    "openCaseWorkspaceLower": "Abrir espacio de trabajo del caso",
+    "view360": "Vista 360°",
+    "view360Lower": "Vista 360°",
+    "focusAreas": "Áreas de enfoque",
+    "workflowProgress": "Progreso del flujo de trabajo",
+    "noFocusAreas": "No hay áreas de enfoque definidas.",
+    "caseClosedReadOnly": "Caso cerrado — el espacio de trabajo es de solo lectura.",
+    "caseClosedReadOnlyShort": "Caso cerrado — solo lectura",
+    "reasonPrefix": "Motivo:",
+    "voidedPrefix": "Anulado ·",
+    "noReason": "Sin motivo",
+    "modalCloseAria": "Cerrar diálogo",
+    "drawerCloseAria": "Cerrar panel lateral",
+    "exportItem": "Elemento",
+    "exportCount": "Cantidad",
+    "summary": "Resumen",
+    "changed": "Cambiado",
+    "previous": "Anterior",
+    "current": "Actual",
+    "voided": "Anulado",
+    "matchStrong": "Fuerte",
+    "matchLikely": "Probable",
+    "matchPossible": "Posible",
+    "matchSuffix": "coincidencia",
+    "matchScoreTitle": "Puntuación de coincidencia {score}",
+    "matchedOn": "Coincidencia en",
+    "openRecord": "Abrir registro",
+    "continueAsNew": "Continuar como nuevo",
+    "possibleDuplicate": "Posible duplicado encontrado",
+    "possibleDuplicates": "Posibles duplicados encontrados",
+    "crossProgramFlag": "Alerta entre programas",
+    "enrollmentVoidLabel": "Inscripción:",
+    "carePlanVoidLabel": "Plan de atención:",
+    "noteVoidLabel": "Nota ({type}):",
+    "moreInWorkspace": "+{count} más en el espacio de trabajo",
+    "consentOnFile": "En archivo",
+    "consentMissing": "Faltante",
+    "onFile": "En archivo",
+    "missing": "Faltante",
+    "assessed": "Evaluado",
+    "composite": "Compuesta",
+    "overall": "General",
+    "sourceLabel": "Fuente:",
+    "reasonLabel": "Motivo:",
+    "receivedLabel": "Recibido:",
+    "consentLabel": "Consentimiento:",
+    "statusLabel": "Estado:",
+    "domain": "Dominio",
+    "dedupDrawerLead": "Este cliente puede existir ya en el sistema. Revise las coincidencias antes de continuar.",
+    "openCase": "Abrir caso",
+    "programExample": "Ejemplo de programa:",
+    "referralLabel": "Referencia:",
+    "opened": "Abierto",
+    "caseManager": "Gestor de casos",
+    "dob": "F. nac.",
+    "phone": "Teléfono",
+    "address": "Dirección"
+  },
+  "workspace": {
+    "breadcrumbCaseSearch": "Búsqueda de casos",
+    "backToCaseSearch": "Volver a búsqueda de casos",
+    "view360": "Vista 360°",
+    "clientNotFound": "Cliente no encontrado.",
+    "closedBadge": "Cerrado",
+    "intakeSummary": "Resumen del ingreso",
+    "referralSource": "Fuente de referencia:",
+    "saveReferralIntake": "Guardar referencia e ingreso",
+    "saveAssessment": "Guardar evaluación",
+    "saveRatings": "Guardar calificaciones",
+    "addItem": "Agregar elemento",
+    "void": "Anular",
+    "enrollInProgram": "Inscribir en programa",
+    "enrollClient": "Inscribir cliente",
+    "program": "Programa",
+    "date": "Fecha",
+    "noEnrollments": "Sin inscripciones",
+    "noEnrollmentsHint": "Inscriba a este cliente en un programa arriba.",
+    "noPlanItems": "Sin elementos del plan",
+    "cboName": "Nombre del CBO",
+    "addCboReferral": "Agregar referencia CBO",
+    "noCboReferrals": "Sin referencias CBO",
+    "noCboReferralsHint": "Referir a organizaciones comunitarias.",
+    "riskUnknown": "Desconocido",
+    "recommendedCadence": "Cadencia recomendada:",
+    "logFollowUp": "Registrar seguimiento",
+    "note": "Nota",
+    "noFollowUpNotes": "Sin notas de seguimiento",
+    "noFollowUpNotesHint": "Registre llamadas telefónicas y visitas domiciliarias aquí.",
+    "currentAssessment": "Evaluación actual ({date})",
+    "history": "Historial",
+    "noReassessments": "Sin reevaluaciones",
+    "noReassessmentsHint": "Registre una reevaluación arriba.",
+    "saveReassessment": "Guardar reevaluación",
+    "trigger": "Disparador",
+    "activityAuditTrail": "Actividad y pista de auditoría",
+    "voidedEntries": "Entradas anuladas",
+    "documentVault": "Bóveda de documentos",
+    "closureReason": "Motivo de cierre",
+    "completeClosureConfirm": "¿Cerrar este caso? Quedará en solo lectura pero seguirá siendo buscable.",
+    "caseClosedToast": "Caso cerrado.",
+    "carePlanAdded": "Elemento del plan de atención agregado.",
+    "clientEnrolled": "Cliente inscrito.",
+    "cboAdded": "Referencia CBO agregada.",
+    "followUpLogged": "Nota de seguimiento registrada.",
+    "reassessmentSaved": "Reevaluación guardada.",
+    "savedSuffix": " guardado.",
+    "stageChip": "Etapa {stage}",
+    "enrollBlock": "Inscribir en programa",
+    "addPlanHint": "Agregue {issue}, {goal} y {service} arriba.",
+    "referOutHint": "Referir a organizaciones comunitarias.",
+    "logNotesHint": "Registre llamadas telefónicas y visitas domiciliarias aquí.",
+    "recordReassessmentHint": "Registre una reevaluación arriba.",
+    "voidedEntriesHint": "Las inscripciones, notas y elementos del plan anulados aparecen aquí con motivos.",
+    "noVoidedEntries": "Sin entradas anuladas",
+    "enrollmentVoidLabel": "Inscripción: {name} — {reason}",
+    "carePlanVoidLabel": "Plan de atención: {issue} — {reason}",
+    "noteVoidLabel": "Nota ({type}): {reason}",
+    "currentFinalRiskScore": "Puntuación final de riesgo actual",
+    "updatedRiskScore": "Puntuación de riesgo actualizada",
+    "finalRiskScore": "Puntuación final de riesgo",
+    "intakeSummaryTitle": "Resumen del ingreso",
+    "completeStageButtonPrefix": "Completar",
+    "caseClosedOn": "Caso cerrado el {date}.",
+    "riskLabel": "Riesgo:",
+    "status": "Estado",
+    "caseRecordsAria": "Registros del caso"
+  },
+  "notifications": {
+    "overdueFollowUp": "Seguimiento vencido",
+    "incompleteIntake": "Ingreso incompleto",
+    "duplicateReview": "Revisión de duplicados",
+    "daysOverdueBody": "{name} — {count} día de retraso",
+    "daysOverdueBodyPlural": "{name} — {count} días de retraso",
+    "consentDobMissingBody": "{name} — falta consentimiento o fecha de nacimiento",
+    "duplicatePairsBody": "{count} par de duplicados potencial pendiente de fusión",
+    "duplicatePairsBodyPlural": "{count} pares de duplicados potenciales pendientes de fusión"
+  },
+  "audit": {
+    "void": "Entrada anulada",
+    "bulk_enroll": "Inscripción masiva",
+    "client_created": "Cliente creado",
+    "demo_reset": "Restablecimiento de demo",
+    "view_record": "Registro consultado",
+    "export_report": "Informe exportado",
+    "duplicate_review": "Duplicado revisado",
+    "merge": "Duplicado fusionado",
+    "document_upload": "Documento cargado",
+    "upload": "Documento cargado",
+    "link_added": "Enlace de documento agregado",
+    "case_handoff": "Traspaso de caso",
+    "merge_duplicate": "Duplicado fusionado",
+    "intake_updated": "Ingreso actualizado",
+    "case_closed": "Caso cerrado",
+    "assignedTo": "Asignado a {name}",
+    "system": "Sistema"
+  },
+  "enums": {
+    "carePlanStatus": {
+      "Not Started": "No iniciado",
+      "In Progress": "En progreso",
+      "Complete": "Completo",
+      "Abandoned": "Abandonado"
+    },
+    "cboStatus": {
+      "Pending": "Pendiente",
+      "Sent": "Enviado",
+      "Confirmed": "Confirmado"
+    },
+    "closureReason": {
+      "Goals met": "Metas cumplidas",
+      "Relocated": "Reubicado",
+      "Transferred": "Transferido",
+      "Declined services": "Servicios rechazados",
+      "No longer needed": "Ya no necesario"
+    },
+    "clientStatus": {
+      "active": "Activo",
+      "open": "Abierto",
+      "closed": "Cerrado"
+    },
+    "intakeCompleteness": {
+      "complete": "Completo",
+      "incomplete": "Incompleto",
+      "unknown": "Desconocido"
+    },
+    "consent": {
+      "On file": "En archivo",
+      "Missing": "Faltante",
+      "Yes": "Sí",
+      "No": "No"
+    },
+    "enrollmentStatus": {
+      "active": "Activo",
+      "voided": "Anulado"
+    }
+  },
+  "picklists": {
+    "referralSources": {
+      "Family": "Familia",
+      "Hospital": "Hospital",
+      "Physician": "Médico",
+      "Police": "Policía",
+      "Neighbor": "Vecino",
+      "Community agency": "Agencia comunitaria",
+      "Self": "Autorreferencia",
+      "Home health agency": "Agencia de salud domiciliaria",
+      "Congregate meal site": "Sitio de comidas congregadas",
+      "School": "Escuela",
+      "Self-referral": "Autorreferencia",
+      "CBO partner": "Socio CBO",
+      "ER": "Urgencias",
+      "Crisis line": "Línea de crisis",
+      "Probation": "Libertad condicional",
+      "Workforce center": "Centro de empleo",
+      "Employer": "Empleador",
+      "Walk-in": "Sin cita previa",
+      "Partner referral": "Referencia de socio"
+    },
+    "referralReasons": {
+      "Self-neglect": "Autonegligencia",
+      "Isolation": "Aislamiento",
+      "Cognitive decline": "Deterioro cognitivo",
+      "Falls": "Caídas",
+      "Medication issues": "Problemas con medicamentos",
+      "Food insecurity": "Inseguridad alimentaria",
+      "Elder abuse": "Abuso de adultos mayores",
+      "Unsafe living conditions": "Condiciones de vivienda inseguras",
+      "Welfare check": "Verificación de bienestar",
+      "ADL decline": "Declive en AVD",
+      "Home safety concern": "Preocupación por seguridad en el hogar",
+      "Caregiver burnout": "Agotamiento del cuidador",
+      "Equipment need": "Necesidad de equipo",
+      "Fall history": "Historial de caídas",
+      "Hospital discharge": "Alta hospitalaria",
+      "Medication management": "Gestión de medicamentos",
+      "Weight loss": "Pérdida de peso",
+      "Malnutrition risk": "Riesgo de desnutrición",
+      "Meal delivery need": "Necesidad de entrega de comidas",
+      "Dietary restrictions": "Restricciones dietéticas",
+      "Social isolation at meals": "Aislamiento social en comidas",
+      "Chronic absenteeism": "Ausentismo crónico",
+      "Behavior concerns": "Preocupaciones de conducta",
+      "Parenting stress": "Estrés parental",
+      "Housing instability": "Inestabilidad de vivienda",
+      "Childcare barriers": "Barreras de cuidado infantil",
+      "Family conflict": "Conflicto familiar",
+      "Financial hardship": "Dificultad financiera",
+      "School engagement": "Participación escolar",
+      "Crisis presentation": "Presentación de crisis",
+      "Depression/anxiety": "Depresión/ansiedad",
+      "Substance use": "Uso de sustancias",
+      "Safety concern": "Preocupación de seguridad",
+      "Medication non-adherence": "Incumplimiento de medicación",
+      "Peer referral": "Referencia de pares",
+      "Job search": "Búsqueda de empleo",
+      "Job retention": "Retención laboral",
+      "Skills training": "Capacitación en habilidades",
+      "Income support": "Apoyo de ingresos",
+      "Transportation barrier": "Barrera de transporte",
+      "Basic needs": "Necesidades básicas",
+      "Program routing": "Derivación de programa",
+      "Eligibility screening": "Evaluación de elegibilidad",
+      "Housing": "Vivienda",
+      "Utilities": "Servicios públicos",
+      "Benefits enrollment": "Inscripción en beneficios",
+      "Unknown service need": "Necesidad de servicio desconocida"
+    },
+    "noteTypes": {
+      "phone call": "llamada telefónica",
+      "home visit": "visita domiciliaria",
+      "provider coordination": "coordinación con proveedor",
+      "caregiver coordination": "coordinación con cuidador",
+      "meal site check-in": "seguimiento en sitio de comidas",
+      "school meeting": "reunión escolar",
+      "case conference": "conferencia de caso",
+      "session note": "nota de sesión",
+      "crisis contact": "contacto de crisis",
+      "care coordination": "coordinación de atención",
+      "job coaching": "orientación laboral",
+      "employer contact": "contacto con empleador",
+      "training check-in": "seguimiento de capacitación",
+      "virtual meeting": "reunión virtual"
+    },
+    "reassessmentTriggers": {
+      "Manual": "Manual",
+      "6-month timer": "Temporizador de 6 meses",
+      "Hospitalization": "Hospitalización",
+      "Post-PT progress": "Progreso post-fisioterapia",
+      "Quarterly review": "Revisión trimestral",
+      "Functional change": "Cambio funcional",
+      "Quarterly nutrition review": "Revisión nutricional trimestral",
+      "Weight change": "Cambio de peso",
+      "Program change": "Cambio de programa",
+      "School report": "Informe escolar",
+      "Plan milestone": "Hito del plan",
+      "Treatment plan review": "Revisión del plan de tratamiento",
+      "Safety event": "Evento de seguridad",
+      "90-day review": "Revisión de 90 días",
+      "Job placement": "Colocación laboral",
+      "Job loss": "Pérdida de empleo",
+      "Needs change": "Cambio de necesidades"
+    }
+  },
+  "documents": {
+    "uploadLabel": "Cargar documento",
+    "addLinkLegend": "Agregar enlace externo",
+    "displayNameLabel": "Nombre para mostrar",
+    "displayNamePlaceholder": "p. ej., Formulario de consentimiento (Google Drive)",
+    "urlLabel": "URL del documento",
+    "urlPlaceholder": "https://drive.google.com/...",
+    "addLink": "Agregar enlace",
+    "addSample": "Agregar documento de ejemplo",
+    "uploadHint": "Cargue un archivo, enlace a un documento en SharePoint o Google Drive, o agregue un archivo de ejemplo para demos.",
+    "noDocumentsTitle": "Aún no hay documentos",
+    "emptyVaultMessage": "Cargue un archivo, agregue un enlace a una unidad externa o use Agregar documento de ejemplo para previsualizar la bóveda.",
+    "emptyDrawerMessage": "Agregue documentos o enlaces en el espacio de trabajo del caso.",
+    "externalLink": "Enlace externo",
+    "openLink": "Abrir enlace",
+    "preview": "Vista previa",
+    "documentUploaded": "Documento cargado.",
+    "linkAdded": "Enlace de documento agregado.",
+    "sampleAdded": "Documento de ejemplo agregado.",
+    "fileTooLarge": "El archivo supera el límite demo de 500 KB",
+    "readFailed": "Error de lectura",
+    "invalidUrl": "Ingrese una URL de documento http o https válida",
+    "externalLinkHost": "Enlace externo",
+    "documentOnHost": "Documento en {host}",
+    "vaultDrawerTitle": "{name} — Bóveda de documentos",
+    "documentsOnFile": "{count} documento y enlace en archivo",
+    "documentsOnFilePlural": "{count} documentos y enlaces en archivo",
+    "noDocumentsOnFile": "Aún no hay documentos en archivo.",
+    "manageInWorkspace": "Agregar o administrar en el espacio de trabajo",
+    "manageInWorkspaceProfile": "Administrar en el espacio de trabajo",
+    "downloadAria": "Descargar {filename}",
+    "linkPreviewLead": "Este documento se almacena externamente. Ábralo en una nueva pestaña para ver el archivo en la unidad o sitio vinculado.",
+    "locationLabel": "Ubicación:",
+    "previewUnavailable": "La vista previa no está disponible para este tipo de archivo.",
+    "consentFilename": "Formulario de consentimiento de ingreso — {name}.svg",
+    "assessmentFilename": "Evaluación de seguridad en el hogar — {name}.svg",
+    "svgOrgTitle": "Servicios para adultos mayores de Rolling Meadows",
+    "svgConsentTitle": "Formulario de consentimiento de ingreso del cliente",
+    "svgClientName": "Nombre del cliente:",
+    "svgAuthorizeIntro": "Autorizo a Servicios para adultos mayores de Rolling Meadows a:",
+    "svgAuthorize1": "Coordinar apoyo domiciliario y referencias comunitarias",
+    "svgAuthorize2": "Compartir información limitada con agencias asociadas para la planificación de atención",
+    "svgAuthorize3": "Contactar a mi contacto de emergencia respecto a la prestación de servicios",
+    "svgConsentDuration": "Este consentimiento permanece vigente durante 12 meses salvo revocación por escrito.",
+    "svgSignature": "Firma del cliente / representante:",
+    "svgDateSigned": "Fecha de firma:",
+    "svgWitness": "Testigo del gestor de casos:",
+    "svgDemoFooter": "Documento demo — prototipo de gestión de casos Rolling Meadows",
+    "svgAssessmentTitle": "Resumen de evaluación de seguridad en el hogar",
+    "svgAssessmentClient": "Cliente:",
+    "svgAssessmentDate": "Fecha:",
+    "svgArea": "Área",
+    "svgFinding": "Hallazgo",
+    "svgBathroom": "Baño",
+    "svgBathroomFinding": "Se recomiendan barras de apoyo cerca de la bañera",
+    "svgStairs": "Escaleras",
+    "svgStairsFinding": "Pasamanos seguro; iluminación adecuada",
+    "svgKitchen": "Cocina",
+    "svgKitchenFinding": "Pasillo principal despejado",
+    "svgMedications": "Medicamentos",
+    "svgMedicationsFinding": "Almacenados en envases originales",
+    "svgFollowUp": "Seguimiento recomendado: referencia a terapia ocupacional para plan de prevención de caídas.",
+    "svgPhotoPlaceholder": "[ Foto de evaluación ]",
+    "svgDemoPlaceholder": "Marcador de posición demo",
+    "demoSeed": "Datos demo iniciales",
+    "demoUser": "Usuario demo"
+  },
+  "pages": {
+    "reports": {
+      "clientsByProgram": "Personas por programa",
+      "clientsByProgramHint": "Personas únicas con un caso abierto en cada programa. Los clientes solo registrados (sin caso abierto) se muestran por separado.",
+      "registeredOnlyProgram": "Solo registro (sin caso abierto)",
+      "noProgramData": "No hay personas para informar",
+      "noProgramDataHint": "Registre clientes o abra casos para llenar este informe.",
+      "program": "Programa",
+      "openCases": "Casos abiertos",
+      "registeredAt": "Registrado",
+      "programDrilldownAria": "{count} personas en {program}, clic para ver",
+      "programDrawerTitle": "{program} — {count} persona",
+      "programDrawerTitlePlural": "{program} — {count} personas",
+      "exportProgramTitle": "Personas por programa",
+      "programDetail": "Personas por programa — detalle de clientes",
+      "auditProgramDetail": "Auditoría — personas por programa (detalle de clientes)",
+      "sheetProgram": "Por programa",
+      "multiProgramEnrollment": "Inscripción en múltiples programas",
+      "multiProgramEnrollmentHint": "Personas con casos abiertos en más de un programa. Basado en programas distintos entre casos activos.",
+      "multiProgramSummary": "{count} persona inscrita en múltiples programas.",
+      "multiProgramSummaryPlural": "{count} personas inscritas en múltiples programas.",
+      "singleProgramBucket": "Un solo programa",
+      "twoProgramsBucket": "2 programas",
+      "threePlusProgramsBucket": "3+ programas",
+      "programCount": "Programas",
+      "programs": "Lista de programas",
+      "noMultiProgramClients": "Sin clientes en múltiples programas",
+      "noMultiProgramClientsHint": "Nadie tiene actualmente casos abiertos en más de un programa.",
+      "multiProgramClientListTitle": "Clientes en múltiples programas",
+      "singleProgramClientListTitle": "Clientes en un solo programa",
+      "twoProgramClientListTitle": "Clientes en 2 programas",
+      "threePlusProgramClientListTitle": "Clientes en 3+ programas",
+      "noClientsInBucket": "No hay clientes en este grupo",
+      "noClientsInBucketHint": "Ningún caso abierto coincide con este segmento del gráfico.",
+      "multiProgramBucketAria": "{count} clientes en {program}, clic para listar abajo",
+      "multiProgramRowAria": "{name} inscrito en {count} programas, clic para detalles",
+      "multiProgramDrawerTitle": "Cliente multi-programa — {name}",
+      "multiProgramDrawerAlert": "Los casos abiertos abarcan {count} programas.",
+      "multiProgramDetail": "Inscripción multi-programa — detalle de clientes",
+      "auditMultiProgramDetail": "Auditoría — inscripción multi-programa (detalle de clientes)",
+      "sheetMultiProgram": "Multi-programa",
+      "caseloadByRisk": "Carga de casos por nivel de riesgo",
+      "clientsEnrolledInEvent": "Clientes inscritos en el evento",
+      "overdueFollowUps": "Seguimientos vencidos",
+      "openCboReferrals": "Referencias CBO abiertas",
+      "programEvent": "Programa / evento",
+      "eventForReport": "Evento para informe de inscripción",
+      "noEnrollments": "Sin inscripciones",
+      "noEnrollmentsHint": "Inscriba clientes masivamente para verlos aquí en vivo.",
+      "noEnrollmentsAuditor": "Aún no hay clientes inscritos en este programa.",
+      "noOverdue": "Sin seguimientos vencidos",
+      "noOverdueHint": "Todos los seguimientos están al día.",
+      "noOpenCbo": "Sin referencias CBO abiertas",
+      "noOpenCboHint": "Todas las referencias confirmadas.",
+      "noRiskData": "Sin datos de riesgo",
+      "noRiskDataHint": "Complete evaluaciones para llenar este informe.",
+      "riskLevel": "Nivel de riesgo",
+      "count": "Cantidad",
+      "client": "Cliente",
+      "dob": "F. nac.",
+      "phone": "Teléfono",
+      "compositeScore": "Puntuación compuesta",
+      "processStage": "Etapa del proceso",
+      "caseManager": "Gestor de casos",
+      "intakeStatus": "Estado del ingreso",
+      "dateEnrolled": "Fecha de inscripción",
+      "event": "Evento",
+      "risk": "Riesgo",
+      "cadence": "Cadencia",
+      "daysOverdue": "Días de retraso",
+      "cbo": "CBO",
+      "status": "Estado",
+      "date": "Fecha",
+      "activeCaseload": "Carga activa",
+      "highRisk": "Riesgo alto",
+      "overdueFollowUpsStat": "Seguimientos vencidos",
+      "openCboStat": "Referencias CBO abiertas",
+      "enrollmentsByProgram": "Inscripciones por programa",
+      "overdueSummary": "Resumen de seguimientos vencidos",
+      "cboSummary": "Resumen de referencias CBO abiertas",
+      "byRiskLevel": "Por nivel de riesgo",
+      "byCadence": "Por cadencia",
+      "byStatus": "Por estado",
+      "byOrganization": "Por organización",
+      "overdueProgramWide": "{count} seguimiento vencido en todo el programa.",
+      "overdueProgramWidePlural": "{count} seguimientos vencidos en todo el programa.",
+      "openReferralsPending": "{count} referencia abierta pendiente de confirmación.",
+      "openReferralsPendingPlural": "{count} referencias abiertas pendientes de confirmación.",
+      "riskDrilldownAria": "{count} clientes con riesgo {level}, clic para ver",
+      "riskDrawerTitle": "Riesgo {level} — {count} cliente",
+      "riskDrawerTitlePlural": "Riesgo {level} — {count} clientes",
+      "overdueDrawerTitle": "Seguimiento vencido — {name}",
+      "overdueAlert": "Cadencia recomendada: {cadence}. El último contacto supera esta ventana.",
+      "daysOverdueBadge": "{count} días de retraso",
+      "followUpCurrent": "Al día",
+      "lastFollowUp": "Último seguimiento",
+      "noNotesYet": "Aún no hay notas de caso. Abra el espacio de trabajo para registrar el primer seguimiento.",
+      "enrollmentDrawerTitle": "Inscripción — {name}",
+      "enrolledMessage": "Inscrito en {event} el {date}.",
+      "programEventLabel": "Programa / evento",
+      "dateEnrolledLabel": "Fecha de inscripción",
+      "otherEnrollments": "Otras inscripciones en programas",
+      "cboDrawerTitle": "Referencia CBO — {name}",
+      "cboAlert": "Referencia abierta a {cbo} — haga seguimiento para confirmar recepción.",
+      "cboOrganization": "Organización CBO",
+      "referralStatus": "Estado de la referencia",
+      "dateReferred": "Fecha de referencia",
+      "otherOpenCbos": "Otras referencias CBO abiertas",
+      "exportRiskTitle": "Carga de casos por nivel de riesgo",
+      "exportEnrollmentTitle": "Clientes inscritos en el evento",
+      "exportOverdueTitle": "Seguimientos vencidos",
+      "exportCboTitle": "Referencias CBO abiertas",
+      "exportOverdueSummaryTitle": "Resumen de seguimientos vencidos",
+      "exportCboSummaryTitle": "Resumen de referencias CBO abiertas",
+      "exportSelectedProgram": "Programa seleccionado",
+      "auditRiskDetail": "Auditoría — carga de casos por riesgo (detalle de clientes)",
+      "auditEnrollments": "Auditoría — inscripciones por programa",
+      "auditOverdueDetail": "Auditoría — seguimientos vencidos (detalle de clientes)",
+      "auditCboDetail": "Auditoría — referencias CBO abiertas (detalle de clientes)",
+      "caseloadRiskDetail": "Carga de casos por riesgo — detalle de clientes",
+      "eventEnrollmentDetail": "Clientes inscritos en el evento",
+      "overdueDetail": "Seguimientos vencidos — detalle de clientes",
+      "cboDetail": "Referencias CBO abiertas — detalle de clientes",
+      "editInBuilder": "Personalizar",
+      "editInBuilderHint": "Abra en el constructor de informes para cambiar columnas, filtros o gráficos.",
+      "editInBuilderAria": "Personalizar {report} en el constructor de informes",
+      "subscribe": "Suscribirse",
+      "subscribeTitle": "Suscribirse al informe",
+      "subscribeLead": "Reciba por correo una copia de «{report}» según la frecuencia elegida.",
+      "subscribeEmail": "Correo electrónico",
+      "subscribeEmailRequired": "Indique un correo para suscribirse.",
+      "subscribeFrequencyLabel": "Frecuencia",
+      "subscribeFrequency": {
+        "daily": "Diaria",
+        "weekly": "Semanal",
+        "monthly": "Mensual"
+      },
+      "subscribeSave": "Guardar suscripción",
+      "subscribeSaved": "Suscripción guardada.",
+      "sheetRiskDetail": "Detalle de riesgo",
+      "sheetEnrollments": "Inscripciones",
+      "sheetOverdue": "Vencidos",
+      "sheetCbo": "Referencias CBO",
+      "overdueRowAria": "{name}, {days} días de retraso, clic para detalles",
+      "enrollmentRowAria": "{name} inscrito en {event}, clic para detalles",
+      "cboRowAria": "{name} referido a {cbo}, clic para detalles",
+      "tier": {
+        "executive": "Informes ejecutivos",
+        "operational": "Informes operativos",
+        "integrity": "Integridad y auditoría",
+        "caseload": "Informes de carga y programas"
+      },
+      "tierExecutiveLead": "Impacto comunitario, resultados de iniciativas e indicadores de desempeño para liderazgo.",
+      "tierOperationalLead": "Carga por subdivisión, tendencias de utilización de servicios y actividad del personal.",
+      "tierIntegrityLead": "Problemas de calidad de datos y registro de auditoría del sistema.",
+      "tierCaseloadLead": "Informes existentes de carga, inscripciones, seguimientos y referidos.",
+      "runtimeFilters": "Filtros del informe",
+      "filterPeriod": "Período de registro",
+      "filterProgram": "Programa",
+      "filterCaseStatus": "Estado del caso",
+      "filterEvent": "Evento / programa",
+      "eventEnrollmentFilterHint": "Use los filtros superiores para acotar por período de inscripción y evento.",
+      "communityImpact": "Panel de impacto comunitario",
+      "initiativePerformance": "Seguimiento de desempeño de iniciativas",
+      "outcomeKpis": "Indicadores de resultados",
+      "subdivisionCaseload": "Resumen de carga por subdivisión",
+      "serviceUtilizationTrend": "Tendencia de utilización de servicios",
+      "staffActivity": "Actividad y utilización del personal",
+      "clientDataIntegrity": "Auditoría de integridad de datos",
+      "systemAuditLog": "Registro de auditoría y cumplimiento",
+      "totalClients": "Total de clientes",
+      "activeCases": "Casos activos",
+      "registrationOnlyStat": "Solo registro",
+      "servicesDelivered": "Inscripciones a servicios",
+      "zipDistribution": "Clientes por código postal",
+      "ageDistribution": "Clientes por grupo de edad",
+      "zipCode": "Código postal",
+      "ageBandLabel": "Grupo de edad",
+      "referralCompletionRate": "Tasa de referidos completados",
+      "avgTimeToService": "Prom. días al primer servicio",
+      "intakeWithin7Day": "Ingreso completo ≤ 7 días",
+      "enrollmentTrend": "Tendencia de inscripciones (30 días)",
+      "recentEnrollments": "Inscripciones (últimos 30 días)",
+      "priorEnrollments": "Inscripciones (30 días anteriores)",
+      "initiativeName": "Iniciativa",
+      "startDate": "Fecha de inicio",
+      "endDate": "Fecha de fin",
+      "targetOutreach": "Alcance objetivo",
+      "referralsGenerated": "Referidos generados",
+      "enrollments": "Inscripciones",
+      "completions": "Completados",
+      "outreachPct": "% de alcance",
+      "completionPct": "% de completado",
+      "subdivisionLabel": "Subdivisión",
+      "uniqueClients": "Clientes únicos",
+      "incompleteIntakeCount": "Ingresos incompletos",
+      "staffName": "Personal",
+      "role": "Rol",
+      "caseload": "Carga",
+      "notesLogged": "Notas registradas",
+      "closures": "Cierres",
+      "estimatedHours": "Horas directas est.",
+      "duplicatePairs": "Pares duplicados",
+      "incompleteIntakes": "Ingresos incompletos",
+      "missingCaseManager": "Sin gestor de caso",
+      "issueType": "Tipo de problema",
+      "detail": "Detalle",
+      "severity": "Gravedad",
+      "timestamp": "Marca de tiempo",
+      "actor": "Actor",
+      "action": "Acción",
+      "entityRef": "Entidad",
+      "reason": "Motivo",
+      "month": "Mes",
+      "category": "Categoría",
+      "units": "Prestaciones de servicio",
+      "noInitiatives": "No hay iniciativas",
+      "noInitiativesHint": "Las iniciativas aparecerán cuando se configuren campañas.",
+      "noUtilizationData": "Sin datos de utilización",
+      "noUtilizationDataHint": "Los conteos mensuales de cuántas veces se prestó cada servicio aparecerán aquí.",
+      "utilizationTrendFootnote": "Cada barra indica cuántas veces se prestó ese servicio en {month} (último mes).",
+      "serviceDeliveries": "Prestaciones de servicio",
+      "zipDrilldownAria": "{count} clientes en ZIP {zip}, clic para ver",
+      "zipDrawerTitle": "ZIP {zip} — {count} clientes",
+      "ageDrilldownAria": "{count} clientes en {band}, clic para ver",
+      "ageDrawerTitle": "{band} — {count} clientes",
+      "subdivisionDrilldownAria": "{count} casos abiertos en {subdivision}, clic para ver",
+      "subdivisionDrawerTitle": "{subdivision} — {count} clientes",
+      "utilizationDrilldownAria": "{count} prestaciones de {category}, clic para ver tendencia",
+      "utilizationDrawerTitle": "{category} — prestaciones mensuales",
+      "staffDrilldownAria": "Carga de {name}: {count}, clic para ver clientes",
+      "staffDrawerTitle": "{name} — {count} clientes",
+      "integrityRowAria": "Ver registro del cliente {name}",
+      "integrityDrawerTitle": "Integridad de datos — {name}",
+      "summaryDrilldownAria": "{count} registros para {label}, clic para ver",
+      "overdueSummaryDrawerTitle": "{label} — {count} clientes",
+      "cboSummaryDrawerTitle": "{label} — {count} referencias",
+      "noDrilldownData": "No hay detalle disponible",
+      "noDrilldownDataHint": "No hay registros para esta selección.",
+      "noSubdivisionData": "Sin carga por subdivisión",
+      "noSubdivisionDataHint": "Los casos abiertos agrupados por subdivisión aparecerán aquí.",
+      "noStaffActivity": "Sin actividad del personal",
+      "noStaffActivityHint": "La actividad se deriva de carga, notas e inscripciones.",
+      "noIntegrityIssues": "Sin problemas de integridad",
+      "noIntegrityIssuesHint": "Duplicados, ingresos y brechas de registro aparecerán aquí.",
+      "noAuditEntries": "Sin entradas de auditoría",
+      "noAuditEntriesHint": "Las acciones del sistema se registran conforme el personal usa la plataforma.",
+      "sheetImpact": "Impacto",
+      "sheetInitiatives": "Iniciativas",
+      "sheetOutcomes": "Resultados",
+      "sheetSubdivision": "Subdivisión",
+      "sheetUtilization": "Utilización",
+      "sheetStaff": "Actividad del personal",
+      "sheetIntegrity": "Integridad",
+      "sheetAuditLog": "Auditoría",
+      "subdivision": {
+        "senior": "Servicios sociales para adultos mayores",
+        "community": "Servicios comunitarios",
+        "parenting": "Apoyo a la crianza",
+        "mental_health": "Salud mental"
+      },
+      "serviceUtil": {
+        "food_pantry": "Despensa de alimentos",
+        "therapy": "Terapia",
+        "court_advocacy": "Defensa judicial",
+        "crisis_counseling": "Consejería de crisis"
+      },
+      "ageBand": {
+        "0-17": "0–17",
+        "18-59": "18–59",
+        "60-74": "60–74",
+        "75+": "75+"
+      },
+      "integrity": {
+        "duplicate": "Posible duplicado",
+        "duplicateDetail": "Posible duplicado de",
+        "incompleteIntake": "Ingreso incompleto",
+        "registrationOnly": "Solo registro",
+        "missingCm": "Sin gestor de caso"
+      }
+    },
+    "customReports": {
+      "createNew": "Crear informe nuevo",
+      "lead": "Los informes guardados se muestran abajo con datos en vivo. Use los filtros superiores para acotar los resultados.",
+      "name": "Nombre del informe",
+      "type": "Tipo",
+      "typeTable": "Tabla",
+      "typeChart": "Gráfico",
+      "updated": "Última actualización",
+      "edit": "Editar",
+      "view": "Ver",
+      "notFound": "No se encontró ese informe personalizado. Puede que se haya eliminado.",
+      "empty": "Aún no hay informes personalizados",
+      "emptyHint": "Cree un informe para guardar columnas, filtros y ajustes de gráfico.",
+      "loading": "Cargando informes personalizados…",
+      "loadFailed": "No se pudieron cargar los informes personalizados"
+    },
+    "reportBuilder": {
+      "title": "Constructor de informes",
+      "backToList": "Volver a la lista",
+      "loading": "Cargando informe…",
+      "runningPreview": "Ejecutando vista previa…",
+      "loadFailed": "No se pudo cargar el informe",
+      "previewFailed": "Error en la vista previa",
+      "saveFailed": "No se pudo guardar el informe",
+      "lead": "Personalice informes desde la página Informes, o cree vistas tabulares y gráficas desde el modelo de datos.",
+      "reportType": "Tipo de informe",
+      "typeTable": "Tabla",
+      "typeChart": "Gráfico",
+      "stepSource": "Elija sus datos",
+      "stepSourceHint": "Seleccione el tipo de registro principal. Una fila = uno de estos.",
+      "stepQuickBuild": "Elija columnas",
+      "stepQuickBuildHint": "Elija campos de cualquier modelo — los datos relacionados se unen automáticamente. La vista previa se actualiza al seleccionar.",
+      "searchColumns": "Buscar columnas…",
+      "searchFields": "Buscar campos…",
+      "columnCount": "{count} seleccionadas",
+      "noColumnsSelected": "Aún no hay columnas seleccionadas.",
+      "removeColumn": "Quitar columna",
+      "stepChartSource": "Elija sus datos",
+      "stepChartSourceHint": "Elija la fuente de datos y configure los ejes en el paso 2. Use Personalizar en cualquier tarjeta de Informes.",
+      "sourceQuickStarts": "Inicios rápidos",
+      "sourceQuickStartsHint": "Tablas listas con columnas y filtros preseleccionados.",
+      "sourceQuickStartsChartHint": "Gráficos con ejes ya configurados.",
+      "sourceDataSource": "Fuente de datos",
+      "sourceDataSourceHint": "El tipo de registro principal — cada fila o segmento proviene de aquí.",
+      "sourceOr": "o",
+      "sourceManualNote": "Elija columnas manualmente en el siguiente paso.",
+      "sourceChartManualNote": "Configure los ejes manualmente en el paso 2.",
+      "stepChartCanvas": "Configure el gráfico",
+      "stepChartCanvasHint": "Asigne una categoría a X y una medida a Y. Puede mezclar modelos — las uniones se agregan solas.",
+      "relatedCounts": "Conteos de registros relacionados",
+      "relatedCount": "Conteo de {entity}",
+      "crossModelHint": "Los campos están agrupados por modelo. Elija de cualquier grupo — las uniones se resuelven automáticamente.",
+      "stepChartOptions": "Ajuste el gráfico",
+      "advancedOptions": "Granularidad y filtros fijos",
+      "advancedOptionsChart": "Filtros fijos",
+      "rowGrain": "Cada fila representa",
+      "rowGrainHint": "Normalmente se infiere de los campos elegidos. Cámbielo solo si necesita una fila por caso, inscripción, referido, etc.",
+      "dynamicParams": "Filtros dinámicos",
+      "dynamicParamsHint": "Filtros que el usuario puede cambiar al ejecutar el informe (período, programa, estado, etc.).",
+      "paramColLabel": "Etiqueta",
+      "paramColType": "Tipo",
+      "paramColEntity": "Entidad",
+      "paramColField": "Campo",
+      "staticFilters": "Filtros fijos",
+      "staticFiltersHint": "Siempre aplicados a este informe. Use los filtros compartidos del panel de vista previa para período, programa y estado.",
+      "filterColEntity": "Entidad",
+      "filterColField": "Campo",
+      "filterColOp": "Operador",
+      "filterColValue": "Valor",
+      "runtimeFilters": "Filtros del informe",
+      "addDynamicParam": "Agregar filtro dinámico",
+      "removeParam": "Quitar filtro dinámico",
+      "paramLabelPlaceholder": "Etiqueta del filtro",
+      "noDynamicParams": "Ninguno agregado aún.",
+      "paramTextPlaceholder": "Contiene…",
+      "paramAllPrograms": "Todos los programas",
+      "paramAllEvents": "Todos los eventos",
+      "paramAllRisk": "Todos los niveles de riesgo",
+      "paramAllStatuses": "Todos los estados",
+      "paramTypes": {
+        "relativePeriod": "Período de fechas",
+        "dateRange": "Rango de fechas",
+        "text": "Texto contiene",
+        "program": "Programa",
+        "caseStatus": "Estado del caso",
+        "risk": "Nivel de riesgo",
+        "event": "Programa / evento",
+        "booleanField": "Campo sí / no"
+      },
+      "paramDefaults": {
+        "relativePeriod": "Período de fechas",
+        "dateRange": "Rango de fechas",
+        "text": "Búsqueda de texto",
+        "program": "Programa",
+        "caseStatus": "Estado del caso",
+        "risk": "Nivel de riesgo",
+        "event": "Evento",
+        "booleanField": "Sí / no"
+      },
+      "periodPresets": {
+        "all": "Todas las fechas",
+        "last7": "Últimos 7 días",
+        "last30": "Últimos 30 días",
+        "last90": "Últimos 90 días",
+        "mtd": "Mes en curso",
+        "ytd": "Año en curso",
+        "custom": "Rango personalizado…"
+      },
+      "caseStatus": {
+        "active": "Activo",
+        "closed": "Cerrado"
+      },
+      "booleanParam": {
+        "any": "Cualquiera",
+        "true": "Sí",
+        "false": "No"
+      },
+      "presets": {
+        "caseload": "Carga activa",
+        "caseloadDesc": "Clientes en casos activos con programa y nivel de riesgo.",
+        "caseloadMeta": "4 columnas · filtro casos activos",
+        "openCbo": "Referidos CBO abiertos",
+        "openCboDesc": "Referidos comunitarios pendientes con datos del cliente y CBO.",
+        "openCboMeta": "4 columnas · estado pendiente",
+        "enrollments": "Inscripciones a servicios",
+        "enrollmentsDesc": "Clientes inscritos en servicios o eventos.",
+        "enrollmentsMeta": "3 columnas · no anulados"
+      },
+      "chartPresets": {
+        "byProgram": "Casos por programa",
+        "byProgramDesc": "Distribución de la carga por programa.",
+        "byProgramMeta": "Barras · Programa × Conteo",
+        "byRisk": "Clientes por nivel de riesgo",
+        "byRiskDesc": "Total de clientes según la última evaluación de riesgo.",
+        "byRiskMeta": "Barras · Riesgo × Conteo",
+        "enrollmentsByProgram": "Inscripciones por programa",
+        "enrollmentsByProgramDesc": "Total de inscripciones agrupadas por programa del caso.",
+        "enrollmentsByProgramMeta": "Cliente → Caso → Inscripción · Suma",
+        "avgRiskByProgram": "Riesgo prom. por programa",
+        "avgRiskByProgramDesc": "Puntaje compuesto de riesgo promedio por programa.",
+        "avgRiskByProgramMeta": "Cliente → Caso → Riesgo · Promedio",
+        "cboByStatus": "Referidos CBO por estado",
+        "cboByStatusDesc": "Volumen de referidos comunitarios por estado.",
+        "cboByStatusMeta": "Cliente → Referido CBO · Dona"
+      },
+      "dimensions": "Categorías (eje X)",
+      "measures": "Medidas (eje Y)",
+      "recordCount": "Conteo de registros",
+      "noDimensions": "No hay campos de categoría disponibles.",
+      "axisX": "X — categorías",
+      "axisY": "Y — valores",
+      "dropX": "Suelte categoría aquí",
+      "dropY": "Suelte medida aquí",
+      "clearAxis": "Limpiar eje",
+      "xMustBeDimension": "El eje X necesita un campo de categoría (no numérico).",
+      "yMustBeMeasure": "El eje Y necesita una medida numérica o recuento — no un campo de categoría.",
+      "guideStartTitle": "Comience con una categoría",
+      "guideStartBody": "Arrastre un campo de Categorías al eje X abajo — por ejemplo Programa, Riesgo o Estado.",
+      "guideYTitle": "Agregue una medida",
+      "guideYBody": "Arrastre Conteo de registros o un campo numérico al eje Y. Se sugerirá barra, línea o dona.",
+      "guideReadyTitle": "Listo para vista previa",
+      "guideReadyBody": "Mostrando {type}: {y} por {x}. Ajuste tipo o agregación abajo, luego exporte.",
+      "chartType": "Tipo de gráfico",
+      "aggregate": "Agregación",
+      "aggregateCountOnly": "Suma, promedio, mínimo y máximo requieren un campo numérico en el eje Y. Conteo, distinto y acumulado funcionan solo con conteo de registros.",
+      "aggregateRequiresMeasure": "Suelte un campo numérico en Y para usar suma, promedio, mínimo o máximo.",
+      "cumulativeToggle": "Total acumulado",
+      "cumulativeHint": "Disponible para conteo y suma — construye un total progresivo a lo largo del eje X ordenado.",
+      "cumulativeCountLabel": "Conteo acumulado de {entity}",
+      "cumulativeSumLabel": "{field} acumulado",
+      "distinctFieldLabel": "{field} distintos",
+      "distinctRecordsLabel": "{entity} distintos",
+      "xGroupingLabel": "Agrupar fechas por",
+      "xGroupingHint": "Combine fechas en periodos — útil para tendencias y totales acumulados.",
+      "xGrouping": {
+        "none": "Fecha exacta",
+        "month": "Mes",
+        "year": "Año"
+      },
+      "aggregateSuffix": {
+        "sum": "suma",
+        "avg": "prom.",
+        "min": "mín.",
+        "max": "máx."
+      },
+      "aggregates": {
+        "count": "Conteo",
+        "distinct": "Distinto",
+        "sum": "Suma",
+        "avg": "Promedio",
+        "min": "Mín.",
+        "max": "Máx."
+      },
+      "chartTypes": {
+        "bar": "Barras",
+        "line": "Línea",
+        "donut": "Dona"
+      },
+      "chart": {
+        "count": "Conteo"
+      },
+      "by": "por",
+      "chartMeta": "{groups} grupos · {rows} filas origen",
+      "chartMetaWithGrain": "{groups} grupos · {rows} registros de {grain}",
+      "noChartPreview": "Gráfico no listo",
+      "noChartPreviewHint": "Suelte una categoría en X y una medida en Y para generar el gráfico.",
+      "noChartData": "Sin datos para este gráfico",
+      "noChartDataHint": "Ningún registro coincidió con los filtros y la granularidad actuales ({rows} filas fuente). Pruebe Case status = All statuses, amplíe el periodo o ajuste los filtros fijos en Avanzado.",
+      "noChartValues": "Sin valores medibles",
+      "noChartValuesHint": "{groups} categorías coincidieron, pero la medida Y está vacía o no es numérica en todas. Elija un campo numérico o Recuento de registros en Y.",
+      "reportName": "Nombre del informe",
+      "reportNamePlaceholder": "p. ej. Carga activa por programa",
+      "savedReports": "Informes guardados",
+      "newReport": "— Nuevo informe —",
+      "newReportBtn": "Nuevo",
+      "newReportBtnHint": "Comenzar un informe en blanco",
+      "paletteHint": "Haga clic en un campo para ver opciones, o arrástrelo a los ejes X / Y.",
+      "clickForMenu": "Clic para opciones o arrastre a un eje",
+      "clickOrDrag": "Clic para opciones o arrastre a un eje",
+      "fieldContextPreview": "Vista previa de datos del campo",
+      "fieldContextAssignX": "Asignar a X",
+      "fieldContextAssignY": "Asignar a Y",
+      "fieldPreviewLead": "Valores de ejemplo de registros en su ámbito ({total} filas).",
+      "fieldPreviewRecordCountLead": "Total de registros de {entity} en su ámbito: {total}.",
+      "fieldPreviewEntity": "Modelo: {entity}",
+      "fieldPreviewType": "Tipo: {type}",
+      "fieldPreviewDistinct": "{count} valores distintos",
+      "fieldPreviewEmpty": "{count} vacíos",
+      "fieldPreviewValue": "Valor",
+      "fieldPreviewCount": "Filas",
+      "fieldPreviewNoData": "Sin valores en el ámbito",
+      "fieldPreviewNoDataHint": "No hay registros para este campo con su acceso actual.",
+      "axisAlreadySet": "Ambos ejes están definidos — limpie un eje para cambiarlo.",
+      "loadTemplate": "Cargar plantilla inicial",
+      "save": "Guardar informe",
+      "saveHint": "Guardar esta definición de informe para reutilizar",
+      "run": "Ejecutar vista previa",
+      "runHint": "Actualizar la vista previa con la configuración actual",
+      "export": "Exportar XLSX",
+      "exportHint": "Descargar los datos de vista previa como Excel",
+      "exportChart": "Exportar XLSX + PNG",
+      "exportChartHint": "Descargar gráfico como PNG y datos como Excel",
+      "dataModel": "Explorador del modelo de datos",
+      "dataModelHint": "Haga clic en una entidad para usarla como base. Las entidades unidas se resaltan en verde.",
+      "configure": "Configuración del informe",
+      "primaryEntity": "Cada fila representa",
+      "joinEntities": "Entidades relacionadas a incluir",
+      "joinEntitiesHint": "Incluya registros relacionados cuando se usen campos de otros modelos.",
+      "columns": "Columnas a mostrar",
+      "filters": "Filtros",
+      "addFilter": "Agregar filtro",
+      "remove": "Quitar",
+      "filterValue": "Valor",
+      "preview": "Vista previa",
+      "previewLive": "En vivo",
+      "noPreview": "Sin vista previa aún",
+      "noPreviewHint": "Seleccione columnas o ejes del gráfico y pulse Vista previa en la barra.",
+      "noJoins": "Esta entidad no tiene relaciones unibles.",
+      "noColumns": "Seleccione una entidad base para elegir columnas.",
+      "noFilters": "Ninguno aplicado.",
+      "rowCount": "{count} filas",
+      "rowCountWithGrain": "{count} filas de {grain}",
+      "nameRequired": "Ingrese un nombre antes de guardar.",
+      "saved": "Informe guardado.",
+      "noDataExport": "Aún no hay nada para exportar — configure columnas o ejes del gráfico.",
+      "sheetName": "Informe personalizado",
+      "relationsFrom": "Relaciones desde {entity}",
+      "relationType": {
+        "hasMany": "uno a muchos",
+        "belongsTo": "muchos a uno"
+      },
+      "ops": {
+        "eq": "igual a",
+        "neq": "distinto de",
+        "contains": "contiene",
+        "notEmpty": "no está vacío",
+        "empty": "está vacío",
+        "true": "es verdadero",
+        "false": "es falso",
+        "gte": "en o después de",
+        "lte": "en o antes de"
+      },
+      "templates": {
+        "clientCaseload": "Carga activa de clientes",
+        "openCbo": "Referidos CBO abiertos"
+      },
+      "entities": {
+        "client": "Cliente",
+        "case": "Caso",
+        "referral": "Referido",
+        "intake": "Ingreso",
+        "riskAssessment": "Evaluación de riesgo",
+        "serviceEnrollment": "Inscripción a servicio",
+        "cboReferral": "Referido CBO",
+        "caseNote": "Nota de caso",
+        "carePlan": "Plan de cuidado",
+        "user": "Usuario del personal",
+        "document": "Documento",
+        "initiative": "Iniciativa",
+        "serviceUtil": "Utilización de servicios"
+      },
+      "relations": {
+        "client": "Cliente",
+        "case": "Caso",
+        "cases": "Casos",
+        "caseManager": "Gestor de caso",
+        "referrals": "Referidos",
+        "intakes": "Ingresos",
+        "riskAssessments": "Evaluaciones de riesgo",
+        "serviceEnrollments": "Inscripciones a servicios",
+        "cboReferrals": "Referidos CBO",
+        "caseNotes": "Notas de caso",
+        "carePlans": "Planes de cuidado",
+        "documents": "Documentos"
+      },
+      "fields": {
+        "id": "ID",
+        "name": "Nombre",
+        "dob": "Fecha de nacimiento",
+        "phone": "Teléfono",
+        "address": "Dirección",
+        "registeredAt": "Registrado",
+        "registrationSource": "Fuente de registro",
+        "caseNumber": "Número de caso",
+        "clientId": "ID de cliente",
+        "programId": "Programa",
+        "caseManagerId": "ID del gestor de caso",
+        "status": "Estado",
+        "currentStage": "Etapa del flujo",
+        "incompleteIntake": "Ingreso incompleto",
+        "openDate": "Fecha de apertura",
+        "source": "Fuente del referido",
+        "reason": "Motivo del referido",
+        "dateReceived": "Fecha recibida",
+        "referredBy": "Referido por",
+        "completeness": "Completitud del ingreso",
+        "consentOnFile": "Consentimiento archivado",
+        "livingArrangement": "Arreglo de vivienda",
+        "date": "Fecha",
+        "overallRisk": "Riesgo general",
+        "compositeScore": "Puntaje compuesto",
+        "serviceOrEventId": "Servicio / evento",
+        "dateEnrolled": "Fecha de inscripción",
+        "voided": "Anulado",
+        "cboName": "Nombre del CBO",
+        "noteType": "Tipo de nota",
+        "noteText": "Texto de la nota",
+        "issue": "Problema",
+        "goal": "Meta",
+        "service": "Servicio",
+        "role": "Rol",
+        "documentKind": "Tipo de documento",
+        "title": "Título",
+        "startDate": "Fecha de inicio",
+        "endDate": "Fecha de fin",
+        "targetOutreach": "Alcance objetivo",
+        "referralsGenerated": "Referidos generados",
+        "enrollments": "Inscripciones",
+        "completions": "Completados",
+        "month": "Mes",
+        "category": "Categoría",
+        "units": "Prestaciones de servicio",
+        "caseId": "ID de caso"
+      }
+    },
+    "clientSearch": {
+      "searchLabel": "Buscar clientes",
+      "searchPlaceholder": "Nombre, teléfono o dirección…",
+      "searchButton": "Buscar",
+      "noClientsFound": "No se encontraron clientes",
+      "noClientsHint": "Pruebe otra ortografía o un número de teléfono parcial.",
+      "crossProgramFlag": "Alerta entre programas",
+      "crossProgramBody": "Caso activo en {program} para {name} — contacte a {manager}. Los detalles del caso no se muestran según la política de confidencialidad.",
+      "crossProgramFlagBody": "Caso activo en {program} — contacte a {manager}{phone}. Los detalles del caso no se muestran según la política de confidencialidad.",
+      "contactAtPhone": " al {phone}",
+      "communityPrograms": "Programas comunitarios",
+      "hasDuplicates": "Tiene posibles duplicados",
+      "viewCaseAria": "Ver resumen del caso para {name}",
+      "viewClientAria": "Ver registro del cliente {name}",
+      "tableName": "Nombre",
+      "tableMatch": "Coincidencia",
+      "matchName": "Nombre",
+      "matchPhone": "Teléfono",
+      "matchAddress": "Dirección",
+      "duplicatePairsTitle": "Posibles registros duplicados en estos resultados",
+      "duplicatePairsHint": "Estos clientes parecen ser la misma persona registrada más de una vez. Revise en Detección de duplicados antes de abrir un nuevo caso.",
+      "tableCategory": "Categoría",
+      "tableProcessStage": "Etapa del proceso",
+      "tablePhone": "Teléfono",
+      "tableAddress": "Dirección",
+      "tableStatus": "Estado",
+      "tableRegistered": "Registrado",
+      "tableCases": "Casos",
+      "tableCaseNumber": "Caso #",
+      "tableOpened": "Apertura",
+      "caseCount": "{open} abiertos / {total} total",
+      "noCases": "Sin casos",
+      "noCasesHint": "Este cliente está registrado pero aún no tiene casos.",
+      "casesTitle": "Casos de este cliente",
+      "createCase": "Crear nuevo caso",
+      "screeningSummary": "{reason} ({date})",
+      "noScreening": "Sin evaluación inicial registrada",
+      "assignedCaseManager": "gestor de casos asignado"
+    },
+    "clientRegistration": {
+      "lead": "Registre primero a la persona. Abra un caso solo cuando la evaluación identifique una necesidad de servicio o una emergencia.",
+      "basicInfoTitle": "Información básica",
+      "nameLabel": "Nombre completo",
+      "dobLabel": "Fecha de nacimiento",
+      "phoneLabel": "Teléfono",
+      "addressLabel": "Dirección",
+      "screeningTitle": "Evaluación inicial",
+      "screeningQuestionsHint": "Opcional en el registro. Las respuestas se transfieren al abrir un caso y pueden actualizarse en el formulario de ingreso.",
+      "screeningHint": "Breve revisión de elegibilidad y necesidades. Muchas visitas solo requieren información — no se necesita caso salvo que haya servicio o seguimiento.",
+      "contactReasonLabel": "Motivo del contacto",
+      "reasonInformation": "Solo información",
+      "reasonBrochure": "Folleto / materiales",
+      "reasonServiceNeed": "Necesidad de servicio identificada",
+      "reasonEmergency": "Emergencia / crisis",
+      "screeningNotesLabel": "Notas de evaluación",
+      "screeningNotesPlaceholder": "¿Qué solicitó la persona? ¿Preocupaciones inmediatas?",
+      "emergencyTriggerLabel": "Disparador de emergencia (abre un caso)",
+      "emergencyTriggerPlaceholder": "p. ej., adulto mayor reporta riesgo de abuso — intervención inmediata",
+      "emergencyTriggerHint": "Si completa este campo, el sistema solicitará crear un caso después del registro.",
+      "serviceNeedLabel": "Necesidad de servicio identificada — abrir caso después del registro",
+      "submit": "Registrar cliente",
+      "caseRequiredNotice": "{name} registrado. La evaluación indica que se necesita un caso — elija el tipo de caso a continuación.",
+      "successNoCase": "{name} registrado. No se abrió caso — registro guardado para contacto futuro."
+    },
+    "clientProfile": {
+      "title": "Vista 360° del cliente",
+      "dobPrefix": "F. nac.:",
+      "openCaseWorkspace": "Abrir espacio de trabajo del caso",
+      "focusAreas": "Áreas de enfoque",
+      "source": "Fuente:",
+      "reason": "Motivo:",
+      "date": "Fecha:",
+      "referredBy": "Referido por:",
+      "consentOnFile": "Consentimiento en archivo:",
+      "status": "Estado:",
+      "noIntakeData": "Sin datos de ingreso",
+      "noIntakeHint": "Complete {stage} en el espacio de trabajo del caso.",
+      "noAssessmentSummary": "Sin resumen de evaluación",
+      "noAssessmentHint": "Complete {stage} en el espacio de trabajo del caso.",
+      "noRatings": "Sin calificaciones registradas",
+      "noRatingsHint": "Complete {stage} en el espacio de trabajo del caso.",
+      "noPlanItems": "Sin elementos del plan",
+      "noPlanHint": "Agregue elementos en {list}.",
+      "noServices": "Sin servicios",
+      "noServicesHint": "Inscriba al cliente desde {services}.",
+      "noFollowUpNotes": "Sin notas de seguimiento",
+      "noFollowUpHint": "Registre notas en {monitoring}.",
+      "noRecordedReviews": "Sin revisiones registradas",
+      "noReviewsHint": "Registre {stage} en el espacio de trabajo del caso.",
+      "closed": "Cerrado:",
+      "reasonLabel": "Motivo:",
+      "caseOpen": "Caso abierto",
+      "caseOpenHint": "La documentación de {stage} aparece aquí cuando el caso se cierre.",
+      "trigger": "Disparador:",
+      "previous": "Anterior",
+      "current": "Actual",
+      "overall": "General",
+      "composite": "Compuesta",
+      "caseLabel": "Caso:",
+      "caseSwitchAria": "Cambiar caso activo",
+      "noOpenCases": "No hay casos abiertos para este cliente",
+      "noOpenCasesHint": "Registre un caso desde búsqueda de clientes o creación de casos para ver los detalles del episodio aquí."
+    },
+    "documentsHub": {
+      "noActiveCases": "Sin casos activos",
+      "noActiveCasesHint": "Las nuevas referencias aparecerán aquí cuando se abran casos.",
+      "tableClient": "Cliente",
+      "tableProcessStage": "Etapa del proceso",
+      "tableDocuments": "Documentos",
+      "openVault": "Abrir bóveda"
+    },
+    "servicesHub": {
+      "activeCaseload": "Carga activa",
+      "openCboReferrals": "Referencias CBO abiertas",
+      "quickActions": "Acciones rápidas",
+      "bulkAllocation": "Asignación masiva de servicios",
+      "enrollmentReports": "Informes de inscripción",
+      "enrollByClient": "Inscribir o coordinar por cliente",
+      "noActiveCases": "Sin casos activos",
+      "noActiveCasesHint": "Las referencias aparecerán aquí.",
+      "tableClient": "Cliente",
+      "tableProgram": "Programa",
+      "tableEnrollments": "Inscripciones",
+      "tableStage": "Etapa",
+      "stageChip": "Etapa {stage}",
+      "openServices": "Abrir servicios",
+      "openCboTitle": "Referencias CBO abiertas",
+      "tableCbo": "CBO",
+      "tableStatus": "Estado",
+      "open": "Abrir",
+      "unknownClient": "Desconocido"
+    },
+    "workflowHub": {
+      "activeByStep": "Casos activos por etapa del proceso",
+      "roleHandoffs": "Traspasos de rol",
+      "noActiveCases": "Sin casos activos",
+      "noActiveCasesHint": "Los casos nuevos aparecen aquí cuando se crean referencias.",
+      "stageComplete": "{complete} de {total} completos",
+      "processProgressAria": "Progreso del proceso para {name}",
+      "stageAria": "Etapa {num}: {label}, {status}",
+      "open": "Abrir",
+      "noPendingHandoffs": "Sin traspasos pendientes",
+      "noPendingHandoffsHint": "Los casos que requieren revisión del supervisor o completar el ingreso aparecen aquí.",
+      "completeIntakeTask": "Completar evaluación de ingreso",
+      "reviewRiskTask": "Revisar priorización de riesgo",
+      "assigned": "Asignado:",
+      "unassigned": "Sin asignar",
+      "assignToMe": "Asignarme",
+      "caseAssignedToast": "Caso asignado a usted."
+    },
+    "bulkEnrollment": {
+      "accessDenied": "La asignación masiva de servicios no está disponible para su rol.",
+      "programEvent": "Programa / evento",
+      "filterClients": "Filtrar clientes",
+      "filterAll": "Toda la carga de casos",
+      "filterHigh": "Solo riesgo alto",
+      "filterIncomplete": "Ingreso incompleto",
+      "selectClients": "Seleccionar clientes",
+      "selectAllVisible": "Seleccionar todos los visibles",
+      "enrollSelected": "Inscribir seleccionados",
+      "enrollCount": "Inscribir {count} seleccionados",
+      "viewReports": "Ver informes de inscripción",
+      "noClientsMatch": "Ningún cliente coincide con el filtro",
+      "noClientsHint": "Pruebe otro filtro o agregue referencias.",
+      "riskUnknown": "Riesgo desconocido",
+      "highRisk": "Riesgo alto",
+      "incompleteIntake": "Ingreso incompleto",
+      "riskLevelMeta": "Riesgo {level}",
+      "selectOneToast": "Seleccione al menos un cliente.",
+      "enrolledToast": "Se inscribieron {count} cliente(s) en {program}.",
+      "alreadyEnrolledToast": "Los clientes seleccionados ya están inscritos en ese programa."
+    },
+    "platform": {
+      "tenants": {
+        "title": "Gestión de inquilinos",
+        "create": "Crear inquilino",
+        "createTitle": "Nueva organización",
+        "createSubmit": "Crear borrador",
+        "createSuccess": "Inquilino creado en estado Borrador.",
+        "createError": "No se pudo crear el inquilino.",
+        "loadError": "No se pudieron cargar los inquilinos.",
+        "colName": "Organización",
+        "colCode": "Código",
+        "colStatus": "Estado",
+        "colUsers": "Usuarios",
+        "colCases": "Casos activos",
+        "colActions": "Acciones",
+        "legalName": "Nombre legal",
+        "shortCode": "Código de organización",
+        "adminName": "Nombre del administrador",
+        "adminEmail": "Correo del administrador",
+        "activate": "Activar",
+        "suspend": "Suspender",
+        "activateSuccess": "Inquilino activado.",
+        "activateError": "No se pudo activar el inquilino.",
+        "suspendSuccess": "Inquilino suspendido.",
+        "suspendError": "No se pudo suspender el inquilino.",
+        "suspendConfirm": "¿Suspender este inquilino? Los usuarios no podrán iniciar sesión.",
+        "notReady": "Las comprobaciones de preparación fallaron.",
+        "readinessTitle": "Comprobaciones de preparación"
+      },
+      "translations": {
+        "title": "Gestión de traducciones",
+        "lead": "Consulte todas las etiquetas de la aplicación, registre idiomas y exporte o importe traducciones en Excel.",
+        "search": "Buscar claves…",
+        "addLocale": "Agregar idioma",
+        "addLocaleTitle": "Registrar idioma",
+        "localeCode": "Código de idioma",
+        "localeName": "Nombre para mostrar",
+        "export": "Exportar Excel",
+        "import": "Importar Excel",
+        "localesHeading": "Idiomas activos",
+        "colKey": "Clave",
+        "colActions": "Acciones",
+        "empty": "No hay claves cargadas. Exporte una plantilla o sincronice.",
+        "loadError": "No se pudieron cargar las traducciones.",
+        "localeAdded": "Idioma registrado.",
+        "localeError": "No se pudo registrar el idioma.",
+        "exportSuccess": "Exportación descargada.",
+        "exportError": "Error en la exportación.",
+        "importSuccess": "Se importaron {count} valores.",
+        "importError": "Error en la importación.",
+        "mockExport": "La exportación requiere modo API.",
+        "saved": "Traducción guardada.",
+        "saveError": "No se pudo guardar la traducción.",
+        "editTitle": "Editar traducción"
+      },
+      "settings": {
+        "title": "Configuración de plataforma",
+        "passwordMinLength": "Longitud mínima de contraseña",
+        "sessionTimeout": "Tiempo de sesión (minutos)",
+        "maxFailedLogins": "Intentos fallidos máximos",
+        "saved": "Configuración guardada.",
+        "saveError": "No se pudo guardar la configuración.",
+        "loadError": "No se pudo cargar la configuración.",
+        "mockSaved": "Vista previa solo en modo demo."
+      }
+    },
+    "admin": {
+      "dashboard": {
+        "title": "Administración",
+        "lead": "Gestione usuarios, configuración y etiquetas locales para {org}.",
+        "users": "Usuarios",
+        "openCases": "Casos abiertos",
+        "quickLinks": "Enlaces rápidos"
+      },
+      "users": {
+        "title": "Gestión de usuarios",
+        "create": "Agregar usuario",
+        "createTitle": "Nuevo usuario",
+        "createSubmit": "Crear usuario",
+        "createSuccess": "Usuario creado correctamente.",
+        "createError": "No se pudo crear el usuario.",
+        "loadError": "No se pudieron cargar los usuarios.",
+        "mockCreate": "La creación de usuarios requiere modo API.",
+        "colName": "Nombre",
+        "colEmail": "Correo",
+        "colRole": "Rol",
+        "colStatus": "Estado",
+        "colActions": "Acciones",
+        "name": "Nombre completo",
+        "email": "Correo",
+        "password": "Contraseña inicial",
+        "role": "Rol",
+        "deactivate": "Desactivar",
+        "deactivateConfirm": "¿Desactivar este usuario?",
+        "deactivateSuccess": "Usuario desactivado.",
+        "deactivateError": "No se pudo desactivar el usuario.",
+        "delete": "Eliminar",
+        "deleteConfirm": "¿Eliminar permanentemente este usuario? Esta acción no se puede deshacer.",
+        "deleteSuccess": "Usuario eliminado.",
+        "deleteError": "No se pudo eliminar el usuario."
+      },
+      "config": {
+        "title": "Configuración del inquilino",
+        "displayName": "Nombre de la agencia",
+        "primaryColor": "Color principal",
+        "defaultLocale": "Idioma predeterminado",
+        "duplicateThreshold": "Umbral de duplicados (%)",
+        "retentionYears": "Retención de documentos (años)",
+        "saved": "Configuración guardada.",
+        "saveError": "No se pudo guardar la configuración.",
+        "mockSaved": "Vista previa solo en modo demo."
+      },
+      "labels": {
+        "title": "Etiquetas e idiomas",
+        "lead": "Administre todas las etiquetas de la aplicación en todos los idiomas. Exporte el catálogo completo a Excel, edite valores e impórtelos para aplicar cambios.",
+        "search": "Buscar claves o texto…",
+        "searchBtn": "Buscar",
+        "addLocale": "Agregar idioma",
+        "addLocaleTitle": "Registrar idioma",
+        "localeCode": "Código de idioma",
+        "localeName": "Nombre para mostrar",
+        "localesHeading": "Idiomas activos",
+        "summary": "{total} claves · mostrando {shown} en página {page} de {pages}",
+        "export": "Exportar Excel",
+        "import": "Importar Excel",
+        "colKey": "Clave",
+        "colLocale": "Idioma",
+        "colValue": "Valor",
+        "colActions": "Acciones",
+        "empty": "No se encontraron claves. Limpie la búsqueda o exporte una plantilla.",
+        "saved": "Traducción guardada.",
+        "saveError": "No se pudo guardar la traducción.",
+        "loadError": "No se pudieron cargar las traducciones.",
+        "localeAdded": "Idioma registrado.",
+        "localeError": "No se pudo registrar el idioma.",
+        "exportSuccess": "Exportación descargada.",
+        "exportError": "Error en la exportación.",
+        "importSuccess": "Se importaron {count} valores de traducción.",
+        "importError": "Error en la importación.",
+        "mockExport": "La exportación requiere modo API.",
+        "editTitle": "Editar traducción",
+        "prevPage": "Anterior",
+        "nextPage": "Siguiente",
+        "pageOf": "Página {page} de {pages}",
+        "localeCodeCol": "Código",
+        "localeNameCol": "Nombre",
+        "localeRtlCol": "RTL",
+        "localeActiveCol": "Activo",
+        "localesEmpty": "No hay idiomas registrados.",
+        "localeRtlLabel": "Idioma de derecha a izquierda",
+        "localeActiveLabel": "Activo",
+        "editLocaleTitle": "Editar idioma",
+        "editLocaleAria": "Editar {code}",
+        "deleteLocale": "Eliminar",
+        "deleteLocaleAria": "Eliminar {code}",
+        "localeDeleteConfirm": "¿Eliminar el idioma \"{code}\" y todas sus traducciones?",
+        "localeDeleted": "Idioma eliminado.",
+        "localeDeleteError": "No se pudo eliminar el idioma.",
+        "localeUpdated": "Idioma actualizado.",
+        "editTranslationAria": "Editar traducción de {key}",
+        "addOverride": "Agregar etiqueta",
+        "key": "Clave de traducción",
+        "locale": "Idioma",
+        "value": "Valor",
+        "mockSaved": "Vista previa solo en modo demo."
+      },
+      "audit": {
+        "title": "Registro de auditoría",
+        "colTime": "Hora",
+        "colAction": "Acción",
+        "colResource": "Recurso",
+        "colActor": "Actor",
+        "empty": "Sin entradas de auditoría aún."
+      }
+    },
+    "adminDuplicates": {
+      "accessDenied": "Acceso denegado. Se requiere rol de supervisor / administrador de departamento.",
+      "noDuplicates": "No se detectaron duplicados",
+      "noDuplicatesHint": "Las coincidencias parciales del ingreso aparecerán aquí para revisión del supervisor.",
+      "matchedOn": "Coincidencia en",
+      "similarDetails": "detalles similares",
+      "dateOfBirth": "fecha de nacimiento",
+      "compareRecords": "Comparar registros",
+      "mergeRecords": "Fusionar registros",
+      "dismissMatch": "Descartar coincidencia",
+      "keepThisRecord": "Conservar este registro",
+      "recordLabel": "Registro {side}",
+      "fieldName": "Nombre",
+      "fieldDob": "Fecha de nacimiento",
+      "fieldPhone": "Teléfono",
+      "fieldAddress": "Dirección",
+      "fieldCategory": "Categoría",
+      "fieldReferral": "Referencia",
+      "fieldIntake": "Ingreso",
+      "fieldRisk": "Riesgo",
+      "fieldNotes": "Notas de caso",
+      "notesLogged": "{count} registradas",
+      "noReferral": "Sin referencia",
+      "noIntake": "Sin ingreso",
+      "notAssessed": "Sin evaluar",
+      "consentOnFile": "consentimiento en archivo",
+      "consentMissing": "consentimiento faltante",
+      "mergeConfirm": "¿Fusionar \"{remove}\" en \"{keep}\"? Se eliminará el otro registro.",
+      "mergeSuccess": "Registros fusionados — se conservó {name}.",
+      "dismissSuccess": "Coincidencia descartada — estos registros permanecerán separados."
+    },
+    "liaisonLookup": {
+      "lookupCaller": "Buscar a quien llama",
+      "searchLabel": "Buscar por nombre o teléfono",
+      "searchPlaceholder": "Nombre o número de teléfono…",
+      "searchButton": "Buscar",
+      "enterNameOrPhone": "Ingrese un nombre o teléfono",
+      "enterHint": "Los resultados listarán al gestor de casos asignado cuando se encuentre un caso activo.",
+      "noActiveCase": "No se encontró caso activo",
+      "noActiveCaseHint": "Ningún registro de gestión de casos abierto coincide con esta búsqueda. Puede continuar con el proceso de ingreso de su programa.",
+      "resultsSummary": "{count} caso activo encontrado — contacte al gestor de casos asignado abajo.",
+      "resultsSummaryPlural": "{count} casos activos encontrados — contacte al gestor de casos asignado abajo.",
+      "tableClient": "Cliente (coincidencia)",
+      "tableProgram": "Programa",
+      "tableCaseManager": "Gestor de casos",
+      "tableStatus": "Estado",
+      "tableContact": "Contacto",
+      "resultsAria": "Contactos del gestor de casos asignado"
+    },
+    "referralIntake": {
+      "workflowLabel": "Flujo de trabajo:",
+      "change": "Cambiar",
+      "stepLead": "Creación de casos — paso 2 de 2",
+      "saveOpen": "Guardar y abrir {next}",
+      "existingClientBanner": "Agregando un nuevo caso para {name}. Los datos de identidad están bloqueados; complete referencia e ingreso para este caso.",
+      "screeningPrefillHint": "Las respuestas de evaluación del registro del cliente aparecen abajo. Actualícelas para este caso si es necesario."
+    },
+    "caseCreation": {
+      "existingClient": "Abrir caso para:",
+      "urgentCase": "Urgente / emergencia",
+      "reset": "Restablecer",
+      "resetHint": "Quita el cliente vinculado e inicia un caso nuevo para cualquier persona."
+    },
+    "caseSearch": {
+      "searchPlaceholder": "Nombre, teléfono o dirección del cliente…",
+      "noCasesFound": "No se encontraron casos",
+      "noCasesHint": "Pruebe ajustar los filtros o los términos de búsqueda.",
+      "tableClient": "Cliente",
+      "tableProgram": "Programa",
+      "tableWorkflow": "Flujo de trabajo",
+      "tableStage": "Etapa",
+      "tableCaseManager": "Gestor de casos",
+      "tableOpened": "Abierto",
+      "tableStatus": "Estado",
+      "open": "Abrir"
+    }
+  },
+  "htmlTitle": {
+    "suffix": " — Rolling Meadows",
+    "dashboard": "Inicio",
+    "caseSearch": "Búsqueda de casos",
+    "caseCreation": "Creación de casos",
+    "clientSearch": "Búsqueda de clientes",
+    "clientRegistration": "Registro de clientes",
+    "adminDuplicates": "Detección de duplicados",
+    "liaisonLookup": "Consulta entre programas",
+    "documentsHub": "Bóveda de documentos",
+    "workflowHub": "Tablero de tareas y traspasos",
+    "servicesHub": "Coordinación de servicios",
+    "bulkEnroll": "Asignación masiva de servicios",
+    "reports": "Informes",
+    "customReports": "Informes personalizados",
+    "reportBuilder": "Constructor de informes",
+    "auditReports": "Informes de auditoría del programa",
+    "referralIntake": "Referencia e ingreso",
+    "caseWorkspace": "Espacio de trabajo del caso",
+    "clientProfile": "Vista 360° del cliente"
+  },
+  "referralIntake": {
+    "voidPrompt": "Ingrese el motivo para anular esta entrada (obligatorio):"
+  },
+  "caseCreation": {
+    "stepLead": "Creación de casos — paso 1 de 2"
+  },
+  "demoAutofill": {
+    "buttonLabel": "Rellenar datos de muestra para esta página",
+    "success": "Datos de muestra completados para esta página.",
+    "nothingToFill": "No hay campos editables en esta vista para rellenar.",
+    "unsupportedPage": "El autocompletado no está disponible en esta página.",
+    "noClient": "Abra un caso antes de usar el autocompletado."
+  }
+}

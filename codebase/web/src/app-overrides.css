@@ -1,0 +1,164 @@
+/* React app overrides — loaded after /public/css for density and layout polish */
+
+#root {
+  min-height: 100vh;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Map legacy utility classes used in pages during migration */
+.muted {
+  color: var(--color-neutral-500);
+}
+
+.lead {
+  color: var(--color-neutral-500);
+}
+
+.error {
+  color: var(--color-risk-high);
+}
+
+.success {
+  color: var(--color-success);
+}
+
+.text-muted {
+  color: var(--color-neutral-500);
+  font-size: 0.8125rem;
+}
+
+/* Keep main content readable on ultra-wide monitors without stretching UI */
+.main-wrapper #page-content {
+  max-width: 1440px;
+}
+
+/* Tighter page sections that repeat across routes */
+.page-header h1 {
+  font-size: 1.25rem;
+}
+
+.card h2,
+.card h3 {
+  font-size: 1rem;
+}
+
+/* Full-width data views (tables, boards) may use full canvas */
+#page-content:has(.data-table),
+#page-content:has(.workflow-board),
+#page-content:has(.report-builder-layout) {
+  max-width: none;
+}
+
+.translations-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.translations-search {
+  flex: 1 1 12rem;
+  min-width: 10rem;
+  padding: 0.4375rem 0.625rem;
+  border: 1px solid var(--color-neutral-300);
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+}
+
+.translations-locales-card {
+  margin-bottom: 1rem;
+}
+
+.translations-locales-card h3 {
+  margin: 0 0 0.5rem;
+  font-size: 0.9375rem;
+}
+
+.translations-summary {
+  margin: 0.75rem 0 0;
+  font-size: 0.8125rem;
+}
+
+.translations-table .translation-key {
+  font-size: 0.75rem;
+  word-break: break-all;
+}
+
+.translation-value-cell {
+  max-width: 14rem;
+  font-size: 0.8125rem;
+}
+
+.translation-value-cell span {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.translation-row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.pagination-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.625rem;
+  border-radius: var(--radius-full);
+  background: var(--color-neutral-100);
+  border: 1px solid var(--color-neutral-200);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.locales-table {
+  margin-bottom: 0.5rem;
+}
+
+.locale-row-inactive td {
+  opacity: 0.65;
+}
+
+.icon-action-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.download-icon-btn--danger:hover:not(:disabled) {
+  color: var(--color-risk-high);
+  background: var(--color-risk-high-bg);
+  border-color: #fecaca;
+}
+
+.download-icon-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.checkbox-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
