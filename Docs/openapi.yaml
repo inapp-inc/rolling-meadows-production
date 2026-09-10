@@ -8,10 +8,12 @@ info:
     Edit this file before changing API shapes.
 
 servers:
+  - url: https://foundry.inapp.com/rolling-meadows/api
+    description: Production (single port behind nginx)
   - url: http://localhost:8000
     description: Local FastAPI (Docker or direct)
-  - url: http://localhost:3000/api
-    description: Local via web dev proxy
+  - url: http://localhost:8081/api
+    description: Local via web nginx proxy
 
 tags:
   - name: health

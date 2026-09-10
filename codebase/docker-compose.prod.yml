@@ -1,0 +1,49 @@
+# Production — single port (app + PostgreSQL)
+# Public URL: https://foundry.inapp.com/rolling-meadows
+# Configure your server nginx to proxy /rolling-meadows to this service.
+
+services:
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-rolling_meadows}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-rolling_meadows}
+      POSTGRES_DB: ${POSTGRES_DB:-rolling_meadows}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-rolling_meadows} -d ${POSTGRES_DB:-rolling_meadows}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    image: rolling-meadows-app:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: /rolling-meadows/api
+        VITE_BASE_PATH: /rolling-meadows
+        VITE_USE_MOCK_AUTH: "false"
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-4510}:4510"
+    environment:
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-rolling_meadows}:${POSTGRES_PASSWORD:-rolling_meadows}@postgres:5432/${POSTGRES_DB:-rolling_meadows}
+      APP_BASE_PATH: /rolling-meadows
+      STATIC_DIR: /app/static
+      PUBLIC_URL: https://foundry.inapp.com/rolling-meadows
+      API_ENABLED_MODULES: health,auth,admin,platform,clients,catalog,cases,enrollments,liaison,workflow,documents,reports
+      JWT_SECRET: ${JWT_SECRET:-change-me-in-production}
+      JWT_EXPIRES_MINUTES: ${JWT_EXPIRES_MINUTES:-480}
+      CORS_ORIGINS: ${CORS_ORIGINS:-https://foundry.inapp.com}
+      SEED_USER_PASSWORD: ${SEED_USER_PASSWORD:-ChangeMe123!}
+      DEFAULT_TENANT_ID: tenant-rolling-meadows
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres_data:

@@ -17,6 +17,12 @@ class Settings(BaseSettings):
     seed_user_password: str = "ChangeMe123!"
     default_tenant_id: str = "tenant-rolling-meadows"
 
+    # Production (single-port): https://foundry.inapp.com/rolling-meadows
+    app_base_path: str = ""
+    public_url: str = "https://foundry.inapp.com/rolling-meadows"
+    static_dir: str = "/app/static"
+    app_port: int = 4510
+
     @property
     def cors_origin_list(self) -> list[str]:
         return [o.strip() for o in self.cors_origins.split(",") if o.strip()]
@@ -24,6 +30,21 @@ class Settings(BaseSettings):
     @property
     def enabled_modules(self) -> set[str]:
         return {m.strip().lower() for m in self.api_enabled_modules.split(",") if m.strip()}
+
+    @property
+    def base_path(self) -> str:
+        """Normalized base path without trailing slash, e.g. `/rolling-meadows`."""
+        value = self.app_base_path.strip().rstrip("/")
+        return value if value and value != "/" else ""
+
+    @property
+    def api_mount_path(self) -> str:
+        return f"{self.base_path}/api" if self.base_path else "/api"
+
+    @property
+    def api_root_path(self) -> str:
+        """OpenAPI root path when served behind a reverse proxy."""
+        return self.api_mount_path
 
 
 settings = Settings()

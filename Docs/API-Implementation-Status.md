@@ -22,6 +22,12 @@ The backend is being rebuilt **module by module** on PostgreSQL. Legacy routers 
 | **App version** | 0.3.0 |
 | **Default modules** | `health,auth,admin,platform,clients,catalog,cases,enrollments,liaison,workflow,documents,reports` |
 
+**Production URL**
+
+- App: `https://foundry.inapp.com/rolling-meadows`
+- API: `https://foundry.inapp.com/rolling-meadows/api`
+- Deploy: `codebase/package.bat` → copy to server → `codebase/deploy.sh`
+
 **Local URLs**
 
 - API: `http://localhost:8000`

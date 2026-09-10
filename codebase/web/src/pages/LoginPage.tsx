@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
 import { useI18n } from '../i18n/I18nContext';
 import { LocaleSwitcher } from '../i18n/LocaleSwitcher';
+import { withBasePath } from '../utils/basePath';
 
 export function LoginPage() {
   const { login } = useAuth();
@@ -31,7 +32,7 @@ export function LoginPage() {
     <div className="sign-in-page">
       <section className="sign-in-hero" aria-label={t('signIn.welcomeAria')}>
         <div className="sign-in-hero-content">
-          <img src="/assets/logo.svg" alt="City of Rolling Meadows" className="hero-logo" />
+          <img src={withBasePath('/assets/logo.svg')} alt="City of Rolling Meadows" className="hero-logo" />
           <h1>{t('signIn.heroTitle')}</h1>
           <p className="hero-tagline">{t('signIn.heroTagline')}</p>
           <ul className="sign-in-features">

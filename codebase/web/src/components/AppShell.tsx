@@ -14,6 +14,7 @@ import {
   roleLabelKey,
   type NavItem,
 } from '../navigation/modules';
+import { withBasePath } from '../utils/basePath';
 
 const STORAGE_KEY = 'rm.sidebar.expandedModules';
 const GROUP_STORAGE_KEY = 'rm.sidebar.expandedGroups';
@@ -195,7 +196,7 @@ export function AppShell() {
       <header className="top-bar">
         <div className="top-bar-left">
           <div className="rm-logo-wrap">
-            <img src="/assets/rmeadows-logo.png" alt="City of Rolling Meadows" className="rm-logo" />
+            <img src={withBasePath('/assets/rmeadows-logo.png')} alt="City of Rolling Meadows" className="rm-logo" />
           </div>
           <div className="built-by-foundry" title={t('shell.builtByFoundryTitle')}>
             <span className="built-by-label">{t('shell.builtByFoundry')}</span>

@@ -6,7 +6,61 @@
 
 **API contract:** `../Docs/openapi.yaml`
 
-## Quick start (Docker)
+## Production deployment
+
+**Public URL:** https://foundry.inapp.com/rolling-meadows  
+**Single port:** `4510` (nginx on your server proxies `/rolling-meadows` to this port)
+
+### Package (Windows)
+
+```bat
+package.bat
+```
+
+Creates:
+- `dist/rolling-meadows-deploy.zip` — copy this to your Linux server
+- `dist/rolling-meadows-deploy/` — same contents (folder)
+
+Zip contents:
+- `rolling-meadows-app.tar` — Docker image
+- `docker-compose.prod.yml`
+- `deploy.sh`
+- `.env.example`
+- `DEPLOY.txt` — quick steps
+
+### Deploy (Linux server)
+
+```bash
+unzip rolling-meadows-deploy.zip
+cd rolling-meadows-deploy
+cp .env.example .env   # set JWT_SECRET, POSTGRES_PASSWORD, etc.
+chmod +x deploy.sh
+./deploy.sh
+```
+
+### Nginx (configure on your server)
+
+Proxy the subpath to the app (preserve the `/rolling-meadows` prefix):
+
+```nginx
+location /rolling-meadows {
+    proxy_pass http://127.0.0.1:4510;
+    proxy_http_version 1.1;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+}
+```
+
+| Endpoint | URL |
+|----------|-----|
+| Web app | https://foundry.inapp.com/rolling-meadows |
+| API | https://foundry.inapp.com/rolling-meadows/api |
+| API docs | https://foundry.inapp.com/rolling-meadows/api/docs |
+| Health | https://foundry.inapp.com/rolling-meadows/api/health |
+
+## Local development (Docker)
 
 ```bash
 cp .env.example .env
@@ -24,6 +78,7 @@ docker compose up --build
 
 | Email | Role |
 |-------|------|
+| org.admin@demo.rmhs.app | Organization Admin |
 | case.manager@demo.rmhs.app | Case Manager |
 | supervisor@demo.rmhs.app | Supervisor |
 | liaison@demo.rmhs.app | Liaison |
@@ -48,11 +103,13 @@ npm install
 npm run dev
 ```
 
-Vite proxies `/auth` and `/health` to `localhost:8000`.
+Vite proxies `/api` to `localhost:8000`.
 
 ## Architecture
 
 See `../openspec/changes/rolling-meadows-platform/design.md` for platform-fit (ADR-0017: FastAPI primary backend) and auth design.
+
+Production uses a **single container** that serves the React build and mounts the API at `/rolling-meadows/api`. Local dev keeps separate `web` (nginx) and `api` services.
 
 ## Scaffold divergence
 
@@ -61,4 +118,5 @@ Cloned from `.cursor/skills/_resources/scaffold/starter/` then modified:
 - Express `api/` replaced with Python FastAPI
 - React Vite app added to `web/`
 - MongoDB replaced with PostgreSQL
-- Per-service Dockerfiles + Compose (web nginx proxies API)
+- Per-service Dockerfiles + Compose (web nginx proxies API locally)
+- Production single-port deploy at `/rolling-meadows`

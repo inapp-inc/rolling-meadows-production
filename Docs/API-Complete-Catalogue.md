@@ -18,8 +18,9 @@
 3. **Review gaps (§17–§18)** — planned APIs not yet built; UI areas still on mock data.
 4. **Sign off in §19** — after confirmation, next step is updating `Docs/openapi.yaml` and wiring remaining React pages to API.
 
+**Base URL (production):** `https://foundry.inapp.com/rolling-meadows/api`  
 **Base URL (local Docker):** `http://localhost:8000`  
-**Web proxy:** `http://localhost:8081/api` → API
+**Web proxy (local):** `http://localhost:8081/api` → API
 
 ---
 
