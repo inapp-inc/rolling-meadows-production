@@ -22,7 +22,9 @@
     "auditReports": "Informes de auditoría del programa",
     "referralIntake": "Referencia e ingreso",
     "platformTenants": "Inquilinos",
-    "platformTranslations": "Traducciones",
+    "platformUsers": "Usuarios",
+    "platformLocaleLabels": "Etiquetas de idioma",
+    "platformTranslations": "Idiomas y etiquetas",
     "platformSettings": "Configuración de plataforma",
     "adminDashboard": "Panel",
     "adminUsers": "Usuarios",
@@ -43,7 +45,7 @@
     "servicesShort": "Servicios",
     "analytics": "Analítica",
     "analyticsShort": "Analítica",
-    "platform": "Plataforma",
+    "platform": "Administración",
     "administration": "Administración"
   },
   "shell": {
@@ -86,6 +88,8 @@
     "welcomeAria": "Bienvenido",
     "heroTitle": "Plataforma de gestión de casos",
     "heroTagline": "Registros unificados de clientes, espacio de trabajo por flujos e informes autoservicio para Rolling Meadows Human Services.",
+    "heroTaglinePlatform": "Inicie sesión para administrar organizaciones, marca y configuración de CommunityOne.",
+    "subtitlePlatformAdmin": "Acceso de administrador de plataforma CommunityOne",
     "feature1": "Identidad única del cliente con detección de duplicados",
     "feature2": "Ciclo de vida de ocho etapas en 12 flujos de programa",
     "feature3": "Seguimiento por riesgo y consulta de enlace entre programas",
@@ -2687,6 +2691,10 @@
       "alreadyEnrolledToast": "Los clientes seleccionados ya están inscritos en ese programa."
     },
     "platform": {
+      "administration": {
+        "title": "Administración",
+        "lead": "Superadministrador de {product}: cree organizaciones y abra un inquilino para configurar marca y ajustes."
+      },
       "tenants": {
         "title": "Gestión de inquilinos",
         "create": "Crear inquilino",
@@ -2697,6 +2705,8 @@
         "loadError": "No se pudieron cargar los inquilinos.",
         "colName": "Organización",
         "colCode": "Código",
+        "colOrgAdminEmail": "Correo del admin. org.",
+        "colBranding": "Marca",
         "colStatus": "Estado",
         "colUsers": "Usuarios",
         "colCases": "Casos activos",
@@ -2705,6 +2715,7 @@
         "shortCode": "Código de organización",
         "adminName": "Nombre del administrador",
         "adminEmail": "Correo del administrador",
+        "adminPassword": "Contraseña inicial",
         "activate": "Activar",
         "suspend": "Suspender",
         "activateSuccess": "Inquilino activado.",
@@ -2713,10 +2724,45 @@
         "suspendError": "No se pudo suspender el inquilino.",
         "suspendConfirm": "¿Suspender este inquilino? Los usuarios no podrán iniciar sesión.",
         "notReady": "Las comprobaciones de preparación fallaron.",
-        "readinessTitle": "Comprobaciones de preparación"
+        "readinessTitle": "Comprobaciones de preparación",
+        "sectionSettings": "Configuración del inquilino",
+        "configure": "Configurar",
+        "configurePageTitle": "Configuración del inquilino",
+        "configureLead": "Marca y ajustes de esta organización. Las cuentas operativas las administran los administradores del inquilino, no aquí.",
+        "configureHint": "El administrador inicial se define al crear la organización. Los usuarios operativos se agregan en Administración → Usuarios.",
+        "backToList": "Volver a inquilinos",
+        "editTitle": "Configuración del inquilino",
+        "updateSuccess": "Configuración guardada.",
+        "updateError": "No se pudo guardar la configuración.",
+        "sectionOrgAdmin": "Administrador de la organización",
+        "newPassword": "Nueva contraseña",
+        "resetPassword": "Restablecer contraseña del administrador",
+        "resetPasswordSuccess": "Contraseña del administrador actualizada.",
+        "resetPasswordError": "No se pudo restablecer la contraseña.",
+        "delete": "Eliminar",
+        "deleteConfirm": "¿Eliminar permanentemente {org}? Se quitarán los administradores y los clientes sin casos. No se puede deshacer.",
+        "deleteSuccess": "Organización eliminada.",
+        "deleteError": "No se pudo eliminar la organización.",
+        "deleteProtected": "La organización de demostración predeterminada no se puede eliminar."
+      },
+      "users": {
+        "title": "Administradores del inquilino",
+        "create": "Agregar administrador",
+        "createTitle": "Nuevo administrador del inquilino",
+        "createSubmit": "Crear usuario",
+        "createSuccess": "Administrador del inquilino creado.",
+        "createError": "No se pudo crear el administrador.",
+        "loadError": "No se pudieron cargar los usuarios.",
+        "mockCreate": "La creación de usuarios está deshabilitada en modo demo.",
+        "tenant": "Organización",
+        "lead": "Administre cuentas de acceso para {org}. Los administradores del inquilino no pueden crear nuevos inquilinos.",
+        "tenantAdminHint": "Crea un administrador del inquilino solo para la organización seleccionada.",
+        "deleteConfirm": "¿Eliminar permanentemente este administrador de organización? No se puede deshacer.",
+        "deleteSuccess": "Administrador de organización eliminado.",
+        "deleteError": "No se pudo eliminar el administrador de organización."
       },
       "translations": {
-        "title": "Gestión de traducciones",
+        "title": "Idiomas y etiquetas",
         "lead": "Consulte todas las etiquetas de la aplicación, registre idiomas y exporte o importe traducciones en Excel.",
         "search": "Buscar claves…",
         "addLocale": "Agregar idioma",
@@ -2753,6 +2799,9 @@
       }
     },
     "admin": {
+      "administration": {
+        "title": "Administración"
+      },
       "dashboard": {
         "title": "Administración",
         "lead": "Gestione usuarios, configuración y etiquetas locales para {org}.",
@@ -2761,7 +2810,8 @@
         "quickLinks": "Enlaces rápidos"
       },
       "users": {
-        "title": "Gestión de usuarios",
+        "title": "Usuarios",
+        "leadOrg": "Personas que pueden iniciar sesión en {org}. Solo se listan usuarios de su organización.",
         "create": "Agregar usuario",
         "createTitle": "Nuevo usuario",
         "createSubmit": "Crear usuario",

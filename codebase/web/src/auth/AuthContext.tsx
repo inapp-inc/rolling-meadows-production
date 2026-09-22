@@ -24,6 +24,7 @@ interface AuthContextValue {
   loading: boolean;
   login: (email: string, password: string) => Promise<UserProfile>;
   loginWithRole: (userId: string) => UserProfile;
+  refreshUser: () => Promise<UserProfile | null>;
   logout: () => Promise<void>;
 }
 
@@ -93,6 +94,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return result.user;
   }, []);
 
+  const refreshUser = useCallback(async () => {
+    if (USE_MOCK_AUTH || !token) return null;
+    const profile = await api.me(token);
+    setUser(profile);
+    return profile;
+  }, [token]);
+
   const logout = useCallback(async () => {
     if (USE_MOCK_AUTH) {
       clearStoredMockUserId();
@@ -113,8 +121,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [token]);
 
   const value = useMemo(
-    () => ({ user, token, loading, login, loginWithRole, logout }),
-    [user, token, loading, login, loginWithRole, logout],
+    () => ({ user, token, loading, login, loginWithRole, refreshUser, logout }),
+    [user, token, loading, login, loginWithRole, refreshUser, logout],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

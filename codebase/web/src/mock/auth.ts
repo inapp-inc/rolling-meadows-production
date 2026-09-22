@@ -36,6 +36,15 @@ export function mockUserToProfile(store: MockStore, userId: string): UserProfile
             shortCode: 'RMHS',
             status: 'Active',
             displayName: 'Rolling Meadows Human Services',
+            branding: {
+              displayName: 'Rolling Meadows Human Services',
+              primaryColor: '#1a5f4a',
+              secondaryColor: '#0f2340',
+              accentColor: '#43a047',
+              footerText: '© Rolling Meadows Human Services',
+              loginTagline: 'Human services case management for the City of Rolling Meadows.',
+              logoUrl: '/assets/logo.svg',
+            },
           },
   };
 }

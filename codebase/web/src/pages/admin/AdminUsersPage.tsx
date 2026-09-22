@@ -61,18 +61,24 @@ export function AdminUsersPage() {
 
   const load = useCallback(async () => {
     if (USE_MOCK_AUTH) {
-      setUsers([
-        { id: 'usr-tenant-admin', email: 'tenant.admin@demo.rmhs.app', name: 'Tenant Administrator', role: 'tenant_admin', status: 'Active' },
-        { id: 'usr-org-admin', email: 'org.admin@demo.rmhs.app', name: 'Organization Administrator', role: 'organization_admin', status: 'Active' },
-        { id: 'usr-case-manager', email: 'case.manager@demo.rmhs.app', name: 'Case Manager', role: 'case_manager', status: 'Active' },
-        { id: 'usr-supervisor', email: 'supervisor@demo.rmhs.app', name: 'Supervisor', role: 'supervisor', status: 'Active' },
-      ]);
+      const tenantId = currentUser?.tenantId ?? 'tenant-rolling-meadows';
+      const mockUsers: AdminUser[] = [
+        { id: 'usr-org-admin', email: 'org.admin@demo.rmhs.app', name: 'Organization Administrator', role: 'organization_admin', status: 'Active', tenantId },
+        { id: 'usr-case-manager', email: 'case.manager@demo.rmhs.app', name: 'Case Manager', role: 'case_manager', status: 'Active', tenantId },
+        { id: 'usr-supervisor', email: 'supervisor@demo.rmhs.app', name: 'Supervisor', role: 'supervisor', status: 'Active', tenantId },
+      ];
+      const operational = new Set<UserRole>(['supervisor', 'case_manager', 'cross_program_liaison', 'auditor']);
+      const scoped = mockUsers.filter((u) => u.tenantId === tenantId && operational.has(u.role as UserRole));
+      setUsers(currentUser?.role === 'organization_admin' ? scoped : mockUsers.filter((u) => u.tenantId === tenantId && u.role !== 'platform_admin'));
       return;
     }
-    if (!token) return;
+    if (!token || !currentUser?.tenantId) return;
     const data = await adminApi.listUsers(token);
-    setUsers(data.items);
-  }, [token]);
+    const items = data.items.filter(
+      (u) => u.tenantId === currentUser.tenantId && u.role !== 'platform_admin',
+    );
+    setUsers(items);
+  }, [token, currentUser?.tenantId, currentUser?.role]);
 
   useEffect(() => {
     load().catch((err) => showToast(err instanceof Error ? err.message : t('pages.admin.users.loadError'), 'error'));
@@ -119,8 +125,18 @@ export function AdminUsersPage() {
     }
   }
 
+  const orgName =
+    currentUser?.tenant?.branding?.displayName ??
+    currentUser?.tenant?.displayName ??
+    currentUser?.tenant?.legalName ??
+    t('shell.organization');
+
   return (
-    <AppLayout title={t('pages.admin.users.title')} navId="admin-users">
+    <AppLayout
+      title={t('pages.admin.administration.title')}
+      lead={t('pages.admin.users.leadOrg', { org: orgName })}
+      navId="admin-users"
+    >
       <div className="page-toolbar">
         {canCreateUsers ? (
           <button type="button" className="btn btn-primary" onClick={() => setShowCreate(true)}>

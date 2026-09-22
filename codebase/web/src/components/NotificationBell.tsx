@@ -1,18 +1,41 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useAuth } from '../auth/AuthContext';
+import { useAuth, USE_MOCK_AUTH } from '../auth/AuthContext';
+import { notificationsApi, type AppNotification } from '../api/notificationsApi';
 import { useI18n } from '../i18n/I18nContext';
 import { useMockData } from '../mock/MockDataContext';
 import { notificationsForUser } from '../mock/notificationService';
 
 export function NotificationBell() {
-  const { user } = useAuth();
+  const { user, token } = useAuth();
   const { store } = useMockData();
   const { t } = useI18n();
   const [open, setOpen] = useState(false);
+  const [apiItems, setApiItems] = useState<AppNotification[]>([]);
   const wrapRef = useRef<HTMLDivElement>(null);
 
-  const items = useMemo(() => (user ? notificationsForUser(store, user) : []), [store, user]);
+  const mockItems = useMemo(
+    () => (user ? notificationsForUser(store, user) : []),
+    [store, user],
+  );
+
+  const refreshApi = useCallback(async () => {
+    if (USE_MOCK_AUTH || !token) return;
+    try {
+      const data = await notificationsApi.list(token);
+      setApiItems(data.items);
+    } catch {
+      setApiItems([]);
+    }
+  }, [token]);
+
+  useEffect(() => {
+    if (USE_MOCK_AUTH || !token || !user) {
+      setApiItems([]);
+      return;
+    }
+    refreshApi();
+  }, [USE_MOCK_AUTH, token, user, refreshApi]);
 
   useEffect(() => {
     if (!open) return;
@@ -25,6 +48,7 @@ export function NotificationBell() {
 
   if (!user) return null;
 
+  const items = USE_MOCK_AUTH ? mockItems : apiItems;
   const label = t('shell.notifications');
 
   return (
@@ -38,7 +62,11 @@ export function NotificationBell() {
         aria-expanded={open}
         onClick={(event) => {
           event.stopPropagation();
-          setOpen((current) => !current);
+          const next = !open;
+          setOpen(next);
+          if (next) {
+            refreshApi();
+          }
         }}
       >
         <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">

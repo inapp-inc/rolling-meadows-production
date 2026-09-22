@@ -7,6 +7,29 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.case import Case
 from app.models.tenant import Tenant
 from app.models.user import User
+from app.services.branding import serialize_branding
+
+
+def serialize_tenant_platform(
+    tenant: Tenant,
+    *,
+    primary_org_admin_email: str | None = None,
+) -> dict[str, Any]:
+    """Minimal tenant row for platform admin — no operational org metrics."""
+    branding = serialize_branding(tenant.branding, legal_name=tenant.legal_name)
+    return {
+        "id": tenant.id,
+        "legalName": tenant.legal_name,
+        "shortCode": tenant.short_code,
+        "status": tenant.status,
+        "timezone": tenant.timezone,
+        "defaultLocale": tenant.default_locale,
+        "branding": branding,
+        "config": tenant.config or {},
+        "provisionedAt": tenant.provisioned_at.isoformat() if tenant.provisioned_at else None,
+        "activatedAt": tenant.activated_at.isoformat() if tenant.activated_at else None,
+        "primaryOrgAdminEmail": primary_org_admin_email,
+    }
 
 
 def serialize_tenant(tenant: Tenant, metrics: dict[str, int] | None = None) -> dict[str, Any]:

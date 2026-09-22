@@ -15,6 +15,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY api/app ./app
 COPY web/src/i18n/locales/en.json ./seed-data/en.json
 
+ENV BRANDING_DIR=/app/branding
+
 EXPOSE 8000
 
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

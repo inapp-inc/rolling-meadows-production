@@ -44,6 +44,9 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    volumes:
+      - branding_data:/app/branding
 
 volumes:
   postgres_data:
+  branding_data:

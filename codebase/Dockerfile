@@ -32,6 +32,7 @@ COPY --from=web-build /app/dist ./static
 
 ENV APP_BASE_PATH=/rolling-meadows
 ENV STATIC_DIR=/app/static
+ENV BRANDING_DIR=/app/branding
 ENV PUBLIC_URL=https://foundry.inapp.com/rolling-meadows
 
 EXPOSE 4510

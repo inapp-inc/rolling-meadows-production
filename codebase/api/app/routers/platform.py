@@ -4,14 +4,19 @@ from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from pydantic import BaseModel, EmailStr, Field
-from sqlalchemy import func, select
+from sqlalchemy import delete, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
+from app.services.branding import merge_branding, normalize_branding_input, save_tenant_logo
 from app.core.deps import require_roles
-from app.core.roles import PLATFORM_ADMIN, TENANT_ADMIN
+from app.core.roles import ORGANIZATION_ADMIN, PLATFORM_ADMIN
 from app.core.security import hash_password
 from app.db.session import get_session
+from app.models.case import Case
+from app.models.client import Client
+from app.models.custom_report import CustomReport
+from app.models.document import Document
 from app.models.platform import PlatformSettings
 from app.models.tenant import Tenant
 from app.models.user import User
@@ -19,6 +24,7 @@ from app.services.admin_audit import list_admin_audit, write_admin_audit
 from app.services.i18n import get_platform_translation_bundle
 from app.services.tenants import (
     serialize_tenant,
+    serialize_tenant_platform,
     tenant_id_from_short_code,
     tenant_metrics,
 )
@@ -35,6 +41,45 @@ from app.services.translations import (
 router = APIRouter(prefix="/platform", tags=["platform"])
 
 
+class TenantBrandingRequest(BaseModel):
+    displayName: str | None = Field(default=None, max_length=200)
+    primaryColor: str | None = Field(default=None, max_length=7)
+    secondaryColor: str | None = Field(default=None, max_length=7)
+    accentColor: str | None = Field(default=None, max_length=7)
+    footerText: str | None = Field(default=None, max_length=200)
+    loginTagline: str | None = Field(default=None, max_length=300)
+
+
+class PlatformTenantAdminCreateRequest(BaseModel):
+    email: EmailStr
+    name: str = Field(min_length=2, max_length=120)
+    password: str = Field(min_length=8, max_length=128)
+    branding: TenantBrandingRequest | None = None
+
+
+class PlatformOrgAdminPasswordRequest(BaseModel):
+    newPassword: str = Field(min_length=8, max_length=128)
+    email: EmailStr | None = None
+
+
+def _serialize_platform_user(user: User) -> dict[str, Any]:
+    return {
+        "id": user.id,
+        "email": user.email,
+        "name": user.name,
+        "role": user.role,
+        "tenantId": user.tenant_id,
+        "programId": user.program_id,
+        "status": user.status,
+        "lastLoginAt": user.last_login_at.isoformat() if user.last_login_at else None,
+    }
+
+
+class TenantConfigRequest(BaseModel):
+    duplicateThreshold: int | None = Field(default=25, ge=0, le=100)
+    retentionYears: int | None = Field(default=7, ge=1, le=30)
+
+
 class TenantCreateRequest(BaseModel):
     legalName: str = Field(min_length=2, max_length=200)
     shortCode: str = Field(min_length=2, max_length=16)
@@ -42,6 +87,9 @@ class TenantCreateRequest(BaseModel):
     defaultLocale: str = "en"
     adminEmail: EmailStr
     adminName: str = Field(min_length=2, max_length=120)
+    adminPassword: str = Field(min_length=8, max_length=128)
+    branding: TenantBrandingRequest | None = None
+    config: TenantConfigRequest | None = None
 
 
 class TenantUpdateRequest(BaseModel):
@@ -49,6 +97,9 @@ class TenantUpdateRequest(BaseModel):
     timezone: str | None = None
     defaultLocale: str | None = None
     enabledLocales: list[str] | None = None
+    branding: TenantBrandingRequest | None = None
+    duplicateThreshold: int | None = Field(default=None, ge=0, le=100)
+    retentionYears: int | None = Field(default=None, ge=1, le=30)
 
 
 class PlatformSettingsUpdate(BaseModel):
@@ -84,6 +135,33 @@ async def _get_tenant_row(session: AsyncSession, tenant_id: str) -> Tenant:
     return tenant
 
 
+async def _primary_org_admin_emails(session: AsyncSession) -> dict[str, str]:
+    result = await session.execute(
+        select(User.tenant_id, User.email)
+        .where(User.role == ORGANIZATION_ADMIN, User.status == "Active")
+        .order_by(User.tenant_id, User.email)
+    )
+    mapping: dict[str, str] = {}
+    for tenant_id, email in result.all():
+        if tenant_id and tenant_id not in mapping:
+            mapping[tenant_id] = email
+    return mapping
+
+
+async def _primary_org_admin_email(session: AsyncSession, tenant_id: str) -> str | None:
+    result = await session.execute(
+        select(User.email)
+        .where(
+            User.tenant_id == tenant_id,
+            User.role == ORGANIZATION_ADMIN,
+            User.status == "Active",
+        )
+        .order_by(User.email)
+        .limit(1)
+    )
+    return result.scalar_one_or_none()
+
+
 async def _get_platform_settings_row(session: AsyncSession) -> PlatformSettings:
     result = await session.execute(select(PlatformSettings).where(PlatformSettings.id == "default"))
     row = result.scalar_one_or_none()
@@ -101,11 +179,13 @@ async def list_tenants(
 ):
     result = await session.execute(select(Tenant).order_by(Tenant.legal_name))
     tenants = result.scalars().all()
-    items = []
-    for tenant in tenants:
-        metrics = await tenant_metrics(session, tenant.id)
-        items.append(serialize_tenant(tenant, metrics))
-    return {"items": items}
+    org_emails = await _primary_org_admin_emails(session)
+    return {
+        "items": [
+            serialize_tenant_platform(tenant, primary_org_admin_email=org_emails.get(tenant.id))
+            for tenant in tenants
+        ]
+    }
 
 
 @router.post("/tenants", operation_id="createTenant", status_code=201)
@@ -126,6 +206,27 @@ async def create_tenant(
             detail={"error": "tenant_exists", "message": "A tenant with this code already exists"},
         )
 
+    branding_payload = body.branding.model_dump(exclude_none=True) if body.branding else {}
+    branding = normalize_branding_input(
+        {
+            "display_name": branding_payload.get("displayName") or body.legalName.strip(),
+            "primary_color": branding_payload.get("primaryColor"),
+            "secondary_color": branding_payload.get("secondaryColor"),
+            "accent_color": branding_payload.get("accentColor"),
+            "footer_text": branding_payload.get("footerText"),
+            "login_tagline": branding_payload.get("loginTagline"),
+        },
+        legal_name=body.legalName.strip(),
+    )
+
+    admin_email = body.adminEmail.lower()
+    email_taken = await session.execute(select(User).where(User.email == admin_email))
+    if email_taken.scalar_one_or_none():
+        raise HTTPException(
+            status_code=409,
+            detail={"error": "email_in_use", "message": "This email is already registered"},
+        )
+
     now = datetime.now(timezone.utc)
     tenant = Tenant(
         id=tenant_id,
@@ -135,11 +236,11 @@ async def create_tenant(
         timezone=body.timezone,
         default_locale=body.defaultLocale,
         enabled_locales=list(dict.fromkeys([body.defaultLocale, "en", "es"])),
-        branding={"display_name": body.legalName.strip()},
+        branding=branding,
         config={
-            "duplicate_threshold": 25,
+            "duplicate_threshold": (body.config.duplicateThreshold if body.config else None) or 25,
             "follow_up_cadence": {"High": 14, "Medium": 30, "Low": 90},
-            "retention_years": 7,
+            "retention_years": (body.config.retentionYears if body.config else None) or 7,
             "support_access_policy": "per_session",
         },
         provisioned_at=now,
@@ -150,13 +251,14 @@ async def create_tenant(
     session.add(
         User(
             id=admin_id,
-            email=body.adminEmail.lower(),
+            email=admin_email,
             name=body.adminName.strip(),
-            role=TENANT_ADMIN,
+            role=ORGANIZATION_ADMIN,
             tenant_id=tenant_id,
             program_id=None,
             status="Active",
-            password_hash=hash_password(settings.seed_user_password),
+            password_hash=hash_password(body.adminPassword),
+            created_by=user["_id"],
         )
     )
 
@@ -171,8 +273,139 @@ async def create_tenant(
     )
     await session.commit()
     await session.refresh(tenant)
-    metrics = await tenant_metrics(session, tenant.id)
-    return serialize_tenant(tenant, metrics)
+    return serialize_tenant_platform(tenant, primary_org_admin_email=admin_email)
+
+
+@router.post("/tenants/{tenant_id}/logo", operation_id="uploadTenantLogo")
+async def upload_tenant_logo(
+    tenant_id: str,
+    user: Annotated[dict, Depends(require_roles(PLATFORM_ADMIN))],
+    session: Annotated[AsyncSession, Depends(get_session)],
+    file: UploadFile = File(...),
+):
+    tenant = await _get_tenant_row(session, tenant_id)
+    logo_url = await save_tenant_logo(settings.branding_dir, tenant.id, file)
+    tenant.branding = merge_branding(tenant.branding, {"logo_url": logo_url}, legal_name=tenant.legal_name)
+    session.add(tenant)
+    await write_admin_audit(
+        session,
+        action="tenant.branding.logo",
+        actor_id=user["_id"],
+        tenant_id=None,
+        resource_type="tenant",
+        resource_id=tenant.id,
+    )
+    await session.commit()
+    return {"logoUrl": logo_url}
+
+
+@router.get("/tenants/{tenant_id}/users", operation_id="listTenantUsers")
+async def list_tenant_users(
+    tenant_id: str,
+    user: Annotated[dict, Depends(require_roles(PLATFORM_ADMIN))],
+    session: Annotated[AsyncSession, Depends(get_session)],
+):
+    await _get_tenant_row(session, tenant_id)
+    result = await session.execute(
+        select(User)
+        .where(User.tenant_id == tenant_id, User.role == ORGANIZATION_ADMIN)
+        .order_by(User.name)
+    )
+    return {"items": [_serialize_platform_user(row) for row in result.scalars().all()]}
+
+
+@router.post("/tenants/{tenant_id}/users", operation_id="createTenantAdminUser", status_code=201)
+async def create_tenant_admin_user(
+    tenant_id: str,
+    body: PlatformTenantAdminCreateRequest,
+    user: Annotated[dict, Depends(require_roles(PLATFORM_ADMIN))],
+    session: Annotated[AsyncSession, Depends(get_session)],
+):
+    tenant = await _get_tenant_row(session, tenant_id)
+    email = body.email.lower()
+    existing = await session.execute(select(User).where(User.email == email))
+    if existing.scalar_one_or_none():
+        raise HTTPException(
+            status_code=409,
+            detail={"error": "email_in_use", "message": "This email is already registered"},
+        )
+
+    if body.branding:
+        payload = body.branding.model_dump(exclude_none=True)
+        tenant.branding = merge_branding(
+            tenant.branding,
+            normalize_branding_input(
+                {
+                    "display_name": payload.get("displayName"),
+                    "primary_color": payload.get("primaryColor"),
+                    "secondary_color": payload.get("secondaryColor"),
+                    "accent_color": payload.get("accentColor"),
+                    "footer_text": payload.get("footerText"),
+                    "login_tagline": payload.get("loginTagline"),
+                },
+                legal_name=tenant.legal_name,
+            ),
+            legal_name=tenant.legal_name,
+        )
+        session.add(tenant)
+
+    user_id = f"usr-{uuid.uuid4().hex[:12]}"
+    new_user = User(
+        id=user_id,
+        email=email,
+        name=body.name.strip(),
+        role=ORGANIZATION_ADMIN,
+        tenant_id=tenant_id,
+        program_id=None,
+        status="Active",
+        password_hash=hash_password(body.password),
+        created_by=user["_id"],
+    )
+    session.add(new_user)
+    await write_admin_audit(
+        session,
+        action="platform.user.create",
+        actor_id=user["_id"],
+        tenant_id=tenant_id,
+        resource_type="user",
+        resource_id=user_id,
+        detail={"email": email, "role": ORGANIZATION_ADMIN},
+    )
+    await session.commit()
+    await session.refresh(new_user)
+    return _serialize_platform_user(new_user)
+
+
+@router.delete("/tenants/{tenant_id}/users/{user_id}", operation_id="deleteTenantOrgAdminUser", status_code=204)
+async def delete_tenant_org_admin_user(
+    tenant_id: str,
+    user_id: str,
+    user: Annotated[dict, Depends(require_roles(PLATFORM_ADMIN))],
+    session: Annotated[AsyncSession, Depends(get_session)],
+):
+    await _get_tenant_row(session, tenant_id)
+    result = await session.execute(
+        select(User).where(User.id == user_id, User.tenant_id == tenant_id, User.role == ORGANIZATION_ADMIN)
+    )
+    target = result.scalar_one_or_none()
+    if not target:
+        raise HTTPException(
+            status_code=404,
+            detail={"error": "not_found", "message": "Organization administrator not found"},
+        )
+
+    await write_admin_audit(
+        session,
+        action="platform.user.delete",
+        actor_id=user["_id"],
+        tenant_id=tenant_id,
+        resource_type="user",
+        resource_id=user_id,
+        detail={"email": target.email},
+    )
+    await session.delete(target)
+    await session.commit()
+    return None
 
 
 @router.get("/tenants/{tenant_id}", operation_id="getTenant")
@@ -182,8 +415,47 @@ async def get_tenant(
     session: Annotated[AsyncSession, Depends(get_session)],
 ):
     tenant = await _get_tenant_row(session, tenant_id)
-    metrics = await tenant_metrics(session, tenant_id)
-    return serialize_tenant(tenant, metrics)
+    org_email = await _primary_org_admin_email(session, tenant_id)
+    return serialize_tenant_platform(tenant, primary_org_admin_email=org_email)
+
+
+@router.post("/tenants/{tenant_id}/organization-admin/password", operation_id="resetTenantOrgAdminPassword")
+async def reset_tenant_org_admin_password(
+    tenant_id: str,
+    body: PlatformOrgAdminPasswordRequest,
+    user: Annotated[dict, Depends(require_roles(PLATFORM_ADMIN))],
+    session: Annotated[AsyncSession, Depends(get_session)],
+):
+    await _get_tenant_row(session, tenant_id)
+    query = select(User).where(
+        User.tenant_id == tenant_id,
+        User.role == ORGANIZATION_ADMIN,
+        User.status == "Active",
+    )
+    if body.email:
+        query = query.where(User.email == body.email.lower())
+    else:
+        query = query.order_by(User.email)
+    result = await session.execute(query.limit(1))
+    org_admin = result.scalar_one_or_none()
+    if not org_admin:
+        raise HTTPException(
+            status_code=404,
+            detail={"error": "not_found", "message": "No active organization administrator found for this tenant"},
+        )
+    org_admin.password_hash = hash_password(body.newPassword)
+    session.add(org_admin)
+    await write_admin_audit(
+        session,
+        action="platform.user.password_reset",
+        actor_id=user["_id"],
+        tenant_id=tenant_id,
+        resource_type="user",
+        resource_id=org_admin.id,
+        detail={"email": org_admin.email},
+    )
+    await session.commit()
+    return {"email": org_admin.email}
 
 
 @router.patch("/tenants/{tenant_id}", operation_id="updateTenant")
@@ -208,6 +480,34 @@ async def update_tenant(
     if body.enabledLocales is not None:
         tenant.enabled_locales = body.enabledLocales
         updates["enabled_locales"] = tenant.enabled_locales
+
+    if body.branding is not None:
+        branding_payload = body.branding.model_dump(exclude_none=True)
+        tenant.branding = merge_branding(
+            tenant.branding,
+            {
+                "display_name": branding_payload.get("displayName"),
+                "primary_color": branding_payload.get("primaryColor"),
+                "secondary_color": branding_payload.get("secondaryColor"),
+                "accent_color": branding_payload.get("accentColor"),
+                "footer_text": branding_payload.get("footerText"),
+                "login_tagline": branding_payload.get("loginTagline"),
+            },
+            legal_name=tenant.legal_name,
+        )
+        updates["branding"] = tenant.branding
+
+    config = dict(tenant.config or {})
+    config_updated = False
+    if body.duplicateThreshold is not None:
+        config["duplicate_threshold"] = body.duplicateThreshold
+        config_updated = True
+    if body.retentionYears is not None:
+        config["retention_years"] = body.retentionYears
+        config_updated = True
+    if config_updated:
+        tenant.config = config
+        updates["config"] = tenant.config
 
     if updates:
         await write_admin_audit(
@@ -236,12 +536,12 @@ async def tenant_readiness(
     admin_count = await session.execute(
         select(func.count())
         .select_from(User)
-        .where(User.tenant_id == tenant_id, User.role == TENANT_ADMIN, User.status == "Active")
+        .where(User.tenant_id == tenant_id, User.role == ORGANIZATION_ADMIN, User.status == "Active")
     )
     checks = [
         {
-            "id": "tenant_admin",
-            "label": "Tenant administrator assigned",
+            "id": "organization_admin",
+            "label": "Organization administrator assigned",
             "passed": admin_count.scalar_one() >= 1,
         },
         {"id": "legal_name", "label": "Legal name configured", "passed": bool(tenant.legal_name)},
@@ -304,6 +604,53 @@ async def suspend_tenant(
     await session.refresh(tenant)
     metrics = await tenant_metrics(session, tenant_id)
     return serialize_tenant(tenant, metrics)
+
+
+@router.delete("/tenants/{tenant_id}", operation_id="deleteTenant", status_code=204)
+async def delete_tenant(
+    tenant_id: str,
+    user: Annotated[dict, Depends(require_roles(PLATFORM_ADMIN))],
+    session: Annotated[AsyncSession, Depends(get_session)],
+):
+    if tenant_id == settings.default_tenant_id:
+        raise HTTPException(
+            status_code=403,
+            detail={
+                "error": "protected_tenant",
+                "message": "The default demo organization cannot be deleted",
+            },
+        )
+
+    tenant = await _get_tenant_row(session, tenant_id)
+    case_count = await session.scalar(
+        select(func.count()).select_from(Case).where(Case.tenant_id == tenant_id)
+    )
+    if case_count and case_count > 0:
+        raise HTTPException(
+            status_code=409,
+            detail={
+                "error": "tenant_has_cases",
+                "message": "Remove or reassign all cases before deleting this organization",
+            },
+        )
+
+    await session.execute(delete(Document).where(Document.tenant_id == tenant_id))
+    await session.execute(delete(CustomReport).where(CustomReport.tenant_id == tenant_id))
+    await session.execute(delete(Client).where(Client.tenant_id == tenant_id))
+    await session.execute(delete(User).where(User.tenant_id == tenant_id))
+
+    await write_admin_audit(
+        session,
+        action="tenant.delete",
+        actor_id=user["_id"],
+        tenant_id=None,
+        resource_type="tenant",
+        resource_id=tenant_id,
+        detail={"legalName": tenant.legal_name, "shortCode": tenant.short_code},
+    )
+    await session.delete(tenant)
+    await session.commit()
+    return None
 
 
 @router.get("/settings", operation_id="getPlatformSettings")

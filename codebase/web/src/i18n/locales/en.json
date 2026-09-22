@@ -22,7 +22,9 @@
     "auditReports": "Program Audit Reports",
     "referralIntake": "Referral & Intake",
     "platformTenants": "Tenants",
-    "platformTranslations": "Translations",
+    "platformUsers": "Users",
+    "platformLocaleLabels": "Locale labels",
+    "platformTranslations": "Locales & labels",
     "platformSettings": "Platform Settings",
     "adminDashboard": "Dashboard",
     "adminUsers": "Users",
@@ -43,21 +45,22 @@
     "servicesShort": "Services",
     "analytics": "Analytics",
     "analyticsShort": "Analytics",
-    "platform": "Platform",
+    "platform": "Administration",
     "administration": "Administration"
   },
   "shell": {
     "signOut": "Sign out",
-    "builtByFoundry": "Built by InApp Foundry",
-    "builtByFoundryTitle": "Built by InApp Foundry",
     "modulesHeading": "Modules",
     "homeAria": "Home",
     "moduleNavAria": "Module navigation",
     "notifications": "Notifications",
     "noAlerts": "No alerts right now",
-    "navFooterCopy": "© City of Rolling Meadows",
+    "navFooterCopy": "© Organization",
     "language": "Language",
-    "platformScope": "Platform scope"
+    "platformScope": "Platform Administration",
+    "platformBrand": "CommunityOne",
+    "platformFooterCopy": "© {product} platform administration",
+    "organization": "Organization"
   },
   "role": {
     "platform_admin": "Platform Administrator",
@@ -70,7 +73,7 @@
     "auditorSignIn": "Auditor (Aggregate reports only)"
   },
   "signIn": {
-    "pageTitle": "Sign In — Rolling Meadows",
+    "pageTitle": "Sign In — CommunityOne",
     "title": "Sign in",
     "subtitle": "Select your role to continue",
     "subtitleCredentials": "Enter your credentials to continue",
@@ -78,18 +81,25 @@
     "emailLabel": "Email",
     "passwordLabel": "Password",
     "organizationCodeLabel": "Organization code",
-    "organizationCodeHint": "Required if your email is used by multiple organizations",
+    "organizationCodePlaceholder": "e.g. RMHS",
+    "defaultOrgName": "your organization",
+    "heroTitleForOrg": "{org}",
+    "heroTitleProduct": "Welcome to {product}",
+    "heroTaglineProduct": "Unified case management for human services agencies — clients, workflows, and reporting in one place.",
+    "heroTaglineOrg": "Sign in to access your agency workspace.",
+    "heroTaglinePlatform": "Sign in to manage tenant organizations, branding, and platform settings for CommunityOne.",
+    "subtitlePlatformAdmin": "CommunityOne platform administrator sign-in",
+    "poweredBy": "Powered by {product}",
     "signInButton": "Sign in",
     "signingIn": "Signing in…",
     "loginFailed": "Sign in failed. Check your credentials and try again.",
     "continue": "Continue",
     "welcomeAria": "Welcome",
     "heroTitle": "Case Management Platform",
-    "heroTagline": "Unified client records, workflow-driven case workspace, and self-service reporting for Rolling Meadows Human Services.",
+    "heroTagline": "Unified client records, workflow-driven case workspace, and self-service reporting.",
     "feature1": "Single client identity with duplicate detection",
     "feature2": "Eight-stage case lifecycle across 12 program workflows",
     "feature3": "Risk-driven follow-up and cross-program liaison lookup",
-    "builtByFoundry": "Built by InApp Foundry",
     "seedError": "Demo data failed to load. Refresh the page or contact your administrator.",
     "userMissing": "Unable to sign in with the selected role. Refresh the page and try again."
   },
@@ -2617,6 +2627,10 @@
       "alreadyEnrolledToast": "Selected clients are already enrolled in that program."
     },
     "platform": {
+      "administration": {
+        "title": "Administration",
+        "lead": "{product} super administrator — create organizations and open a tenant to configure branding and settings."
+      },
       "tenants": {
         "title": "Tenant Management",
         "create": "Create tenant",
@@ -2627,6 +2641,8 @@
         "loadError": "Could not load tenants.",
         "colName": "Organization",
         "colCode": "Code",
+        "colOrgAdminEmail": "Org admin email",
+        "colBranding": "Branding",
         "colStatus": "Status",
         "colUsers": "Users",
         "colCases": "Active cases",
@@ -2635,6 +2651,7 @@
         "shortCode": "Organization code",
         "adminName": "Tenant admin name",
         "adminEmail": "Tenant admin email",
+        "adminPassword": "Initial password",
         "activate": "Activate",
         "suspend": "Suspend",
         "activateSuccess": "Tenant activated.",
@@ -2643,10 +2660,49 @@
         "suspendError": "Could not suspend tenant.",
         "suspendConfirm": "Suspend this tenant? Users will be blocked at sign-in.",
         "notReady": "Readiness checks failed.",
-        "readinessTitle": "Readiness checks"
+        "readinessTitle": "Readiness checks",
+        "sectionOrganization": "Organization",
+        "sectionBranding": "Branding",
+        "sectionSettings": "Tenant settings",
+        "sectionTenantAdmin": "Organization administrator",
+        "sectionOrgAdmin": "Organization administrator",
+        "configure": "Configure",
+        "configurePageTitle": "Tenant configuration",
+        "configureLead": "Branding and tenant settings for this organization. End-user accounts are managed by that tenant’s administrators, not here.",
+        "configureHint": "The initial organization administrator is set when the organization is created. Staff users are added under Administration → Users by that organization admin.",
+        "backToList": "Back to tenants",
+        "editTitle": "Tenant configuration",
+        "updateSuccess": "Tenant settings saved.",
+        "updateError": "Could not save tenant settings.",
+        "newPassword": "New password",
+        "resetPassword": "Reset organization admin password",
+        "resetPasswordSuccess": "Organization administrator password updated.",
+        "resetPasswordError": "Could not reset password.",
+        "delete": "Delete",
+        "deleteConfirm": "Permanently delete {org}? All organization administrators and client records without cases will be removed. This cannot be undone.",
+        "deleteSuccess": "Organization deleted.",
+        "deleteError": "Could not delete organization.",
+        "deleteProtected": "The default demo organization cannot be deleted."
+      },
+      "users": {
+        "title": "Organization administrators",
+        "create": "Add organization admin",
+        "createTitle": "New organization administrator",
+        "createSubmit": "Create organization admin",
+        "createSuccess": "Organization administrator created.",
+        "createError": "Could not create organization administrator.",
+        "loadError": "Could not load users.",
+        "mockCreate": "User creation is disabled in demo mode.",
+        "tenant": "Organization",
+        "lead": "Organization administrators for {org}. Staff accounts created by the org are not listed here.",
+        "leadOrgAdmin": "Create organization administrators and set tenant branding for their sign-in experience.",
+        "tenantAdminHint": "Creates an organization administrator for the selected organization only.",
+        "deleteConfirm": "Permanently delete this organization administrator? This cannot be undone.",
+        "deleteSuccess": "Organization administrator deleted.",
+        "deleteError": "Could not delete organization administrator."
       },
       "translations": {
-        "title": "Translation Management",
+        "title": "Locales & labels",
         "lead": "Browse all application labels, register languages, and export or import translations as Excel.",
         "search": "Search keys…",
         "addLocale": "Add language",
@@ -2683,6 +2739,9 @@
       }
     },
     "admin": {
+      "administration": {
+        "title": "Administration"
+      },
       "dashboard": {
         "title": "Administration",
         "lead": "Manage users, configuration, and local labels for {org}.",
@@ -2691,7 +2750,8 @@
         "quickLinks": "Quick links"
       },
       "users": {
-        "title": "User Management",
+        "title": "Users",
+        "leadOrg": "Staff accounts you created for {org}. Organization administrators and users from other sources are not listed.",
         "create": "Add user",
         "createTitle": "New user",
         "createSubmit": "Create user",
@@ -2719,8 +2779,15 @@
       },
       "config": {
         "title": "Tenant Settings",
+        "brandingSection": "Branding",
+        "settingsSection": "Organization settings",
         "displayName": "Agency display name",
         "primaryColor": "Primary brand color",
+        "secondaryColor": "Secondary brand color",
+        "accentColor": "Accent color",
+        "footerText": "Footer text",
+        "logo": "Organization logo",
+        "loginTagline": "Login welcome message",
         "defaultLocale": "Default locale",
         "duplicateThreshold": "Duplicate detection threshold (%)",
         "retentionYears": "Document retention (years)",
@@ -2849,7 +2916,8 @@
       "existingClient": "Opening case for:",
       "urgentCase": "Urgent / emergency",
       "reset": "Reset",
-      "resetHint": "Clears the linked client and starts a new case for anyone."
+      "resetHint": "Clears the linked client and starts a new case for anyone.",
+      "linkExistingClientOptional": "Link existing client (optional)"
     },
     "caseSearch": {
       "searchPlaceholder": "Client name, phone, or address…",
@@ -2866,7 +2934,7 @@
     }
   },
   "htmlTitle": {
-    "suffix": " — Rolling Meadows",
+    "suffix": " — CommunityOne",
     "dashboard": "Homepage",
     "caseSearch": "Case Search",
     "caseCreation": "Case Creation",

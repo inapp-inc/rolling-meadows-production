@@ -7,8 +7,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 from app.core.roles import ORGANIZATION_ADMIN, PLATFORM_ADMIN, TENANT_ADMIN
+
+PRODUCT_NAME = "CommunityOne"
 from app.models.tenant import Tenant
 from app.models.user import User
+from app.services.branding import serialize_branding
 
 
 async def load_tenant_summary(session: AsyncSession, tenant_id: str | None) -> dict | None:
@@ -20,7 +23,7 @@ async def load_tenant_summary(session: AsyncSession, tenant_id: str | None) -> d
     if not tenant:
         return None
 
-    branding = tenant.branding or {}
+    branding = serialize_branding(tenant.branding, legal_name=tenant.legal_name)
     return {
         "id": tenant.id,
         "legalName": tenant.legal_name,
@@ -28,15 +31,89 @@ async def load_tenant_summary(session: AsyncSession, tenant_id: str | None) -> d
         "status": tenant.status,
         "defaultLocale": tenant.default_locale,
         "enabledLocales": tenant.enabled_locales or ["en", "es"],
-        "displayName": branding.get("display_name") or tenant.legal_name,
+        "displayName": branding["displayName"],
+        "branding": branding,
+    }
+
+
+async def load_branding_by_email(session: AsyncSession, email: str) -> dict | None:
+    """Public tenant branding when email maps to exactly one active organization user."""
+    email_lower = email.strip().lower()
+    if not email_lower or "@" not in email_lower:
+        return None
+
+    result = await session.execute(
+        select(User).where(User.email == email_lower, User.status == "Active")
+    )
+    users = list(result.scalars().all())
+    if len(users) != 1:
+        return None
+
+    user = users[0]
+    if not user.tenant_id:
+        return None
+
+    tenant_result = await session.execute(select(Tenant).where(Tenant.id == user.tenant_id))
+    tenant = tenant_result.scalar_one_or_none()
+    if not tenant or tenant.status in {"Suspended", "Offboarded"}:
+        return None
+
+    branding = serialize_branding(tenant.branding, legal_name=tenant.legal_name)
+    return {
+        "legalName": tenant.legal_name,
+        "shortCode": tenant.short_code,
+        "status": tenant.status,
+        "branding": branding,
+    }
+
+
+async def load_login_preview(session: AsyncSession, email: str) -> dict:
+    """Login screen scope: CommunityOne (platform/product) vs tenant organization branding."""
+    email_lower = email.strip().lower()
+    if not email_lower or "@" not in email_lower:
+        return {"scope": "product", "productName": PRODUCT_NAME}
+
+    result = await session.execute(
+        select(User).where(User.email == email_lower, User.status == "Active")
+    )
+    users = list(result.scalars().all())
+    if len(users) == 1 and users[0].role == PLATFORM_ADMIN and not users[0].tenant_id:
+        return {"scope": "platform", "productName": PRODUCT_NAME}
+
+    tenant_payload = await load_branding_by_email(session, email_lower)
+    if tenant_payload:
+        return {"scope": "tenant", **tenant_payload}
+
+    return {"scope": "product", "productName": PRODUCT_NAME}
+
+
+async def load_public_branding(session: AsyncSession, organization_code: str) -> dict | None:
+    code = organization_code.strip().upper()
+    if not code:
+        return None
+
+    result = await session.execute(select(Tenant).where(Tenant.short_code == code))
+    tenant = result.scalar_one_or_none()
+    if not tenant:
+        return None
+
+    branding = serialize_branding(tenant.branding, legal_name=tenant.legal_name)
+    return {
+        "organizationCode": tenant.short_code,
+        "legalName": tenant.legal_name,
+        "status": tenant.status,
+        "branding": branding,
     }
 
 
 async def resolve_user_for_login(
     session: AsyncSession,
     email: str,
-    organization_code: str | None,
+    password: str,
+    *,
+    verify_password_fn,
 ) -> User | None:
+    """Resolve the user (and their organization) from email + password."""
     email_lower = email.lower()
     result = await session.execute(
         select(User)
@@ -46,22 +123,14 @@ async def resolve_user_for_login(
     matches = list(result.scalars().all())
     if not matches:
         return None
-    if len(matches) == 1:
-        return matches[0]
 
-    if not organization_code:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail={
-                "error": "organization_code_required",
-                "message": "Organization code is required for this email",
-            },
-        )
+    verified = [user for user in matches if verify_password_fn(password, user.password_hash)]
+    if not verified:
+        return None
+    if len(verified) == 1:
+        return verified[0]
 
-    code = organization_code.strip().upper()
-    for user in matches:
-        if user.tenant and user.tenant.short_code.upper() == code:
-            return user
+    # Same email/password in multiple organizations — refuse ambiguous login.
     return None
 
 

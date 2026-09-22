@@ -8,7 +8,11 @@ export function PlatformTranslationsPage() {
   const { t } = useI18n();
 
   return (
-    <AppLayout title={t('pages.platform.translations.title')} navId="platform-translations">
+    <AppLayout
+      title={t('pages.platform.translations.title')}
+      lead={t('pages.platform.translations.lead')}
+      navId="platform-translations"
+    >
       <TranslationsManagerPanel mode="platform" token={token} leadKey="pages.platform.translations.lead" />
     </AppLayout>
   );

@@ -31,6 +31,8 @@ services:
       CORS_ORIGINS: http://localhost:8081,http://localhost:5173
       SEED_USER_PASSWORD: ${SEED_USER_PASSWORD:-ChangeMe123!}
       DEFAULT_TENANT_ID: tenant-rolling-meadows
+    volumes:
+      - branding_data:/app/branding
     depends_on:
       postgres:
         condition: service_healthy
@@ -48,3 +50,4 @@ services:
 
 volumes:
   postgres_data:
+  branding_data:

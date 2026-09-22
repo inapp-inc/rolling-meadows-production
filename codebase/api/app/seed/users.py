@@ -24,18 +24,12 @@ SEED_USERS = [
         "tenant_id": None,
     },
     {
-        "id": "usr-tenant-admin",
-        "email": "tenant.admin@demo.rmhs.app",
-        "name": "Tenant Administrator",
-        "role": "tenant_admin",
-        "program_id": None,
-    },
-    {
         "id": "usr-org-admin",
         "email": "org.admin@demo.rmhs.app",
         "name": "Organization Administrator",
         "role": "organization_admin",
         "program_id": None,
+        "created_by": "usr-platform-admin",
     },
     {
         "id": "usr-case-manager",
@@ -43,6 +37,7 @@ SEED_USERS = [
         "name": "Case Manager",
         "role": "case_manager",
         "program_id": "prog-senior-services",
+        "created_by": "usr-org-admin",
     },
     {
         "id": "usr-supervisor",
@@ -50,6 +45,7 @@ SEED_USERS = [
         "name": "Supervisor / Dept Admin",
         "role": "supervisor",
         "program_id": "prog-senior-services",
+        "created_by": "usr-org-admin",
     },
     {
         "id": "usr-liaison",
@@ -57,6 +53,7 @@ SEED_USERS = [
         "name": "Cross-Program Liaison",
         "role": "cross_program_liaison",
         "program_id": None,
+        "created_by": "usr-org-admin",
     },
     {
         "id": "usr-auditor",
@@ -64,6 +61,7 @@ SEED_USERS = [
         "name": "Auditor",
         "role": "auditor",
         "program_id": None,
+        "created_by": "usr-org-admin",
     },
 ]
 
@@ -112,11 +110,41 @@ def _flatten_json(obj: dict[str, Any], prefix: str = "") -> dict[str, str]:
     return entries
 
 
+async def _backfill_created_by(session: AsyncSession) -> None:
+    """Align demo data with CR-2026-002 creator scoping for existing databases."""
+    backfill = {
+        "usr-org-admin": "usr-platform-admin",
+        "usr-case-manager": "usr-org-admin",
+        "usr-supervisor": "usr-org-admin",
+        "usr-liaison": "usr-org-admin",
+        "usr-auditor": "usr-org-admin",
+    }
+    for user_id, creator_id in backfill.items():
+        result = await session.execute(select(User).where(User.id == user_id))
+        row = result.scalar_one_or_none()
+        if row and not row.created_by:
+            row.created_by = creator_id
+            session.add(row)
+    tenant_admin = await session.execute(select(User).where(User.id == "usr-tenant-admin"))
+    legacy = tenant_admin.scalar_one_or_none()
+    if legacy:
+        legacy.status = "Inactive"
+        session.add(legacy)
+    await session.commit()
+
+
 async def seed_auth_data_if_empty(session: AsyncSession) -> None:
     tenant_result = await session.execute(
         select(Tenant).where(Tenant.id == settings.default_tenant_id)
     )
     tenant = tenant_result.scalar_one_or_none()
+    if tenant:
+        branding = dict(tenant.branding or {})
+        if not branding.get("logo_url"):
+            branding["logo_url"] = "/assets/logo.svg"
+            tenant.branding = branding
+            session.add(tenant)
+            await session.commit()
     if not tenant:
         session.add(
             Tenant(
@@ -130,6 +158,11 @@ async def seed_auth_data_if_empty(session: AsyncSession) -> None:
                 branding={
                     "display_name": "Rolling Meadows Human Services",
                     "primary_color": "#1a5f4a",
+                    "secondary_color": "#0f2340",
+                    "accent_color": "#43a047",
+                    "footer_text": "© Rolling Meadows Human Services",
+                    "logo_url": "/assets/logo.svg",
+                    "login_tagline": "Human services case management for the City of Rolling Meadows.",
                 },
                 config={
                     "duplicate_threshold": 25,
@@ -163,9 +196,12 @@ async def seed_auth_data_if_empty(session: AsyncSession) -> None:
                 program_id=seed_user.get("program_id"),
                 status="Active",
                 password_hash=password_hash,
+                created_by=seed_user.get("created_by"),
             )
         )
     await session.commit()
+
+    await _backfill_created_by(session)
 
     for loc in DEFAULT_LOCALE_SEED:
         result = await session.execute(

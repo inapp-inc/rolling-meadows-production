@@ -21,6 +21,7 @@ class Settings(BaseSettings):
     app_base_path: str = ""
     public_url: str = "https://foundry.inapp.com/rolling-meadows"
     static_dir: str = "/app/static"
+    branding_dir: str = "/app/branding"
     app_port: int = 4510
 
     @property

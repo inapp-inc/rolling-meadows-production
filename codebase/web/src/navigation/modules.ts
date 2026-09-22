@@ -29,25 +29,24 @@ export const GLOBAL_NAV: GlobalNavItem[] = [
 
 const MODULES: ModuleDef[] = [
   {
-    id: 'platform',
-    labelKey: 'module.platform',
-    roles: ['platform_admin'],
-    items: [
-      { id: 'platform-tenants', labelKey: 'nav.platformTenants', path: '/platform/tenants', roles: ['platform_admin'] },
-      { id: 'platform-translations', labelKey: 'nav.platformTranslations', path: '/platform/translations', roles: ['platform_admin'] },
-      { id: 'platform-settings', labelKey: 'nav.platformSettings', path: '/platform/settings', roles: ['platform_admin'] },
-    ],
-  },
-  {
     id: 'administration',
     labelKey: 'module.administration',
-    roles: ['tenant_admin', 'organization_admin'],
+    roles: ['platform_admin', 'organization_admin'],
     items: [
-      { id: 'admin-dashboard', labelKey: 'nav.adminDashboard', path: '/admin', roles: ['tenant_admin', 'organization_admin'] },
-      { id: 'admin-users', labelKey: 'nav.adminUsers', path: '/admin/users', roles: ['tenant_admin', 'organization_admin'] },
-      { id: 'admin-config', labelKey: 'nav.adminConfig', path: '/admin/config', roles: ['tenant_admin', 'organization_admin'] },
-      { id: 'admin-labels', labelKey: 'nav.adminLabels', path: '/admin/labels', roles: ['tenant_admin', 'organization_admin'] },
-      { id: 'admin-audit', labelKey: 'nav.adminAudit', path: '/admin/audit', roles: ['tenant_admin', 'organization_admin'] },
+      { id: 'platform-tenants', labelKey: 'nav.platformTenants', path: '/platform/tenants', roles: ['platform_admin'] },
+      {
+        id: 'platform-translations',
+        labelKey: 'nav.platformLocaleLabels',
+        path: '/platform/translations',
+        roles: ['platform_admin'],
+      },
+      {
+        id: 'platform-users',
+        labelKey: 'nav.platformUsers',
+        path: '/platform/users',
+        roles: ['platform_admin'],
+      },
+      { id: 'admin-users', labelKey: 'nav.adminUsers', path: '/admin/users', roles: ['organization_admin'] },
     ],
   },
   {
@@ -115,13 +114,12 @@ const MODULES: ModuleDef[] = [
 
 const NAV_TO_MODULE: Record<string, string | null> = {
   dashboard: null,
-  'platform-tenants': 'platform',
-  'platform-translations': 'platform',
-  'platform-settings': 'platform',
+  'platform-tenants': 'administration',
+  'platform-translations': 'administration',
+  'platform-users': 'administration',
   'admin-dashboard': 'administration',
   'admin-users': 'administration',
   'admin-config': 'administration',
-  'admin-labels': 'administration',
   'admin-audit': 'administration',
   'case-search': 'cases',
   'case-creation': 'cases',
@@ -170,8 +168,12 @@ export function globalNavForRole(role: UserRole): GlobalNavItem[] {
 }
 
 export function modulesForRole(role: UserRole): ModuleDef[] {
-  if (role === 'platform_admin') return MODULES.filter((m) => m.id === 'platform');
-  if (role === 'tenant_admin') return MODULES.filter((m) => m.id === 'administration');
+  if (role === 'platform_admin') {
+    return MODULES.filter((m) => m.id === 'administration');
+  }
+  if (role === 'tenant_admin') {
+    return MODULES.filter((m) => m.id === 'administration');
+  }
   if (role === 'organization_admin') {
     const operational = MODULES.filter(
       (m) => m.roles.includes('organization_admin') && m.id !== 'administration',
@@ -181,7 +183,7 @@ export function modulesForRole(role: UserRole): ModuleDef[] {
   }
   if (role === 'cross_program_liaison') return MODULES.filter((m) => m.id === 'clients');
   if (role === 'auditor') return MODULES.filter((m) => m.id === 'analytics');
-  return MODULES.filter((m) => m.roles.includes(role) && !['platform', 'administration'].includes(m.id));
+  return MODULES.filter((m) => m.roles.includes(role) && m.id !== 'administration');
 }
 
 export function navItemsForRole(module: ModuleDef, role: UserRole): NavItem[] {
@@ -199,12 +201,13 @@ export function resolveActiveNav(pathname: string, search = ''): string {
   const tier = new URLSearchParams(search).get('tier');
   if (pathname.startsWith('/dashboard')) return 'dashboard';
   if (pathname.startsWith('/platform/tenants')) return 'platform-tenants';
+  if (pathname.startsWith('/platform/users')) return 'platform-users';
   if (pathname.startsWith('/platform/translations')) return 'platform-translations';
-  if (pathname.startsWith('/platform/settings')) return 'platform-settings';
-  if (pathname === '/admin') return 'admin-dashboard';
+  if (pathname.startsWith('/platform/settings')) return 'platform-tenants';
+  if (pathname === '/admin') return 'admin-users';
   if (pathname.startsWith('/admin/users')) return 'admin-users';
   if (pathname.startsWith('/admin/config')) return 'admin-config';
-  if (pathname.startsWith('/admin/labels')) return 'admin-labels';
+  if (pathname.startsWith('/admin/labels')) return 'admin-users';
   if (pathname.startsWith('/admin/audit')) return 'admin-audit';
   if (pathname.startsWith('/reports/custom')) return 'custom-reports';
   if (pathname.startsWith('/reports')) {

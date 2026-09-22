@@ -35,6 +35,9 @@ async def init_db() -> None:
                 """
             )
         )
+        await conn.execute(
+            text("ALTER TABLE users ADD COLUMN IF NOT EXISTS created_by VARCHAR(64)")
+        )
 
 
 async def close_db() -> None:

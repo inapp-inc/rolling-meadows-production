@@ -408,7 +408,7 @@ export const ROLE_OPTIONS = [
 
 export function landingPathForRole(role: string): string {
   if (role === 'platform_admin') return '/platform/tenants';
-  if (role === 'tenant_admin') return '/admin';
+  if (role === 'tenant_admin') return '/admin/users';
   if (role === 'cross_program_liaison') return '/liaison';
   if (role === 'auditor') return '/reports?tier=integrity';
   return '/cases/new';

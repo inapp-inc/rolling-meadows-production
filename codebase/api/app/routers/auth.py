@@ -11,6 +11,9 @@ from app.db.session import get_session
 from app.seed.users import user_model_to_dict, user_to_profile
 from app.services.auth_service import (
     assert_tenant_login_allowed,
+    load_branding_by_email,
+    load_login_preview,
+    load_public_branding,
     load_tenant_summary,
     record_login,
     resolve_user_for_login,
@@ -39,6 +42,45 @@ class LoginResponse(BaseModel):
     user: dict
 
 
+@router.get("/branding", operation_id="getPublicBranding")
+async def get_public_branding(
+    session: Annotated[AsyncSession, Depends(get_session)],
+    organizationCode: str = "",
+):
+    """Public tenant branding for the login screen (by organization code)."""
+    payload = await load_public_branding(session, organizationCode)
+    if not payload:
+        raise HTTPException(
+            status_code=404,
+            detail={"error": "not_found", "message": "Organization not found"},
+        )
+    return payload
+
+
+@router.get("/login-preview", operation_id="getLoginPreview")
+async def get_login_preview(
+    session: Annotated[AsyncSession, Depends(get_session)],
+    email: EmailStr = "",
+):
+    """Login hero scope: CommunityOne for super admin, tenant branding for org users."""
+    return await load_login_preview(session, str(email))
+
+
+@router.get("/branding/by-email", operation_id="getBrandingByEmail")
+async def get_branding_by_email(
+    session: Annotated[AsyncSession, Depends(get_session)],
+    email: EmailStr = "",
+):
+    """Public tenant branding when email uniquely identifies one organization."""
+    payload = await load_branding_by_email(session, str(email))
+    if not payload:
+        raise HTTPException(
+            status_code=404,
+            detail={"error": "not_found", "message": "Organization branding not available for this email"},
+        )
+    return payload
+
+
 @router.get("/locales", operation_id="listAuthLocales")
 async def list_auth_locales(organizationCode: str | None = None):
     """Public locale list for login and unauthenticated pages."""
@@ -57,8 +99,13 @@ async def login(
     session: Annotated[AsyncSession, Depends(get_session)],
     correlation_id: Annotated[str | None, Depends(get_correlation_id)],
 ):
-    user = await resolve_user_for_login(session, body.email, body.organizationCode)
-    if not user or not verify_password(body.password, user.password_hash):
+    user = await resolve_user_for_login(
+        session,
+        body.email,
+        body.password,
+        verify_password_fn=verify_password,
+    )
+    if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail={"error": "invalid_credentials", "message": "Invalid email or password"},

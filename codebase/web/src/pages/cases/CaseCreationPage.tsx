@@ -1,6 +1,6 @@
 import { FormEvent, useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { ApiError, caseApi, catalogApi, type Workflow } from '../../api/client';
+import { ApiError, catalogApi, type Workflow } from '../../api/client';
 import { USE_MOCK_AUTH, useAuth } from '../../auth/AuthContext';
 import { AppLayout } from '../../components/AppLayout';
 import { getClient } from '../../mock/clientService';
@@ -45,25 +45,12 @@ export function CaseCreationPage() {
     setError('');
     setSubmitting(true);
     try {
-      if (USE_MOCK_AUTH) {
-        if (!user) throw new Error('Sign in required.');
-        setPendingCase({ categoryId: DEFAULT_CATEGORY_ID, subcategoryId: DEFAULT_SUBCATEGORY_ID });
-        if (clientIdParam) setPendingClientId(clientIdParam);
-        else clearPendingClientId();
-        navigate(clientIdParam ? `/cases/intake?clientId=${clientIdParam}` : '/cases/intake');
-        return;
-      }
-      if (!token) return;
-      if (!clientIdParam) {
-        setError('Link a client from Client Search or registration before opening a case.');
-        return;
-      }
-      const ws = await caseApi.create(token, {
-        clientId: clientIdParam,
-        categoryId: DEFAULT_CATEGORY_ID,
-        subcategoryId: DEFAULT_SUBCATEGORY_ID,
-      });
-      navigate(`/cases/${ws.case.id}?tab=intake`);
+      if (!USE_MOCK_AUTH && !token) return;
+      if (USE_MOCK_AUTH && !user) throw new Error('Sign in required.');
+      setPendingCase({ categoryId: DEFAULT_CATEGORY_ID, subcategoryId: DEFAULT_SUBCATEGORY_ID });
+      if (clientIdParam) setPendingClientId(clientIdParam);
+      else clearPendingClientId();
+      navigate(clientIdParam ? `/cases/intake?clientId=${clientIdParam}` : '/cases/intake');
     } catch (err) {
       setError(err instanceof ApiError ? err.message : err instanceof Error ? err.message : 'Case creation failed.');
     } finally {
@@ -129,7 +116,7 @@ export function CaseCreationPage() {
           </button>
           {!clientIdParam ? (
             <Link to="/clients/search" className="btn btn-secondary">
-              Find client
+              {t('pages.caseCreation.linkExistingClientOptional')}
             </Link>
           ) : null}
         </div>

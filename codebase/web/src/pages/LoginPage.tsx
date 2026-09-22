@@ -1,18 +1,73 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { authApi } from '../api/authApi';
+import type { TenantBranding } from '../api/client';
 import { useAuth } from '../auth/AuthContext';
+import { applyBranding, clearBranding } from '../branding/applyBranding';
+import { PRODUCT_BRANDING, PRODUCT_NAME, productLogoUrl } from '../branding/productBranding';
+import { TenantLogo } from '../components/TenantLogo';
 import { useI18n } from '../i18n/I18nContext';
 import { LocaleSwitcher } from '../i18n/LocaleSwitcher';
-import { withBasePath } from '../utils/basePath';
 
 export function LoginPage() {
   const { login } = useAuth();
   const { t } = useI18n();
   const navigate = useNavigate();
-  const [email, setEmail] = useState('tenant.admin@demo.rmhs.app');
-  const [password, setPassword] = useState('ChangeMe123!');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [loginScope, setLoginScope] = useState<'product' | 'platform' | 'tenant'>('product');
+  const [tenantBranding, setTenantBranding] = useState<TenantBranding | null>(null);
+  const [orgName, setOrgName] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (loginScope === 'tenant' && tenantBranding) {
+      applyBranding(tenantBranding);
+    } else {
+      applyBranding(PRODUCT_BRANDING);
+    }
+    return () => clearBranding();
+  }, [loginScope, tenantBranding]);
+
+  useEffect(() => {
+    const trimmed = email.trim();
+    if (!trimmed.includes('@')) {
+      setLoginScope('product');
+      setTenantBranding(null);
+      setOrgName(null);
+      return;
+    }
+
+    let cancelled = false;
+    const timer = window.setTimeout(() => {
+      authApi
+        .getLoginPreview(trimmed)
+        .then((response) => {
+          if (cancelled) return;
+          if (response.scope === 'tenant') {
+            setLoginScope('tenant');
+            setTenantBranding(response.branding);
+            setOrgName(response.branding.displayName ?? response.legalName);
+            return;
+          }
+          setLoginScope(response.scope === 'platform' ? 'platform' : 'product');
+          setTenantBranding(null);
+          setOrgName(null);
+        })
+        .catch(() => {
+          if (cancelled) return;
+          setLoginScope('product');
+          setTenantBranding(null);
+          setOrgName(null);
+        });
+    }, 400);
+
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
+  }, [email]);
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
@@ -28,21 +83,44 @@ export function LoginPage() {
     }
   }
 
+  const showCommunityOne = loginScope !== 'tenant';
+  const heroTitle = showCommunityOne
+    ? t('signIn.heroTitleProduct', { product: PRODUCT_NAME })
+    : t('signIn.heroTitleForOrg', { org: orgName ?? t('signIn.defaultOrgName') });
+  const heroTagline = showCommunityOne
+    ? loginScope === 'platform'
+      ? t('signIn.heroTaglinePlatform')
+      : t('signIn.heroTaglineProduct')
+    : tenantBranding?.loginTagline || t('signIn.heroTaglineOrg');
+
   return (
     <div className="sign-in-page">
       <section className="sign-in-hero" aria-label={t('signIn.welcomeAria')}>
         <div className="sign-in-hero-content">
-          <img src={withBasePath('/assets/logo.svg')} alt="City of Rolling Meadows" className="hero-logo" />
-          <h1>{t('signIn.heroTitle')}</h1>
-          <p className="hero-tagline">{t('signIn.heroTagline')}</p>
-          <ul className="sign-in-features">
-            <li>{t('signIn.feature1')}</li>
-            <li>{t('signIn.feature2')}</li>
-            <li>{t('signIn.feature3')}</li>
-          </ul>
-          <div className="hero-built-by">
-            <span className="built-by-label">{t('signIn.builtByFoundry')}</span>
-          </div>
+          {showCommunityOne ? (
+            <img src={productLogoUrl()} alt={PRODUCT_NAME} className="hero-logo hero-logo-product" />
+          ) : (
+            <TenantLogo
+              branding={tenantBranding}
+              alt={orgName ?? t('shell.organization')}
+              className="hero-logo hero-logo-org"
+              fallbackClassName="hero-logo-fallback"
+            />
+          )}
+          <h1>{heroTitle}</h1>
+          <p className="hero-tagline">{heroTagline}</p>
+          {showCommunityOne ? (
+            <ul className="sign-in-features">
+              <li>{t('signIn.feature1')}</li>
+              <li>{t('signIn.feature2')}</li>
+              <li>{t('signIn.feature3')}</li>
+            </ul>
+          ) : null}
+          {showCommunityOne ? (
+            <p className="hero-powered-by">{t('signIn.poweredBy', { product: PRODUCT_NAME })}</p>
+          ) : (
+            <p className="hero-powered-by">{t('signIn.poweredBy', { product: PRODUCT_NAME })}</p>
+          )}
         </div>
       </section>
 
@@ -50,8 +128,27 @@ export function LoginPage() {
         <div className="sign-in-card">
           <div className="sign-in-card-top">
             <div>
-              <h2 id="sign-in-title">{t('signIn.title')}</h2>
-              <p className="subtitle">{t('signIn.subtitleCredentials')}</p>
+              {showCommunityOne ? (
+                <>
+                  <h2 id="sign-in-title">{t('signIn.title')}</h2>
+                  <p className="subtitle">
+                    {loginScope === 'platform' ? t('signIn.subtitlePlatformAdmin') : t('signIn.subtitleCredentials')}
+                  </p>
+                </>
+              ) : (
+                <div className="sign-in-org-badge">
+                  <TenantLogo
+                    branding={tenantBranding}
+                    alt={orgName ?? t('shell.organization')}
+                    className="sign-in-org-logo"
+                    fallbackClassName="sign-in-org-logo-fallback"
+                  />
+                  <div>
+                    <h2 id="sign-in-title">{t('signIn.title')}</h2>
+                    <p className="subtitle">{orgName ?? t('signIn.defaultOrgName')}</p>
+                  </div>
+                </div>
+              )}
             </div>
             <LocaleSwitcher compact />
           </div>

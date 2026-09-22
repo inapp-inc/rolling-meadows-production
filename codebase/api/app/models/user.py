@@ -22,6 +22,7 @@ class User(Base):
     program_id: Mapped[str | None] = mapped_column(String(64), nullable=True)
     status: Mapped[str] = mapped_column(String(32), default="Active", nullable=False)
     password_hash: Mapped[str] = mapped_column(String(255), nullable=False)
+    created_by: Mapped[str | None] = mapped_column(String(64), nullable=True)
     last_login_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
     tenant: Mapped["Tenant | None"] = relationship(back_populates="users")

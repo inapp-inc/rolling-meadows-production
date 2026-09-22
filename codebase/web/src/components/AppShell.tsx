@@ -1,6 +1,6 @@
 import { ReactNode, useEffect, useMemo, useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
-import { useAuth, USE_MOCK_AUTH } from '../auth/AuthContext';
+import { useAuth } from '../auth/AuthContext';
 import { NotificationBell } from './NotificationBell';
 import { useI18n } from '../i18n/I18nContext';
 import { LocaleSwitcher } from '../i18n/LocaleSwitcher';
@@ -14,7 +14,8 @@ import {
   roleLabelKey,
   type NavItem,
 } from '../navigation/modules';
-import { withBasePath } from '../utils/basePath';
+import { productLogoUrl, PRODUCT_NAME } from '../branding/productBranding';
+import { TenantLogo } from './TenantLogo';
 
 const STORAGE_KEY = 'rm.sidebar.expandedModules';
 const GROUP_STORAGE_KEY = 'rm.sidebar.expandedGroups';
@@ -152,8 +153,9 @@ export function AppShell() {
       sessionStorage.setItem(STORAGE_KEY, JSON.stringify([]));
       return;
     }
-    setExpandedModules([activeModuleId]);
-    sessionStorage.setItem(STORAGE_KEY, JSON.stringify([activeModuleId]));
+    const expanded = role === 'platform_admin' ? ['administration'] : [activeModuleId];
+    setExpandedModules(expanded);
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(expanded));
 
     const activeModule = modules.find((m) => m.id === activeModuleId);
     if (activeModule) {
@@ -185,26 +187,44 @@ export function AppShell() {
 
   const displayName = user?.name ?? t(roleLabelKey(role));
   const initials = ROLE_INITIALS[role] ?? 'U';
+  const isPlatformAdmin = role === 'platform_admin';
+  const branding = user?.tenant?.branding;
+  const orgDisplayName = branding?.displayName ?? user?.tenant?.displayName ?? user?.tenant?.legalName;
   const tenantLabel = user?.tenant?.shortCode
-    ? `${user.tenant.displayName ?? user.tenant.legalName} (${user.tenant.shortCode})`
-    : role === 'platform_admin'
+    ? `${orgDisplayName} (${user.tenant.shortCode})`
+    : isPlatformAdmin
       ? t('shell.platformScope')
       : null;
+  const footerCopy = isPlatformAdmin
+    ? t('shell.platformFooterCopy', { product: PRODUCT_NAME })
+    : branding?.footerText ?? (orgDisplayName ? `© ${orgDisplayName}` : t('shell.navFooterCopy'));
 
   return (
     <>
       <header className="top-bar">
         <div className="top-bar-left">
           <div className="rm-logo-wrap">
-            <img src={withBasePath('/assets/rmeadows-logo.png')} alt="City of Rolling Meadows" className="rm-logo" />
+            {isPlatformAdmin ? (
+              <>
+                <img src={productLogoUrl()} alt={PRODUCT_NAME} className="rm-logo rm-logo-product" />
+                <span className="platform-brand-title">{PRODUCT_NAME}</span>
+              </>
+            ) : (
+              <TenantLogo
+                branding={branding}
+                alt={orgDisplayName ?? t('shell.organization')}
+                className="rm-logo"
+                fallbackClassName="rm-logo-fallback"
+              />
+            )}
           </div>
-          <div className="built-by-foundry" title={t('shell.builtByFoundryTitle')}>
-            <span className="built-by-label">{t('shell.builtByFoundry')}</span>
-          </div>
+          {!isPlatformAdmin && orgDisplayName ? (
+            <div className="org-brand-name">{orgDisplayName}</div>
+          ) : null}
         </div>
         <div className="top-bar-right">
           <LocaleSwitcher />
-          {USE_MOCK_AUTH ? <NotificationBell /> : null}
+          {!isPlatformAdmin && user ? <NotificationBell /> : null}
           {user ? (
             <div className="user-badge">
               <span className="user-avatar" aria-hidden="true">
@@ -274,7 +294,7 @@ export function AppShell() {
               );
             })}
           </div>
-          <div className="nav-footer">{t('shell.navFooterCopy')}</div>
+          <div className="nav-footer">{footerCopy}</div>
         </nav>
 
         <div className="main-wrapper">

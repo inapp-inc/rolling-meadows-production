@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import type { DedupMatch } from '../../api/client';
-import { useAuth } from '../../auth/AuthContext';
+import { ApiError, caseApi, clientApi, type ClientDetail, type DedupMatch } from '../../api/client';
+import { USE_MOCK_AUTH, useAuth } from '../../auth/AuthContext';
 import { CrossProgramFlag, type CrossProgramFlagData } from '../../components/CrossProgramFlag';
 import { DedupDrawer } from '../../components/DedupDrawer';
 import {
@@ -48,7 +48,7 @@ function hasMeaningfulDedupInput(partial: { name: string; dob: string; phone: st
  * then open the case and hand off to the workspace assessment tab.
  */
 export function ReferralIntakePage() {
-  const { user } = useAuth();
+  const { user, token } = useAuth();
   const { store, refresh } = useMockData();
   const i18n = useI18n();
   const { t } = i18n;
@@ -57,7 +57,11 @@ export function ReferralIntakePage() {
 
   const pending = useMemo(() => getPendingCase() ?? DEFAULT_SELECTION, []);
   const urlClientId = searchParams.get('clientId');
-  const existingClient: MockClient | null = urlClientId ? getClient(store, urlClientId) : null;
+  const existingClient: MockClient | null =
+    USE_MOCK_AUTH && urlClientId ? getClient(store, urlClientId) : null;
+  const [apiClient, setApiClient] = useState<ClientDetail | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   const config = useMemo(
     () => configForSubcategory(i18n, pending.subcategoryId),
@@ -97,6 +101,28 @@ export function ReferralIntakePage() {
     else if (!urlClientId) clearPendingClientId();
   }, [existingClient, urlClientId]);
 
+  useEffect(() => {
+    if (USE_MOCK_AUTH || !token || !urlClientId) {
+      setApiClient(null);
+      return;
+    }
+    clientApi
+      .get(token, urlClientId)
+      .then((detail) => {
+        setApiClient(detail);
+        setValues((current) => ({
+          ...current,
+          clientName: detail.name,
+          clientDob: detail.dob ?? '',
+          clientPhone: detail.phone ?? '',
+          clientAddress: detail.address ?? '',
+        }));
+      })
+      .catch(() => setApiClient(null));
+  }, [token, urlClientId]);
+
+  const linkedClientName = existingClient?.name ?? apiClient?.name ?? null;
+
   const hasScreeningPrefill = Boolean(
     existingClient && Object.keys(existingClient.screening?.intakeQuestions ?? {}).length,
   );
@@ -110,12 +136,12 @@ export function ReferralIntakePage() {
   }
 
   function handleIdentityInput() {
-    if (existingClient) return;
+    if (existingClient || apiClient) return;
     setLiveFlag(crossProgramFlag(store, identityPartial()));
   }
 
   function handleIdentityBlur() {
-    if (existingClient) return;
+    if (existingClient || apiClient) return;
     const partial = identityPartial();
     if (!hasMeaningfulDedupInput({ name: partial.name, dob: partial.dob, phone: partial.phone })) {
       setDedupMatches([]);
@@ -126,6 +152,11 @@ export function ReferralIntakePage() {
 
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
+    setSubmitError('');
+    if (!USE_MOCK_AUTH) {
+      void saveCaseApi(urlClientId);
+      return;
+    }
     if (existingClient) {
       saveCase(existingClient);
       return;
@@ -140,6 +171,51 @@ export function ReferralIntakePage() {
       return;
     }
     saveCase(null);
+  }
+
+  async function saveCaseApi(knownClientId: string | null) {
+    if (!token) return;
+    setSubmitting(true);
+    try {
+      let clientId = knownClientId;
+      if (!clientId) {
+        const created = await clientApi.create(token, {
+          name: values.clientName.trim(),
+          phone: values.clientPhone.trim(),
+          address: values.clientAddress.trim(),
+          dob: values.clientDob || undefined,
+        });
+        clientId = created.id;
+      }
+      const ws = await caseApi.create(token, {
+        clientId,
+        categoryId: pending.categoryId,
+        subcategoryId: pending.subcategoryId,
+      });
+      await caseApi.saveIntake(token, ws.case.id, {
+        name: values.clientName.trim(),
+        dob: values.clientDob || undefined,
+        phone: values.clientPhone.trim(),
+        address: values.clientAddress.trim(),
+        referral: {
+          source: values.refSource,
+          reason: values.refReason,
+          referrerName: values.refBy,
+        },
+        intake: {
+          consentOnFile: values.consent,
+          livingArrangement: values.living,
+          medicalHistory: values.medical,
+        },
+      });
+      clearPendingCase();
+      clearPendingClientId();
+      navigate(`/cases/${ws.case.id}?tab=assessment`);
+    } catch (err) {
+      setSubmitError(err instanceof ApiError ? err.message : err instanceof Error ? err.message : 'Could not save case.');
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   function saveCase(client: MockClient | null) {
@@ -245,9 +321,9 @@ export function ReferralIntakePage() {
         ) : null}
       </div>
 
-      {existingClient ? (
+      {linkedClientName ? (
         <div className="alert alert-info">
-          {t('pages.referralIntake.existingClientBanner', { name: existingClient.name })}
+          {t('pages.referralIntake.existingClientBanner', { name: linkedClientName })}
         </div>
       ) : null}
 
@@ -276,18 +352,20 @@ export function ReferralIntakePage() {
           config={config}
           values={values}
           onChange={patch}
-          readOnlyClient={Boolean(existingClient)}
+          readOnlyClient={Boolean(existingClient || apiClient)}
           onIdentityInput={handleIdentityInput}
           onIdentityBlur={handleIdentityBlur}
         />
+
+        {submitError ? <div className="alert alert-danger">{submitError}</div> : null}
 
         <div id="live-cross-program">
           <CrossProgramFlag flag={liveFlag} />
         </div>
 
         <div className="form-actions">
-          <button type="submit" className="btn btn-primary">
-            {t('pages.referralIntake.saveOpen', { next: assessmentStage?.label ?? '' })}
+          <button type="submit" className="btn btn-primary" disabled={submitting}>
+            {submitting ? `${t('common.save')}…` : t('pages.referralIntake.saveOpen', { next: assessmentStage?.label ?? '' })}
           </button>
         </div>
       </form>

@@ -6,6 +6,7 @@ import { AuthProvider } from './auth/AuthContext';
 import { ToastProvider } from './components/ToastContext';
 import { I18nProvider } from './i18n/I18nContext';
 import { MockDataProvider } from './mock/MockDataContext';
+import { BrandingProvider } from './branding/BrandingProvider';
 import { BASE_PATH } from './utils/basePath';
 import './app-overrides.css';
 
@@ -15,9 +16,11 @@ createRoot(document.getElementById('root')!).render(
       <I18nProvider>
         <MockDataProvider>
           <AuthProvider>
-            <ToastProvider>
-              <App />
-            </ToastProvider>
+            <BrandingProvider>
+              <ToastProvider>
+                <App />
+              </ToastProvider>
+            </BrandingProvider>
           </AuthProvider>
         </MockDataProvider>
       </I18nProvider>

@@ -3,14 +3,12 @@ import { ProtectedRoute, PublicOnlyRoute } from './auth/ProtectedRoute';
 import { RequireRole } from './auth/RequireRole';
 import { AppShell } from './components/AppShell';
 import { LoginPage } from './pages/LoginPage';
-import { AdminDashboardPage } from './pages/admin/AdminDashboardPage';
 import { AdminUsersPage } from './pages/admin/AdminUsersPage';
-import { AdminConfigPage } from './pages/admin/AdminConfigPage';
-import { AdminLabelsPage } from './pages/admin/AdminLabelsPage';
-import { AdminAuditPage } from './pages/admin/AdminAuditPage';
+import { RestrictPlatformAdminScope } from './auth/RestrictPlatformAdminScope';
 import { PlatformTenantsPage } from './pages/platform/PlatformTenantsPage';
+import { PlatformTenantConfigurePage } from './pages/platform/PlatformTenantConfigurePage';
 import { PlatformTranslationsPage } from './pages/platform/PlatformTranslationsPage';
-import { PlatformSettingsPage } from './pages/platform/PlatformSettingsPage';
+import { PlatformUsersPage } from './pages/platform/PlatformUsersPage';
 import { AdminDuplicatesPage } from './pages/clients/AdminDuplicatesPage';
 import { ClientProfilePage } from './pages/clients/ClientProfilePage';
 import { ClientRegistrationPage } from './pages/clients/ClientRegistrationPage';
@@ -53,22 +51,25 @@ export default function App() {
 
       <Route element={<ProtectedRoute />}>
         <Route element={<AppShell />}>
-          <Route path="/reports" element={<ReportsPage />} />
+          <Route element={<RestrictPlatformAdminScope />}>
+            <Route path="/reports" element={<ReportsPage />} />
 
-          <Route element={<RequireRole roles={['platform_admin']} />}>
-            <Route path="/platform/tenants" element={<PlatformTenantsPage />} />
-            <Route path="/platform/translations" element={<PlatformTranslationsPage />} />
-            <Route path="/platform/settings" element={<PlatformSettingsPage />} />
-            <Route path="/platform" element={<Navigate to="/platform/tenants" replace />} />
-          </Route>
+            <Route element={<RequireRole roles={['platform_admin']} />}>
+              <Route path="/platform/tenants" element={<PlatformTenantsPage />} />
+              <Route path="/platform/tenants/:tenantId" element={<PlatformTenantConfigurePage />} />
+              <Route path="/platform/users" element={<PlatformUsersPage />} />
+              <Route path="/platform/translations" element={<PlatformTranslationsPage />} />
+              <Route path="/platform/settings" element={<Navigate to="/platform/tenants" replace />} />
+              <Route path="/platform" element={<Navigate to="/platform/tenants" replace />} />
+            </Route>
 
-          <Route element={<RequireRole roles={['tenant_admin', 'organization_admin']} />}>
-            <Route path="/admin" element={<AdminDashboardPage />} />
-            <Route path="/admin/users" element={<AdminUsersPage />} />
-            <Route path="/admin/config" element={<AdminConfigPage />} />
-            <Route path="/admin/labels" element={<AdminLabelsPage />} />
-            <Route path="/admin/audit" element={<AdminAuditPage />} />
-          </Route>
+            <Route element={<RequireRole roles={['tenant_admin', 'organization_admin']} />}>
+              <Route path="/admin" element={<Navigate to="/admin/users" replace />} />
+              <Route path="/admin/users" element={<AdminUsersPage />} />
+              <Route path="/admin/config" element={<Navigate to="/admin/users" replace />} />
+              <Route path="/admin/labels" element={<Navigate to="/admin/users" replace />} />
+              <Route path="/admin/audit" element={<Navigate to="/admin/users" replace />} />
+            </Route>
 
           <Route element={<RequireRole capability="viewCaseDetail" />}>
             <Route path="/dashboard" element={<DashboardPage />} />
@@ -96,6 +97,7 @@ export default function App() {
 
           <Route element={<RequireRole roles={['cross_program_liaison']} />}>
             <Route path="/liaison" element={<LiaisonLookupPage />} />
+          </Route>
           </Route>
         </Route>
       </Route>

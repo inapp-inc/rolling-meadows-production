@@ -76,15 +76,22 @@ docker compose up --build
 
 ### Demo login
 
-| Email | Role |
-|-------|------|
-| org.admin@demo.rmhs.app | Organization Admin |
-| case.manager@demo.rmhs.app | Case Manager |
-| supervisor@demo.rmhs.app | Supervisor |
-| liaison@demo.rmhs.app | Liaison |
-| auditor@demo.rmhs.app | Auditor |
-
 Password: `ChangeMe123!` (or `SEED_USER_PASSWORD` in `.env`)
+
+| Email | Role | Access |
+|-------|------|--------|
+| platform.admin@demo.rmhs.app | Super admin (CommunityOne) | **Tenants**, **Locale labels**, **Users** (org admins + branding on create) |
+| org.admin@demo.rmhs.app | Organization admin (Rolling Meadows) | Tenant branding on login; ops + **Users** (staff they created only) |
+| case.manager@demo.rmhs.app | Case Manager | Cases, clients, workflow |
+| supervisor@demo.rmhs.app | Supervisor | Cases, clients, workflow |
+| liaison@demo.rmhs.app | Liaison | Cross-program lookup |
+| auditor@demo.rmhs.app | Auditor | Reports |
+
+Rolling Meadows is a **tenant organization** in CommunityOne, not the product name.
+
+For the full super-admin vs tenant-admin behavior and a sign-in verification checklist, see [docs/administration-and-roles.md](docs/administration-and-roles.md).
+
+**Implemented:** [CR-2026-002](../Docs/CR-2026-002-super-admin-org-admin-locale-branding.md) — see [docs/administration-and-roles.md](docs/administration-and-roles.md).
 
 ## Local development (without Docker)
 
@@ -107,7 +114,10 @@ Vite proxies `/api` to `localhost:8000`.
 
 ## Architecture
 
-See `../openspec/changes/rolling-meadows-platform/design.md` for platform-fit (ADR-0017: FastAPI primary backend) and auth design.
+- **Technologies used:** [../Docs/TECHNOLOGIES.md](../Docs/TECHNOLOGIES.md)
+- **Technical architecture (as-built):** [../Docs/TECHNICAL-ARCHITECTURE.md](../Docs/TECHNICAL-ARCHITECTURE.md)
+- **Handover:** [../Docs/HANDOVER.md](../Docs/HANDOVER.md)
+- **OpenSpec (historical bootstrap):** [../openspec/changes/rolling-meadows-platform/design.md](../openspec/changes/rolling-meadows-platform/design.md) — note: runtime uses PostgreSQL, not MongoDB
 
 Production uses a **single container** that serves the React build and mounts the API at `/rolling-meadows/api`. Local dev keeps separate `web` (nginx) and `api` services.
 

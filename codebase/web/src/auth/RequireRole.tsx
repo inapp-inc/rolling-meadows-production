@@ -27,7 +27,7 @@ export function RequireRole({ roles, capability }: RequireRoleProps) {
 
 export function fallbackPathForRole(role: UserRole): string {
   if (role === 'platform_admin') return '/platform/tenants';
-  if (role === 'tenant_admin') return '/admin';
+  if (role === 'tenant_admin') return '/admin/users';
   if (role === 'organization_admin') return '/dashboard';
   if (role === 'auditor') return '/reports?tier=integrity';
   if (role === 'cross_program_liaison') return '/liaison';

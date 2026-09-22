@@ -8,7 +8,7 @@ from app.core.config import settings
 
 ROLE_LANDING_PATHS: dict[str, str] = {
     "platform_admin": "/platform/tenants",
-    "tenant_admin": "/admin",
+    "tenant_admin": "/admin/users",
     "organization_admin": "/dashboard",
     "supervisor": "/cases/new",
     "case_manager": "/cases/new",

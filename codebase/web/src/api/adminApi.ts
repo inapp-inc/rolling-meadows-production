@@ -66,6 +66,11 @@ export const adminApi = {
   updateConfig(token: string, body: Record<string, unknown>) {
     return apiRequest<TenantConfig>('/admin/config', { method: 'PATCH', body: JSON.stringify(body) }, token);
   },
+  uploadBrandingLogo(token: string, file: File) {
+    const form = new FormData();
+    form.append('file', file);
+    return apiRequest<{ logoUrl: string }>('/admin/branding/logo', { method: 'POST', body: form }, token);
+  },
   listTranslations(token: string, params?: { locale?: string; q?: string; limit?: number; offset?: number }) {
     const qs = new URLSearchParams();
     if (params?.locale) qs.set('locale', params.locale);

@@ -9,6 +9,16 @@ export type UserRole =
   | 'cross_program_liaison'
   | 'auditor';
 
+export interface TenantBranding {
+  displayName?: string;
+  primaryColor?: string;
+  secondaryColor?: string;
+  accentColor?: string;
+  logoUrl?: string;
+  footerText?: string;
+  loginTagline?: string;
+}
+
 export interface TenantInfo {
   id: string;
   legalName: string;
@@ -17,6 +27,7 @@ export interface TenantInfo {
   defaultLocale?: string;
   enabledLocales?: string[];
   displayName?: string;
+  branding?: TenantBranding;
 }
 
 export interface UserProfile {

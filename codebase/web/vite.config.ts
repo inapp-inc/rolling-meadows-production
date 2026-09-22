@@ -4,6 +4,7 @@ import react from '@vitejs/plugin-react';
 const rawBase = process.env.VITE_BASE_PATH?.trim() ?? '';
 const base = rawBase ? (rawBase.endsWith('/') ? rawBase : `${rawBase}/`) : '/';
 const apiPrefix = rawBase ? `${rawBase.replace(/\/$/, '')}/api` : '/api';
+const brandingPrefix = rawBase ? `${rawBase.replace(/\/$/, '')}/branding` : '/branding';
 
 export default defineConfig({
   base,
@@ -15,6 +16,10 @@ export default defineConfig({
         target: 'http://localhost:8000',
         changeOrigin: true,
         rewrite: (path) => path.replace(new RegExp(`^${apiPrefix}`), ''),
+      },
+      [brandingPrefix]: {
+        target: 'http://localhost:8000',
+        changeOrigin: true,
       },
     },
   },

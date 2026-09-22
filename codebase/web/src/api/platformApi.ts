@@ -1,3 +1,4 @@
+import type { TenantBranding } from './client';
 import { apiRequest, downloadFile } from './http';
 
 export interface TenantSummary {
@@ -8,12 +9,13 @@ export interface TenantSummary {
   timezone?: string;
   defaultLocale?: string;
   enabledLocales?: string[];
-  branding?: Record<string, string>;
+  branding?: TenantBranding;
   config?: Record<string, unknown>;
   userCount?: number;
   activeCaseCount?: number;
   provisionedAt?: string;
   activatedAt?: string;
+  primaryOrgAdminEmail?: string | null;
 }
 
 export interface LocaleItem {
@@ -39,6 +41,46 @@ export const platformApi = {
   listTenants(token: string) {
     return apiRequest<{ items: TenantSummary[] }>('/platform/tenants', {}, token);
   },
+  listTenantUsers(token: string, tenantId: string) {
+    return apiRequest<{ items: import('./adminApi').AdminUser[] }>(
+      `/platform/tenants/${encodeURIComponent(tenantId)}/users`,
+      {},
+      token,
+    );
+  },
+  deleteTenantUser(token: string, tenantId: string, userId: string) {
+    return apiRequest<void>(
+      `/platform/tenants/${encodeURIComponent(tenantId)}/users/${encodeURIComponent(userId)}`,
+      { method: 'DELETE' },
+      token,
+    );
+  },
+  deleteTenant(token: string, tenantId: string) {
+    return apiRequest<void>(`/platform/tenants/${encodeURIComponent(tenantId)}`, { method: 'DELETE' }, token);
+  },
+  createTenantOrgAdmin(
+    token: string,
+    tenantId: string,
+    body: {
+      email: string;
+      name: string;
+      password: string;
+      branding?: {
+        displayName?: string;
+        primaryColor?: string;
+        secondaryColor?: string;
+        accentColor?: string;
+        footerText?: string;
+        loginTagline?: string;
+      };
+    },
+  ) {
+    return apiRequest<import('./adminApi').AdminUser>(
+      `/platform/tenants/${encodeURIComponent(tenantId)}/users`,
+      { method: 'POST', body: JSON.stringify(body) },
+      token,
+    );
+  },
   createTenant(
     token: string,
     body: {
@@ -48,14 +90,64 @@ export const platformApi = {
       defaultLocale?: string;
       adminEmail: string;
       adminName: string;
+      adminPassword: string;
+      branding?: {
+        displayName?: string;
+        primaryColor?: string;
+        secondaryColor?: string;
+        accentColor?: string;
+        footerText?: string;
+        loginTagline?: string;
+      };
+      config?: {
+        duplicateThreshold?: number;
+        retentionYears?: number;
+      };
     },
   ) {
     return apiRequest<TenantSummary>('/platform/tenants', { method: 'POST', body: JSON.stringify(body) }, token);
   },
+  uploadTenantLogo(token: string, tenantId: string, file: File) {
+    const form = new FormData();
+    form.append('file', file);
+    return apiRequest<{ logoUrl: string }>(
+      `/platform/tenants/${encodeURIComponent(tenantId)}/logo`,
+      { method: 'POST', body: form },
+      token,
+    );
+  },
   getTenant(token: string, tenantId: string) {
     return apiRequest<TenantSummary>(`/platform/tenants/${tenantId}`, {}, token);
   },
-  updateTenant(token: string, tenantId: string, body: Partial<TenantSummary>) {
+  resetTenantOrgAdminPassword(
+    token: string,
+    tenantId: string,
+    body: { newPassword: string; email?: string },
+  ) {
+    return apiRequest<{ email: string }>(
+      `/platform/tenants/${encodeURIComponent(tenantId)}/organization-admin/password`,
+      { method: 'POST', body: JSON.stringify(body) },
+      token,
+    );
+  },
+  updateTenant(
+    token: string,
+    tenantId: string,
+    body: {
+      legalName?: string;
+      defaultLocale?: string;
+      duplicateThreshold?: number;
+      retentionYears?: number;
+      branding?: {
+        displayName?: string;
+        primaryColor?: string;
+        secondaryColor?: string;
+        accentColor?: string;
+        footerText?: string;
+        loginTagline?: string;
+      };
+    },
+  ) {
     return apiRequest<TenantSummary>(
       `/platform/tenants/${tenantId}`,
       { method: 'PATCH', body: JSON.stringify(body) },

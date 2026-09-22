@@ -4,10 +4,26 @@ from pathlib import Path
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
 
 from app.core.config import settings
 from app.db.session import async_session_factory, close_db, init_db
-from app.routers import admin, auth, catalog, case_stages, cases, clients, documents, enrollments, health, liaison, platform, reports, workflow_hub
+from app.routers import (
+    admin,
+    auth,
+    catalog,
+    case_stages,
+    cases,
+    clients,
+    documents,
+    enrollments,
+    health,
+    liaison,
+    notifications,
+    platform,
+    reports,
+    workflow_hub,
+)
 from app.seed.catalog import seed_catalog_if_empty
 from app.seed.cases import seed_cases_if_empty
 from app.seed.clients import seed_clients_if_empty
@@ -37,6 +53,7 @@ def _register_api_routes(api: FastAPI) -> None:
             api.include_router(router)
     if "cases" in settings.enabled_modules:
         api.include_router(case_stages.router)
+        api.include_router(notifications.router)
 
 
 def _add_api_middleware(api: FastAPI) -> None:
@@ -106,6 +123,14 @@ def _attach_lifecycle(app: FastAPI) -> None:
         await close_db()
 
 
+def _mount_branding_assets(app: FastAPI) -> None:
+    branding_dir = Path(settings.branding_dir)
+    branding_dir.mkdir(parents=True, exist_ok=True)
+    prefix = settings.base_path
+    mount_path = f"{prefix}/branding" if prefix else "/branding"
+    app.mount(mount_path, StaticFiles(directory=branding_dir), name="tenant-branding")
+
+
 def create_app() -> FastAPI:
     static_dir = Path(settings.static_dir)
     has_static = static_dir.is_dir() and (static_dir / "index.html").is_file()
@@ -114,11 +139,13 @@ def create_app() -> FastAPI:
         shell = FastAPI(title="Rolling Meadows", docs_url=None, redoc_url=None, openapi_url=None)
         api = create_api_app(root_path=settings.api_root_path)
         shell.mount(settings.api_mount_path, api)
+        _mount_branding_assets(shell)
         register_spa_routes(shell, static_dir, settings.base_path)
         _attach_lifecycle(shell)
         return shell
 
     api = create_api_app()
+    _mount_branding_assets(api)
     _attach_lifecycle(api)
     return api
 

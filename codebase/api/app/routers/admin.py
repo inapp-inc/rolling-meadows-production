@@ -7,13 +7,23 @@ from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.deps import get_current_user_doc, require_roles
-from app.core.roles import TENANT_ADMIN_ROLES, assignable_roles_for, can_manage_user
+from app.core.roles import (
+    ORGANIZATION_ADMIN,
+    PLATFORM_ADMIN,
+    TENANT_ADMIN,
+    TENANT_ADMIN_ROLES,
+    assignable_roles_for,
+    can_manage_user,
+    OPERATIONAL_ROLES,
+)
 from app.core.security import hash_password
 from app.db.session import get_session
 from app.models.case import Case
 from app.models.tenant import Tenant
 from app.models.user import User
+from app.core.config import settings
 from app.services.admin_audit import list_admin_audit, write_admin_audit
+from app.services.branding import merge_branding, save_tenant_logo
 from app.services.tenants import serialize_tenant_config
 from app.services.translations import (
     delete_locale,
@@ -127,9 +137,23 @@ async def list_users(
     user: Annotated[dict, Depends(require_roles(*TENANT_ADMIN_ROLES))],
     session: Annotated[AsyncSession, Depends(get_session)],
 ):
-    result = await session.execute(
-        select(User).where(User.tenant_id == user["tenant_id"]).order_by(User.name)
-    )
+    tenant_id = user.get("tenant_id")
+    if not tenant_id:
+        raise HTTPException(
+            status_code=403,
+            detail={"error": "forbidden", "message": "Organization context is required"},
+        )
+    filters = [User.tenant_id == tenant_id, User.role != PLATFORM_ADMIN]
+    if user["role"] == ORGANIZATION_ADMIN:
+        filters.extend(
+            [
+                User.created_by == user["_id"],
+                User.role.in_(tuple(OPERATIONAL_ROLES)),
+            ]
+        )
+    elif user["role"] == TENANT_ADMIN:
+        filters.append(User.role != TENANT_ADMIN)
+    result = await session.execute(select(User).where(*filters).order_by(User.name))
     users = result.scalars().all()
     return {"items": [_serialize_user(u) for u in users]}
 
@@ -148,12 +172,33 @@ async def create_user(
         )
 
     tenant_id = user["tenant_id"]
+    if not tenant_id:
+        raise HTTPException(
+            status_code=403,
+            detail={"error": "forbidden", "message": "Organization context is required"},
+        )
     email = body.email.lower()
     existing = await session.execute(
         select(User).where(User.email == email, User.tenant_id == tenant_id)
     )
     if existing.scalar_one_or_none():
         raise HTTPException(status_code=409, detail={"error": "user_exists", "message": "User already exists"})
+
+    cross_tenant = await session.execute(
+        select(User).where(
+            User.email == email,
+            User.tenant_id.isnot(None),
+            User.tenant_id != tenant_id,
+        )
+    )
+    if cross_tenant.scalar_one_or_none():
+        raise HTTPException(
+            status_code=409,
+            detail={
+                "error": "email_in_use",
+                "message": "This email is already registered to another organization",
+            },
+        )
 
     user_id = f"usr-{uuid.uuid4().hex[:12]}"
     new_user = User(
@@ -165,6 +210,7 @@ async def create_user(
         program_id=body.programId,
         status="Active",
         password_hash=hash_password(body.password),
+        created_by=user["_id"],
     )
     session.add(new_user)
     await write_admin_audit(
@@ -281,6 +327,28 @@ async def delete_user(
     return None
 
 
+@router.post("/branding/logo", operation_id="uploadTenantBrandingLogo")
+async def upload_tenant_branding_logo(
+    user: Annotated[dict, Depends(require_roles(*TENANT_ADMIN_ROLES))],
+    session: Annotated[AsyncSession, Depends(get_session)],
+    file: UploadFile = File(...),
+):
+    tenant = await _get_tenant_for_admin(session, user["tenant_id"])
+    logo_url = await save_tenant_logo(settings.branding_dir, tenant.id, file)
+    tenant.branding = merge_branding(tenant.branding, {"logo_url": logo_url}, legal_name=tenant.legal_name)
+    session.add(tenant)
+    await write_admin_audit(
+        session,
+        action="tenant.branding.logo",
+        actor_id=user["_id"],
+        tenant_id=tenant.id,
+        resource_type="tenant",
+        resource_id=tenant.id,
+    )
+    await session.commit()
+    return {"logoUrl": logo_url}
+
+
 @router.get("/config", operation_id="getTenantConfig")
 async def get_tenant_config(
     user: Annotated[dict, Depends(require_roles(*TENANT_ADMIN_ROLES))],
@@ -300,7 +368,7 @@ async def update_tenant_config(
     detail: dict[str, Any] = {}
 
     if body.branding is not None:
-        tenant.branding = {**(tenant.branding or {}), **body.branding}
+        tenant.branding = merge_branding(tenant.branding, body.branding, legal_name=tenant.legal_name)
         detail["branding"] = body.branding
     if body.defaultLocale is not None:
         tenant.default_locale = body.defaultLocale
@@ -340,7 +408,7 @@ async def update_tenant_config(
 
 @router.get("/translations", operation_id="listAdminTranslations")
 async def list_admin_translations(
-    user: Annotated[dict, Depends(require_roles(*TENANT_ADMIN_ROLES))],
+    user: Annotated[dict, Depends(require_roles(PLATFORM_ADMIN))],
     session: Annotated[AsyncSession, Depends(get_session)],
     locale: str | None = None,
     q: str | None = None,
@@ -359,7 +427,7 @@ async def list_admin_translations(
 
 @router.get("/locales", operation_id="listAdminLocales")
 async def list_admin_locales(
-    user: Annotated[dict, Depends(require_roles(*TENANT_ADMIN_ROLES))],
+    user: Annotated[dict, Depends(require_roles(PLATFORM_ADMIN))],
     session: Annotated[AsyncSession, Depends(get_session)],
 ):
     locales = await list_all_locales(session)
@@ -374,7 +442,7 @@ async def list_admin_locales(
 @router.post("/locales", operation_id="createAdminLocale", status_code=201)
 async def create_admin_locale(
     body: LocaleCreateRequest,
-    user: Annotated[dict, Depends(require_roles(*TENANT_ADMIN_ROLES))],
+    user: Annotated[dict, Depends(require_roles(PLATFORM_ADMIN))],
     session: Annotated[AsyncSession, Depends(get_session)],
 ):
     locale = await register_locale(session, code=body.code, name=body.name, rtl=body.rtl)
@@ -394,7 +462,7 @@ async def create_admin_locale(
 async def update_admin_locale(
     code: str,
     body: LocaleUpdateRequest,
-    user: Annotated[dict, Depends(require_roles(*TENANT_ADMIN_ROLES))],
+    user: Annotated[dict, Depends(require_roles(PLATFORM_ADMIN))],
     session: Annotated[AsyncSession, Depends(get_session)],
 ):
     locale = await update_locale(
@@ -419,7 +487,7 @@ async def update_admin_locale(
 @router.delete("/locales/{code}", operation_id="deleteAdminLocale", status_code=204)
 async def delete_admin_locale(
     code: str,
-    user: Annotated[dict, Depends(require_roles(*TENANT_ADMIN_ROLES))],
+    user: Annotated[dict, Depends(require_roles(PLATFORM_ADMIN))],
     session: Annotated[AsyncSession, Depends(get_session)],
 ):
     await delete_locale(session, code)
@@ -438,7 +506,7 @@ async def delete_admin_locale(
 @router.patch("/translations", operation_id="patchAdminTranslation")
 async def patch_admin_translation(
     body: TranslationPatchRequest,
-    user: Annotated[dict, Depends(require_roles(*TENANT_ADMIN_ROLES))],
+    user: Annotated[dict, Depends(require_roles(PLATFORM_ADMIN))],
     session: Annotated[AsyncSession, Depends(get_session)],
 ):
     await upsert_translation(
@@ -464,7 +532,7 @@ async def patch_admin_translation(
 
 @router.get("/translations/export", operation_id="exportAdminTranslations")
 async def export_admin_translations(
-    user: Annotated[dict, Depends(require_roles(*TENANT_ADMIN_ROLES))],
+    user: Annotated[dict, Depends(require_roles(PLATFORM_ADMIN))],
     session: Annotated[AsyncSession, Depends(get_session)],
 ):
     return await export_translations_xlsx(
@@ -476,7 +544,7 @@ async def export_admin_translations(
 
 @router.post("/translations/import", operation_id="importAdminTranslations")
 async def import_admin_translations(
-    user: Annotated[dict, Depends(require_roles(*TENANT_ADMIN_ROLES))],
+    user: Annotated[dict, Depends(require_roles(PLATFORM_ADMIN))],
     session: Annotated[AsyncSession, Depends(get_session)],
     file: UploadFile = File(...),
 ):
