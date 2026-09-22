@@ -265,8 +265,6 @@ export async function auditedDownloadBarChartPng(
   downloadBarChartPng(filename, title, points);
 }
 
-type ExportColumn = { key: string; label: string };
-
 export function exportTierTable(
   token: string | null | undefined,
   resourceId: string,
@@ -312,19 +310,19 @@ export function exportCaseloadChartPng(
   void auditedDownloadBarChartPng(token, audit, filename, title, points);
 }
 
-export function exportCaseloadTable(
+export function exportCaseloadTable<T extends object>(
   token: string | null | undefined,
   resourceId: string,
   filename: string,
   columns: ExportColumn[],
-  rows: Record<string, unknown>[],
+  rows: T[],
 ): void {
   const audit = { resourceType: 'caseload' as const, resourceId };
   if (USE_MOCK_AUTH) {
     downloadTableCsv(filename, columns, rows);
     return;
   }
-  void auditedDownloadTableCsv(token, audit, filename, columns, rows);
+  void auditedDownloadTableCsv(token, audit, filename, columns, rows as Record<string, unknown>[]);
 }
 
 export function exportCaseloadTablePng<T extends object>(

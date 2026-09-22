@@ -20,6 +20,8 @@ export function AccountChangePasswordPage() {
     return null;
   }
 
+  const accessToken = token;
+
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
     if (newPassword !== confirmPassword) {
@@ -28,7 +30,7 @@ export function AccountChangePasswordPage() {
     }
     setBusy(true);
     try {
-      await api.changePassword(token, currentPassword, newPassword);
+      await api.changePassword(accessToken, currentPassword, newPassword);
       const profile = await refreshUser();
       showToast(t('pages.account.changePassword.success'), 'success');
       navigate(profile?.landingPath ?? '/dashboard', { replace: true });

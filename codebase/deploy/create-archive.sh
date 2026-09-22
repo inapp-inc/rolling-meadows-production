@@ -48,7 +48,6 @@ copy_tree() {
       --exclude 'coverage' \
       --exclude 'logs' \
       --exclude '.run-production' \
-      --exclude 'branding/*' \
       "${src}/" "${dest}/"
   else
     tar -C "${src}" \
