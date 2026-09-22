@@ -192,7 +192,10 @@ install_python_deps() {
 install_npm_deps() {
   echo "==> Installing npm dependencies..."
   if [[ -f package-lock.json ]]; then
-    npm_config_production=false npm ci --include=dev
+    if ! npm_config_production=false npm ci --include=dev; then
+      echo "    npm ci failed (lock out of sync?) — running npm install..."
+      npm_config_production=false npm install --include=dev
+    fi
   else
     npm_config_production=false npm install --include=dev
   fi
