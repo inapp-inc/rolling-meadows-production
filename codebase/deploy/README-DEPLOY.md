@@ -58,6 +58,8 @@ Copy `deploy/.env.example` → `deploy/.env`. Important keys:
 | `APP_BASE_PATH` | URL prefix (default `/case-management`) |
 | `APP_PORT` | Loopback port (default `4510`) |
 | `ENFORCE_HTTPS` | `true` behind TLS-terminating nginx |
+| `PUBLIC_URL` | e.g. `https://client-demo.inapp.com/case-management` |
+| `VITE_BASE_PATH` / `VITE_API_BASE_URL` | Must match `APP_BASE_PATH` for production build |
 
 ## Nginx
 

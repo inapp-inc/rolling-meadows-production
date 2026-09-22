@@ -84,7 +84,7 @@ bootstrap_env() {
   replace_env_value "POSTGRES_USER" "$pg_user" "$ENV_FILE"
   replace_env_value "POSTGRES_DB" "$pg_db" "$ENV_FILE"
   replace_env_value "POSTGRES_PORT" "$pg_port" "$ENV_FILE"
-  db_url="postgresql+asyncpg://${pg_user}:${pg}:${pg_host}:${pg_port}/${pg_db}"
+  db_url="$(python3 "$ROOT/deploy/build-database-url.py" "$pg_user" "$pg" "$pg_host" "$pg_port" "$pg_db")"
   replace_env_value "DATABASE_URL" "$db_url" "$ENV_FILE"
 }
 

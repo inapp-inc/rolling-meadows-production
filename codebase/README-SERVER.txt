@@ -33,11 +33,15 @@ URLs (defaults)
 
 Demo login password: SEED_USER_PASSWORD in deploy/.env (default ChangeMe123!)
 
-Public HTTPS later
-------------------
-Edit deploy/.env: PUBLIC_HOST, SSL_CERTIFICATE, SSL_CERTIFICATE_KEY, PUBLIC_URL, CORS_ORIGINS.
-Set ENFORCE_HTTPS=true when nginx terminates TLS.
-Re-run: sudo bash start.sh
+Public HTTPS (demo default)
+---------------------------
+Default in deploy/.env.example:
+
+  https://client-demo.inapp.com/case-management/
+
+Set SSL_CERTIFICATE / SSL_CERTIFICATE_KEY to your cert paths, then:
+
+  sudo bash start.sh
 
 Updates
 -------

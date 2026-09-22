@@ -145,11 +145,28 @@ prepare_env() {
   export VITE_BASE_PATH="${VITE_BASE_PATH:-$APP_BASE_PATH}"
   export VITE_USE_MOCK_AUTH="${VITE_USE_MOCK_AUTH:-false}"
 
-  if [[ -z "${DATABASE_URL:-}" ]]; then
-    export DATABASE_URL="postgresql+asyncpg://${POSTGRES_USER:-case_management}:${POSTGRES_PASSWORD}@${POSTGRES_HOST:-127.0.0.1}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-case_management}"
+  if [[ -n "${POSTGRES_PASSWORD:-}" ]]; then
+    export DATABASE_URL="$(
+      python3 "$ROOT/deploy/build-database-url.py" \
+        "${POSTGRES_USER:-case_management}" \
+        "$POSTGRES_PASSWORD" \
+        "${POSTGRES_HOST:-127.0.0.1}" \
+        "${POSTGRES_PORT:-5432}" \
+        "${POSTGRES_DB:-case_management}"
+    )"
+  elif [[ -z "${DATABASE_URL:-}" ]]; then
+    echo "Error: set POSTGRES_PASSWORD or DATABASE_URL in $ENV_FILE." >&2
+    exit 1
   fi
   if [[ "$DATABASE_URL" == *"@postgres:"* ]]; then
-    export DATABASE_URL="postgresql+asyncpg://${POSTGRES_USER:-case_management}:${POSTGRES_PASSWORD}@${POSTGRES_HOST:-127.0.0.1}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-case_management}"
+    export DATABASE_URL="$(
+      python3 "$ROOT/deploy/build-database-url.py" \
+        "${POSTGRES_USER:-case_management}" \
+        "$POSTGRES_PASSWORD" \
+        "${POSTGRES_HOST:-127.0.0.1}" \
+        "${POSTGRES_PORT:-5432}" \
+        "${POSTGRES_DB:-case_management}"
+    )"
     echo "    Adjusted DATABASE_URL for bare-metal (removed docker hostname postgres)"
   fi
 
