@@ -39,9 +39,17 @@ Default in deploy/.env.example:
 
   https://client-demo.inapp.com/case-management/
 
-Set SSL_CERTIFICATE / SSL_CERTIFICATE_KEY to your cert paths, then:
+Nginx uses a snippet on the shared vhost (like FWA):
+
+  /etc/nginx/snippets/case-management.conf
+
+First install or path/cert change:
 
   sudo bash start.sh
+
+Routine code updates (keep nginx as-is):
+
+  bash start.sh --no-nginx
 
 Updates
 -------

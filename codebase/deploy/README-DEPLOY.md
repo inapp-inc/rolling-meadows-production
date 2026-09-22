@@ -63,11 +63,16 @@ Copy `deploy/.env.example` → `deploy/.env`. Important keys:
 
 ## Nginx
 
-Path-based proxy to loopback (preserve prefix):
+On **shared** hosts like `client-demo.inapp.com` (same as FWA / Foster Care PM2 deploy):
 
-- `location /case-management/` → `http://127.0.0.1:4510/case-management/`
+1. Writes `NGINX_SNIPPET` (default `/etc/nginx/snippets/case-management.conf`) with  
+   `location /case-management/` → `http://127.0.0.1:4510/case-management/`
+2. Inserts `include …case-management.conf;` into the **existing** `listen 443` vhost for `PUBLIC_HOST`
+3. Does **not** replace `location /` or `/api/` for other apps
 
-Auto-config: `sudo bash deploy/configure-nginx.sh` (uses `SSL_CERTIFICATE` / `SSL_CERTIFICATE_KEY` from `.env`).
+Auto-config: `sudo bash deploy/configure-nginx.sh`. Default TLS paths are the shared inapp cert (only used when no vhost exists yet).
+
+Updates: use `bash start.sh --no-nginx` so you do not clobber a shared vhost.
 
 ## Updates
 
