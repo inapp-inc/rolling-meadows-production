@@ -5,21 +5,23 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
     database_url: str = (
-        "postgresql+asyncpg://rolling_meadows:rolling_meadows@localhost:5432/rolling_meadows"
+        "postgresql+asyncpg://case_management:case_management@localhost:5432/case_management"
     )
     database_echo: bool = False
     api_enabled_modules: str = "health,auth"
 
     jwt_secret: str = "dev-change-me-in-production"
     jwt_algorithm: str = "HS256"
-    jwt_expires_minutes: int = 480
+    jwt_expires_minutes: int = 30
+    enforce_https: bool = False
+    trust_proxy: bool = False
     cors_origins: str = "http://localhost:8080,http://localhost:5173"
     seed_user_password: str = "ChangeMe123!"
-    default_tenant_id: str = "tenant-rolling-meadows"
+    default_tenant_id: str = "tenant-demo"
 
-    # Production (single-port): https://foundry.inapp.com/rolling-meadows
+    # Production (single-port): set APP_BASE_PATH and PUBLIC_URL for your deployment host
     app_base_path: str = ""
-    public_url: str = "https://foundry.inapp.com/rolling-meadows"
+    public_url: str = "http://localhost:4510/case-management"
     static_dir: str = "/app/static"
     branding_dir: str = "/app/branding"
     app_port: int = 4510
@@ -34,7 +36,7 @@ class Settings(BaseSettings):
 
     @property
     def base_path(self) -> str:
-        """Normalized base path without trailing slash, e.g. `/rolling-meadows`."""
+        """Normalized base path without trailing slash, e.g. `/case-management`."""
         value = self.app_base_path.strip().rstrip("/")
         return value if value and value != "/" else ""
 

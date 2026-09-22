@@ -24,11 +24,13 @@ from app.routers import (
     reports,
     workflow_hub,
 )
+from app.routers import compliance
 from app.seed.catalog import seed_catalog_if_empty
 from app.seed.cases import seed_cases_if_empty
 from app.seed.clients import seed_clients_if_empty
 from app.seed.custom_reports import seed_custom_reports_if_empty
 from app.seed.users import seed_auth_data_if_empty
+from app.middleware.security_headers import SecurityHeadersMiddleware
 from app.spa import register_spa_routes
 
 MODULE_ROUTERS = {
@@ -54,9 +56,12 @@ def _register_api_routes(api: FastAPI) -> None:
     if "cases" in settings.enabled_modules:
         api.include_router(case_stages.router)
         api.include_router(notifications.router)
+    if "auth" in settings.enabled_modules:
+        api.include_router(compliance.router)
 
 
 def _add_api_middleware(api: FastAPI) -> None:
+    api.add_middleware(SecurityHeadersMiddleware)
     api.add_middleware(
         CORSMiddleware,
         allow_origins=settings.cors_origin_list,
@@ -88,7 +93,7 @@ def _add_api_middleware(api: FastAPI) -> None:
 
 def create_api_app(*, root_path: str | None = None) -> FastAPI:
     api = FastAPI(
-        title="Rolling Meadows Case Management API",
+        title="Case Management API",
         version="0.3.0",
         description="React + FastAPI + PostgreSQL — modular API",
         root_path=root_path or None,
@@ -136,7 +141,8 @@ def create_app() -> FastAPI:
     has_static = static_dir.is_dir() and (static_dir / "index.html").is_file()
 
     if has_static:
-        shell = FastAPI(title="Rolling Meadows", docs_url=None, redoc_url=None, openapi_url=None)
+        shell = FastAPI(title="Case Management Platform", docs_url=None, redoc_url=None, openapi_url=None)
+        shell.add_middleware(SecurityHeadersMiddleware)
         api = create_api_app(root_path=settings.api_root_path)
         shell.mount(settings.api_mount_path, api)
         _mount_branding_assets(shell)

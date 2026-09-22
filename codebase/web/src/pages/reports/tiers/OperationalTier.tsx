@@ -7,7 +7,7 @@ import { reportFilterOptions, toReportI18n } from '../../../mock/customReportSer
 import { useMockData } from '../../../mock/MockDataContext';
 import { ReportBarChart } from '../../../components/ReportBarChart';
 import { SideDrawer } from '../../../components/SideDrawer';
-import { downloadBarChartPng, downloadTableCsv } from '../../../utils/reportExport';
+import { exportTierChartPng, exportTierTable } from '../../../utils/reportExport';
 import { ClientChipList } from '../components/ClientChipList';
 import { ReportCard } from '../components/ReportCard';
 import { ReportDataTable } from '../components/ReportDataTable';
@@ -100,14 +100,18 @@ export function OperationalTier({ filters, onFiltersChange }: OperationalTierPro
           subscribeKey="operational-subdivision-caseload"
           lead="Open cases grouped by program subdivision. Select a bar to list the caseload."
           onDownloadImage={() =>
-            downloadBarChartPng(
+            exportTierChartPng(
+              token,
+              'operational/subdivision-caseload',
               'subdivision-caseload',
               t('pages.reports.subdivisionCaseload'),
               subdivision.map((r) => ({ label: r.subdivisionLabel, value: r.openCases, color: r.color })),
             )
           }
           onDownloadTable={() =>
-            downloadTableCsv(
+            exportTierTable(
+              token,
+              'operational/subdivision-caseload',
               'subdivision-caseload',
               [
                 { key: 'subdivisionLabel', label: t('pages.reports.subdivisionLabel') },
@@ -160,14 +164,18 @@ export function OperationalTier({ filters, onFiltersChange }: OperationalTierPro
           subscribeKey="operational-service-utilization"
           lead="Monthly service delivery counts by category (latest month shown). Select a bar for the month-by-month breakdown."
           onDownloadImage={() =>
-            downloadBarChartPng(
+            exportTierChartPng(
+              token,
+              'operational/service-utilization',
               'service-utilization',
               t('pages.reports.serviceUtilizationTrend'),
               utilization.series.map((s) => ({ label: s.categoryLabel, value: s.latestUnits })),
             )
           }
           onDownloadTable={() =>
-            downloadTableCsv(
+            exportTierTable(
+              token,
+              'operational/service-utilization',
               'service-utilization',
               [
                 { key: 'month', label: t('pages.reports.month') },
@@ -218,7 +226,9 @@ export function OperationalTier({ filters, onFiltersChange }: OperationalTierPro
           subscribeKey="operational-staff-activity"
           lead="Caseload, notes, enrollments, and estimated direct hours. Select a row to see that staff member's caseload."
           onDownloadTable={() =>
-            downloadTableCsv(
+            exportTierTable(
+              token,
+              'operational/staff-activity',
               'staff-activity',
               [
                 { key: 'staffName', label: t('pages.reports.staffName') },
@@ -233,7 +243,9 @@ export function OperationalTier({ filters, onFiltersChange }: OperationalTierPro
             )
           }
           onDownloadImage={() =>
-            downloadBarChartPng(
+            exportTierChartPng(
+              token,
+              'operational/staff-caseload',
               'staff-caseload',
               'Staff caseload',
               staff.map((s) => ({ label: s.staffName, value: s.caseload })),

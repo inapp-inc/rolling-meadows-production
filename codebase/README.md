@@ -1,4 +1,4 @@
-# Rolling Meadows — Production Codebase
+# Case Management Platform — Production Codebase
 
 **Stack:** React (Vite) + Python FastAPI + PostgreSQL, deployed via Docker Compose.
 
@@ -8,21 +8,42 @@
 
 ## Production deployment
 
-**Public URL:** https://foundry.inapp.com/rolling-meadows  
-**Single port:** `4510` (nginx on your server proxies `/rolling-meadows` to this port)
+**Default base path:** `/case-management`  
+**Single port:** `4510` (configure nginx or your edge to proxy the base path to this port)
 
-### Package (Windows)
+Set `PUBLIC_URL` and `APP_BASE_PATH` in `.env` for your host.
+
+### PM2 deploy (Linux, no Docker)
+
+Stage a zip-friendly folder (LF line endings for shell scripts):
+
+```bash
+cd codebase
+bash deploy/create-archive.sh
+```
+
+Zip `dist/case-management-staging/`, copy to Ubuntu, then:
+
+```bash
+sudo unzip -o case-management-linux.zip -d /var/www/case-management
+cd /var/www/case-management
+sudo bash start.sh
+```
+
+See `README-SERVER.txt` and `deploy/README-DEPLOY.md`. PostgreSQL must be installed and a matching role/database created before the health check passes.
+
+### Package (Windows — Docker)
 
 ```bat
 package.bat
 ```
 
 Creates:
-- `dist/rolling-meadows-deploy.zip` — copy this to your Linux server
-- `dist/rolling-meadows-deploy/` — same contents (folder)
+- `dist/case-management-deploy.zip` — copy this to your Linux server
+- `dist/case-management-deploy/` — same contents (folder)
 
 Zip contents:
-- `rolling-meadows-app.tar` — Docker image
+- `case-management-app.tar` — Docker image
 - `docker-compose.prod.yml`
 - `deploy.sh`
 - `.env.example`
@@ -31,19 +52,19 @@ Zip contents:
 ### Deploy (Linux server)
 
 ```bash
-unzip rolling-meadows-deploy.zip
-cd rolling-meadows-deploy
-cp .env.example .env   # set JWT_SECRET, POSTGRES_PASSWORD, etc.
+unzip case-management-deploy.zip
+cd case-management-deploy
+cp .env.example .env   # set JWT_SECRET, POSTGRES_PASSWORD, PUBLIC_URL, etc.
 chmod +x deploy.sh
 ./deploy.sh
 ```
 
 ### Nginx (configure on your server)
 
-Proxy the subpath to the app (preserve the `/rolling-meadows` prefix):
+Proxy the subpath to the app (preserve the `/case-management` prefix):
 
 ```nginx
-location /rolling-meadows {
+location /case-management {
     proxy_pass http://127.0.0.1:4510;
     proxy_http_version 1.1;
     proxy_set_header Host $host;
@@ -53,12 +74,12 @@ location /rolling-meadows {
 }
 ```
 
-| Endpoint | URL |
+| Endpoint | URL (example) |
 |----------|-----|
-| Web app | https://foundry.inapp.com/rolling-meadows |
-| API | https://foundry.inapp.com/rolling-meadows/api |
-| API docs | https://foundry.inapp.com/rolling-meadows/api/docs |
-| Health | https://foundry.inapp.com/rolling-meadows/api/health |
+| Web app | `https://your-host.example.com/case-management` |
+| API | `https://your-host.example.com/case-management/api` |
+| API docs | `https://your-host.example.com/case-management/api/docs` |
+| Health | `https://your-host.example.com/case-management/api/health |
 
 ## Local development (Docker)
 
@@ -80,14 +101,14 @@ Password: `ChangeMe123!` (or `SEED_USER_PASSWORD` in `.env`)
 
 | Email | Role | Access |
 |-------|------|--------|
-| platform.admin@demo.rmhs.app | Super admin (CommunityOne) | **Tenants**, **Locale labels**, **Users** (org admins + branding on create) |
-| org.admin@demo.rmhs.app | Organization admin (Rolling Meadows) | Tenant branding on login; ops + **Users** (staff they created only) |
-| case.manager@demo.rmhs.app | Case Manager | Cases, clients, workflow |
-| supervisor@demo.rmhs.app | Supervisor | Cases, clients, workflow |
-| liaison@demo.rmhs.app | Liaison | Cross-program lookup |
-| auditor@demo.rmhs.app | Auditor | Reports |
+| platform.admin@demo.example.com | Super admin | **Tenants**, **Locale labels**, **Users** (org admins + branding on create) |
+| org.admin@demo.example.com | Organization admin | Tenant branding on login; ops + **Users** (staff they created only) |
+| case.manager@demo.example.com | Case Manager | Cases, clients, workflow |
+| supervisor@demo.example.com | Supervisor | Cases, clients, workflow |
+| liaison@demo.example.com | Liaison | Cross-program lookup |
+| auditor@demo.example.com | Auditor | Reports |
 
-Rolling Meadows is a **tenant organization** in CommunityOne, not the product name.
+The demo **tenant organization** (Demo Human Services Agency) is sample data, not the product name.
 
 For the full super-admin vs tenant-admin behavior and a sign-in verification checklist, see [docs/administration-and-roles.md](docs/administration-and-roles.md).
 
@@ -119,7 +140,7 @@ Vite proxies `/api` to `localhost:8000`.
 - **Handover:** [../Docs/HANDOVER.md](../Docs/HANDOVER.md)
 - **OpenSpec (historical bootstrap):** [../openspec/changes/rolling-meadows-platform/design.md](../openspec/changes/rolling-meadows-platform/design.md) — note: runtime uses PostgreSQL, not MongoDB
 
-Production uses a **single container** that serves the React build and mounts the API at `/rolling-meadows/api`. Local dev keeps separate `web` (nginx) and `api` services.
+Production uses a **single container** that serves the React build and mounts the API at `{APP_BASE_PATH}/api`. Local dev keeps separate `web` (nginx) and `api` services.
 
 ## Scaffold divergence
 
@@ -129,4 +150,4 @@ Cloned from `.cursor/skills/_resources/scaffold/starter/` then modified:
 - React Vite app added to `web/`
 - MongoDB replaced with PostgreSQL
 - Per-service Dockerfiles + Compose (web nginx proxies API locally)
-- Production single-port deploy at `/rolling-meadows`
+- Production single-port deploy with configurable base path (default `/case-management`)

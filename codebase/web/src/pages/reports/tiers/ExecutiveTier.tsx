@@ -5,7 +5,7 @@ import { useMockData } from '../../../mock/MockDataContext';
 import { executiveReport } from '../../../mock/reportEngine';
 import { ReportBarChart } from '../../../components/ReportBarChart';
 import { SideDrawer } from '../../../components/SideDrawer';
-import { downloadBarChartPng, downloadTableCsv } from '../../../utils/reportExport';
+import { exportTierChartPng, exportTierTable } from '../../../utils/reportExport';
 import { ClientChipList } from '../components/ClientChipList';
 import { ReportCard } from '../components/ReportCard';
 import { ReportDataTable } from '../components/ReportDataTable';
@@ -77,7 +77,9 @@ export function ExecutiveTier() {
         subscribeKey="executive-community-impact"
         lead="Geographic and demographic distribution of served clients. Select a bar to list the people behind it."
         onDownloadTable={() =>
-          downloadTableCsv(
+          exportTierTable(
+            token,
+            'executive/community-impact',
             'community-impact',
             [
               { key: 'label', label: 'Group' },
@@ -141,7 +143,9 @@ export function ExecutiveTier() {
         subscribeKey="executive-initiative-performance"
         lead="Outreach campaigns and program event performance."
         onDownloadTable={() =>
-          downloadTableCsv(
+          exportTierTable(
+            token,
+            'executive/initiative-performance',
             'initiative-performance',
             [
               { key: 'name', label: 'Initiative' },
@@ -158,7 +162,9 @@ export function ExecutiveTier() {
           )
         }
         onDownloadImage={() =>
-          downloadBarChartPng(
+          exportTierChartPng(
+            token,
+            'executive/initiative-enrollments',
             'initiative-enrollments',
             'Initiative enrollments',
             initiatives.map((i) => ({ label: i.name, value: i.enrollments })),
@@ -188,7 +194,9 @@ export function ExecutiveTier() {
         subscribeKey="executive-outcome-kpis"
         lead="Referral completion, time-to-service, and enrollment trends."
         onDownloadTable={() =>
-          downloadTableCsv(
+          exportTierTable(
+            token,
+            'executive/outcome-kpis',
             'outcome-kpis',
             [
               { key: 'metric', label: 'Metric' },

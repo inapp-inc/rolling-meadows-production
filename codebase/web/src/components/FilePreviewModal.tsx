@@ -7,10 +7,11 @@ import type { MockDocument } from '../mock/types';
 type FilePreviewModalProps = {
   doc: MockDocument | null;
   onClose: () => void;
+  onDownload?: (doc: MockDocument) => void;
 };
 
 /** Mirrors the prototype's `RM.DocumentService.preview` modal. */
-export function FilePreviewModal({ doc, onClose }: FilePreviewModalProps) {
+export function FilePreviewModal({ doc, onClose, onDownload }: FilePreviewModalProps) {
   const { t } = useI18n();
 
   useEffect(() => {
@@ -47,7 +48,7 @@ export function FilePreviewModal({ doc, onClose }: FilePreviewModalProps) {
                 type="button"
                 className="modal-icon-btn"
                 aria-label={t('documents.downloadAria', { filename: doc.name })}
-                onClick={() => downloadDocument(doc)}
+                onClick={() => (onDownload ? onDownload(doc) : downloadDocument(doc))}
               >
                 <UiIcon name="download" />
               </button>

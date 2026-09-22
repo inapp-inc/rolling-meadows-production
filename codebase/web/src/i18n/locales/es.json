@@ -57,9 +57,12 @@
     "moduleNavAria": "Navegación de módulos",
     "notifications": "Notificaciones",
     "noAlerts": "No hay alertas en este momento",
-    "navFooterCopy": "© City of Rolling Meadows",
+    "navFooterCopy": "© Organización",
     "language": "Idioma",
-    "platformScope": "Ámbito de plataforma"
+    "platformScope": "Ámbito de plataforma",
+    "platformBrand": "Plataforma de gestión de casos",
+    "platformFooterCopy": "© Administración de plataforma {product}",
+    "organization": "Organización"
   },
   "role": {
     "platform_admin": "Administrador de plataforma",
@@ -72,7 +75,7 @@
     "auditorSignIn": "Auditor (solo informes agregados)"
   },
   "signIn": {
-    "pageTitle": "Iniciar sesión — Rolling Meadows",
+    "pageTitle": "Iniciar sesión — Plataforma de gestión de casos",
     "title": "Iniciar sesión",
     "subtitle": "Seleccione su rol para continuar",
     "subtitleCredentials": "Ingrese sus credenciales para continuar",
@@ -87,9 +90,9 @@
     "continue": "Continuar",
     "welcomeAria": "Bienvenido",
     "heroTitle": "Plataforma de gestión de casos",
-    "heroTagline": "Registros unificados de clientes, espacio de trabajo por flujos e informes autoservicio para Rolling Meadows Human Services.",
-    "heroTaglinePlatform": "Inicie sesión para administrar organizaciones, marca y configuración de CommunityOne.",
-    "subtitlePlatformAdmin": "Acceso de administrador de plataforma CommunityOne",
+    "heroTagline": "Registros unificados de clientes, espacio de trabajo por flujos e informes autoservicio para su agencia.",
+    "heroTaglinePlatform": "Inicie sesión para administrar organizaciones, marca y configuración de la plataforma.",
+    "subtitlePlatformAdmin": "Acceso de administrador de plataforma",
     "feature1": "Identidad única del cliente con detección de duplicados",
     "feature2": "Ciclo de vida de ocho etapas en 12 flujos de programa",
     "feature3": "Seguimiento por riesgo y consulta de enlace entre programas",
@@ -1836,15 +1839,16 @@
     "manageInWorkspace": "Agregar o administrar en el espacio de trabajo",
     "manageInWorkspaceProfile": "Administrar en el espacio de trabajo",
     "downloadAria": "Descargar {filename}",
+    "downloadError": "No se pudo descargar el documento.",
     "linkPreviewLead": "Este documento se almacena externamente. Ábralo en una nueva pestaña para ver el archivo en la unidad o sitio vinculado.",
     "locationLabel": "Ubicación:",
     "previewUnavailable": "La vista previa no está disponible para este tipo de archivo.",
     "consentFilename": "Formulario de consentimiento de ingreso — {name}.svg",
     "assessmentFilename": "Evaluación de seguridad en el hogar — {name}.svg",
-    "svgOrgTitle": "Servicios para adultos mayores de Rolling Meadows",
+    "svgOrgTitle": "Servicios para adultos mayores — agencia demo",
     "svgConsentTitle": "Formulario de consentimiento de ingreso del cliente",
     "svgClientName": "Nombre del cliente:",
-    "svgAuthorizeIntro": "Autorizo a Servicios para adultos mayores de Rolling Meadows a:",
+    "svgAuthorizeIntro": "Autorizo a los Servicios para adultos mayores de la agencia demo a:",
     "svgAuthorize1": "Coordinar apoyo domiciliario y referencias comunitarias",
     "svgAuthorize2": "Compartir información limitada con agencias asociadas para la planificación de atención",
     "svgAuthorize3": "Contactar a mi contacto de emergencia respecto a la prestación de servicios",
@@ -1852,7 +1856,7 @@
     "svgSignature": "Firma del cliente / representante:",
     "svgDateSigned": "Fecha de firma:",
     "svgWitness": "Testigo del gestor de casos:",
-    "svgDemoFooter": "Documento demo — prototipo de gestión de casos Rolling Meadows",
+    "svgDemoFooter": "Documento demo — prototipo de plataforma de gestión de casos",
     "svgAssessmentTitle": "Resumen de evaluación de seguridad en el hogar",
     "svgAssessmentClient": "Cliente:",
     "svgAssessmentDate": "Fecha:",
@@ -1873,6 +1877,20 @@
     "demoUser": "Usuario demo"
   },
   "pages": {
+    "account": {
+      "changePassword": {
+        "title": "Cambiar contraseña",
+        "requiredLead": "Debe actualizar su contraseña antes de continuar.",
+        "expiresIn": "Su contraseña caduca en {days} días. Actualícela ahora para evitar interrupciones.",
+        "current": "Contraseña actual",
+        "new": "Nueva contraseña",
+        "confirm": "Confirmar nueva contraseña",
+        "submit": "Actualizar contraseña",
+        "success": "Contraseña actualizada.",
+        "error": "No se pudo actualizar la contraseña.",
+        "mismatch": "Las contraseñas nuevas no coinciden."
+      }
+    },
     "reports": {
       "clientsByProgram": "Personas por programa",
       "clientsByProgramHint": "Personas únicas con un caso abierto en cada programa. Los clientes solo registrados (sin caso abierto) se muestran por separado.",
@@ -2839,11 +2857,24 @@
       },
       "config": {
         "title": "Configuración del inquilino",
+        "brandingSection": "Marca",
+        "settingsSection": "Configuración de la organización",
         "displayName": "Nombre de la agencia",
         "primaryColor": "Color principal",
+        "secondaryColor": "Color secundario",
+        "accentColor": "Color de acento",
+        "footerText": "Texto del pie de página",
+        "logo": "Logo de la organización",
+        "loginTagline": "Mensaje de bienvenida",
         "defaultLocale": "Idioma predeterminado",
         "duplicateThreshold": "Umbral de duplicados (%)",
         "retentionYears": "Retención de documentos (años)",
+        "securitySection": "Sesión y contraseñas",
+        "securityLead": "Duración de sesión, tiempo de inactividad y reglas de contraseña para esta organización.",
+        "sessionTimeoutMinutes": "Duración máxima de sesión (minutos)",
+        "idleTimeoutMinutes": "Tiempo de inactividad (minutos)",
+        "passwordMinLength": "Longitud mínima de contraseña",
+        "passwordMaxAgeDays": "Antigüedad máxima de contraseña (días, 0 = sin caducidad)",
         "saved": "Configuración guardada.",
         "saveError": "No se pudo guardar la configuración.",
         "mockSaved": "Vista previa solo en modo demo."
@@ -2989,7 +3020,7 @@
     }
   },
   "htmlTitle": {
-    "suffix": " — Rolling Meadows",
+    "suffix": " — Plataforma de gestión de casos",
     "dashboard": "Inicio",
     "caseSearch": "Búsqueda de casos",
     "caseCreation": "Creación de casos",

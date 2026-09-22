@@ -2,18 +2,18 @@ const PROGRAM_ID = 'prog-senior-services';
 const CM_ID = 'usr-case-manager';
 
 const SENIOR_NAMES = [
-  { id: 'cli-john-davis', name: 'John Davis', dob: '1938-07-22', phone: '(847) 555-0201', address: '88 Oak Street, Rolling Meadows, IL', risk: 'High' },
-  { id: 'cli-elena-rodriguez', name: 'Elena Rodriguez', dob: '1940-11-03', phone: '(847) 555-0202', address: '15 Pine Court, Rolling Meadows, IL', risk: 'Medium' },
-  { id: 'cli-robert-kim', name: 'Robert Kim', dob: '1935-04-18', phone: '(847) 555-0203', address: '902 Central Rd, Rolling Meadows, IL', risk: 'Low' },
-  { id: 'cli-dorothy-williams', name: 'Dorothy Williams', dob: '1944-09-30', phone: '(847) 555-0204', address: '77 Birch Ave, Rolling Meadows, IL', risk: 'Medium' },
-  { id: 'cli-frank-miller', name: 'Frank Miller', dob: '1939-01-12', phone: '(847) 555-0205', address: '203 Willow Dr, Rolling Meadows, IL', risk: 'High' },
-  { id: 'cli-helen-chen', name: 'Helen Chen', dob: '1941-06-25', phone: '(847) 555-0206', address: '44 Maple St, Rolling Meadows, IL', risk: 'Medium' },
-  { id: 'cli-george-patel', name: 'George Patel', dob: '1937-12-08', phone: '(847) 555-0207', address: '561 Elm Way, Rolling Meadows, IL', risk: 'Low' },
-  { id: 'cli-ruth-anderson', name: 'Ruth Anderson', dob: '1943-02-14', phone: '(847) 555-0208', address: '19 Cedar Ln, Rolling Meadows, IL', risk: 'Medium' },
-  { id: 'cli-james-wilson', name: 'James Wilson', dob: '1936-08-19', phone: '(847) 555-0209', address: '330 Park Blvd, Rolling Meadows, IL', risk: 'High' },
-  { id: 'cli-margaret-lee', name: 'Margaret Lee', dob: '1945-05-07', phone: '(847) 555-0210', address: '67 Spruce Ct, Rolling Meadows, IL', risk: 'Medium' },
-  { id: 'cli-william-brown', name: 'William Brown', dob: '1934-10-31', phone: '(847) 555-0211', address: '118 Ash St, Rolling Meadows, IL', risk: 'Low' },
-  { id: 'cli-betty-taylor', name: 'Betty Taylor', dob: '1942-07-04', phone: '(847) 555-0212', address: '245 Hickory Rd, Rolling Meadows, IL', risk: 'Medium' },
+  { id: 'cli-john-davis', name: 'John Davis', dob: '1938-07-22', phone: '(847) 555-0201', address: '88 Oak Street, Springfield, IL', risk: 'High' },
+  { id: 'cli-elena-rodriguez', name: 'Elena Rodriguez', dob: '1940-11-03', phone: '(847) 555-0202', address: '15 Pine Court, Springfield, IL', risk: 'Medium' },
+  { id: 'cli-robert-kim', name: 'Robert Kim', dob: '1935-04-18', phone: '(847) 555-0203', address: '902 Central Rd, Springfield, IL', risk: 'Low' },
+  { id: 'cli-dorothy-williams', name: 'Dorothy Williams', dob: '1944-09-30', phone: '(847) 555-0204', address: '77 Birch Ave, Springfield, IL', risk: 'Medium' },
+  { id: 'cli-frank-miller', name: 'Frank Miller', dob: '1939-01-12', phone: '(847) 555-0205', address: '203 Willow Dr, Springfield, IL', risk: 'High' },
+  { id: 'cli-helen-chen', name: 'Helen Chen', dob: '1941-06-25', phone: '(847) 555-0206', address: '44 Maple St, Springfield, IL', risk: 'Medium' },
+  { id: 'cli-george-patel', name: 'George Patel', dob: '1937-12-08', phone: '(847) 555-0207', address: '561 Elm Way, Springfield, IL', risk: 'Low' },
+  { id: 'cli-ruth-anderson', name: 'Ruth Anderson', dob: '1943-02-14', phone: '(847) 555-0208', address: '19 Cedar Ln, Springfield, IL', risk: 'Medium' },
+  { id: 'cli-james-wilson', name: 'James Wilson', dob: '1936-08-19', phone: '(847) 555-0209', address: '330 Park Blvd, Springfield, IL', risk: 'High' },
+  { id: 'cli-margaret-lee', name: 'Margaret Lee', dob: '1945-05-07', phone: '(847) 555-0210', address: '67 Spruce Ct, Springfield, IL', risk: 'Medium' },
+  { id: 'cli-william-brown', name: 'William Brown', dob: '1934-10-31', phone: '(847) 555-0211', address: '118 Ash St, Springfield, IL', risk: 'Low' },
+  { id: 'cli-betty-taylor', name: 'Betty Taylor', dob: '1942-07-04', phone: '(847) 555-0212', address: '245 Hickory Rd, Springfield, IL', risk: 'Medium' },
 ];
 
 const SUBCATEGORIES = ['sub-seniors-at-risk', 'sub-in-home-support', 'sub-nutrition-programs'];
@@ -108,7 +108,7 @@ export function createSeedStore(): MockStore {
       name: 'Mary Smith',
       dob: '1942-03-15',
       phone: '(847) 555-0142',
-      address: '412 Meadow Lane, Rolling Meadows, IL 60008',
+      address: '412 Oak Lane, Springfield, IL 62701',
       registeredAt: '2026-02-01',
     },
     {
@@ -211,7 +211,7 @@ export function createSeedStore(): MockStore {
     name: 'Susan Taylor',
     dob: '1946-03-20',
     phone: '(847) 555-0300',
-    address: '100 Main St, Rolling Meadows, IL',
+    address: '100 Main St, Springfield, IL',
     registeredAt: '2026-06-01',
     registrationSource: 'referral',
   });
@@ -231,10 +231,10 @@ export function createSeedStore(): MockStore {
 
   // Duplicate candidates
   [
-    { id: 'cli-oconnor-a', name: "Patrick O'Connor", dob: '1940-05-12', phone: '(847) 555-0401', address: '12 Lakeview Dr, Rolling Meadows, IL' },
-    { id: 'cli-oconnor-b', name: "Pat O'Connor", dob: '1940-05-12', phone: '(847) 555-0401', address: '12 Lakeview Drive, Rolling Meadows, IL' },
-    { id: 'cli-walsh-a', name: 'Margaret Walsh', dob: '1939-11-22', phone: '(847) 555-0402', address: '55 Center St, Rolling Meadows, IL' },
-    { id: 'cli-walsh-b', name: 'Maggie Walsh', dob: '1939-11-22', phone: '(847) 555-0402', address: '55 Center Street, Rolling Meadows, IL' },
+    { id: 'cli-oconnor-a', name: "Patrick O'Connor", dob: '1940-05-12', phone: '(847) 555-0401', address: '12 Lakeview Dr, Springfield, IL' },
+    { id: 'cli-oconnor-b', name: "Pat O'Connor", dob: '1940-05-12', phone: '(847) 555-0401', address: '12 Lakeview Drive, Springfield, IL' },
+    { id: 'cli-walsh-a', name: 'Margaret Walsh', dob: '1939-11-22', phone: '(847) 555-0402', address: '55 Center St, Springfield, IL' },
+    { id: 'cli-walsh-b', name: 'Maggie Walsh', dob: '1939-11-22', phone: '(847) 555-0402', address: '55 Center Street, Springfield, IL' },
   ].forEach((c, i) => {
     store.clients.push({ ...c, registeredAt: '2026-05-01' });
     if (i % 2 === 0) {
@@ -261,7 +261,7 @@ export function createSeedStore(): MockStore {
       name: i === 0 ? 'Alice Nguyen' : 'Carlos Mendez',
       dob: i === 0 ? '1955-08-01' : '1962-03-14',
       phone: i === 0 ? '(847) 555-0501' : '(847) 555-0502',
-      address: i === 0 ? '200 Main St, Rolling Meadows, IL' : '301 Oak Ave, Rolling Meadows, IL',
+      address: i === 0 ? '200 Main St, Springfield, IL' : '301 Oak Ave, Springfield, IL',
       registeredAt: '2026-08-01',
       registrationSource: 'walk_in',
     });
@@ -334,7 +334,7 @@ function seedReferralsIntakes(store: MockStore) {
       caseId: caseRecord.id,
       source: sources[i % sources.length],
       reason: reasons[i % reasons.length],
-      referredBy: 'Rolling Meadows community referral',
+      referredBy: 'Community health referral',
       dateReceived: caseRecord.openDate,
     });
     store.intakes.push({

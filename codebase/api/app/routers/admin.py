@@ -1,4 +1,5 @@
 import uuid
+from datetime import datetime, timezone
 from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
@@ -17,6 +18,9 @@ from app.core.roles import (
     OPERATIONAL_ROLES,
 )
 from app.core.security import hash_password
+from app.services.password_policy import validate_password
+from app.services.phi_access import list_phi_access
+from app.services.session_policy import get_password_min_length
 from app.db.session import get_session
 from app.models.case import Case
 from app.models.tenant import Tenant
@@ -64,6 +68,10 @@ class TenantConfigUpdateRequest(BaseModel):
     followUpCadence: dict[str, int] | None = None
     retentionYears: int | None = None
     supportAccessPolicy: str | None = None
+    sessionTimeoutMinutes: int | None = None
+    idleTimeoutMinutes: int | None = None
+    passwordMinLength: int | None = None
+    passwordMaxAgeDays: int | None = None
 
 
 class TranslationOverridePatchRequest(BaseModel):
@@ -200,6 +208,9 @@ async def create_user(
             },
         )
 
+    min_len = await get_password_min_length(session, tenant_id)
+    validate_password(body.password, min_length=min_len)
+
     user_id = f"usr-{uuid.uuid4().hex[:12]}"
     new_user = User(
         id=user_id,
@@ -211,6 +222,7 @@ async def create_user(
         status="Active",
         password_hash=hash_password(body.password),
         created_by=user["_id"],
+        password_changed_at=datetime.now(timezone.utc),
     )
     session.add(new_user)
     await write_admin_audit(
@@ -390,6 +402,18 @@ async def update_tenant_config(
     if body.supportAccessPolicy is not None:
         config["support_access_policy"] = body.supportAccessPolicy
         detail["supportAccessPolicy"] = body.supportAccessPolicy
+    if body.sessionTimeoutMinutes is not None:
+        config["session_timeout_minutes"] = body.sessionTimeoutMinutes
+        detail["sessionTimeoutMinutes"] = body.sessionTimeoutMinutes
+    if body.idleTimeoutMinutes is not None:
+        config["idle_timeout_minutes"] = body.idleTimeoutMinutes
+        detail["idleTimeoutMinutes"] = body.idleTimeoutMinutes
+    if body.passwordMinLength is not None:
+        config["password_min_length"] = body.passwordMinLength
+        detail["passwordMinLength"] = body.passwordMinLength
+    if body.passwordMaxAgeDays is not None:
+        config["password_max_age_days"] = body.passwordMaxAgeDays
+        detail["passwordMaxAgeDays"] = body.passwordMaxAgeDays
     tenant.config = config
 
     await write_admin_audit(
@@ -660,4 +684,14 @@ async def get_admin_audit_log(
     limit: int = 50,
 ):
     items = await list_admin_audit(session, tenant_id=user["tenant_id"], limit=limit)
+    return {"items": items}
+
+
+@router.get("/phi-access-log", operation_id="getPhiAccessLog")
+async def get_phi_access_log(
+    user: Annotated[dict, Depends(require_roles(*TENANT_ADMIN_ROLES))],
+    session: Annotated[AsyncSession, Depends(get_session)],
+    limit: int = 100,
+):
+    items = await list_phi_access(session, tenant_id=user["tenant_id"], limit=limit)
     return {"items": items}

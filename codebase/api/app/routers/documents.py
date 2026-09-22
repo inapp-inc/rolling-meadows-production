@@ -3,17 +3,19 @@ import uuid
 from datetime import datetime, timezone
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi.responses import Response
 from pydantic import BaseModel, Field
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.deps import get_current_user_doc
+from app.core.deps import get_correlation_id, get_current_user_doc
 from app.db.session import get_session
 from app.models.case import Case
 from app.models.document import Document
 from app.services.case_access import assert_case_access
 from app.services.case_store import audit, get_case
+from app.services.phi_access import record_phi_access
 
 router = APIRouter(prefix="/documents", tags=["documents"])
 
@@ -63,6 +65,8 @@ async def _case_ids_for_manager(session: AsyncSession, tenant_id: str, user_id: 
 async def list_documents(
     user: Annotated[dict, Depends(get_current_user_doc)],
     session: Annotated[AsyncSession, Depends(get_session)],
+    request: Request,
+    correlation_id: Annotated[str | None, Depends(get_correlation_id)],
     caseId: str | None = None,
 ):
     assert_case_access(user)
@@ -78,7 +82,72 @@ async def list_documents(
     query = query.order_by(Document.uploaded_at.desc())
     result = await session.execute(query)
     docs = result.scalars().all()
-    return {"items": [_document_to_item(doc) for doc in docs]}
+    items = [_document_to_item(doc) for doc in docs]
+    await record_phi_access(
+        session,
+        tenant_id=tenant_id,
+        actor_id=user["_id"],
+        action="list",
+        resource_type="document",
+        resource_id=caseId,
+        detail={"count": len(items), "hasQuery": bool(caseId)},
+        request=request,
+        correlation_id=correlation_id,
+    )
+    await session.commit()
+    return {"items": items}
+
+
+@router.get("/{document_id}/download", operation_id="downloadDocument")
+async def download_document(
+    document_id: str,
+    user: Annotated[dict, Depends(get_current_user_doc)],
+    session: Annotated[AsyncSession, Depends(get_session)],
+    request: Request,
+    correlation_id: Annotated[str | None, Depends(get_correlation_id)],
+):
+    assert_case_access(user)
+    result = await session.execute(
+        select(Document).where(
+            Document.id == document_id,
+            Document.tenant_id == user["tenant_id"],
+        )
+    )
+    doc = result.scalar_one_or_none()
+    if not doc:
+        raise HTTPException(status_code=404, detail={"error": "not_found", "message": "Document not found"})
+
+    export_format = "link" if doc.source_type == "url" else "file"
+    await record_phi_access(
+        session,
+        tenant_id=user["tenant_id"],
+        actor_id=user["_id"],
+        action="export",
+        resource_type="document",
+        resource_id=document_id,
+        detail={"exportFormat": export_format},
+        request=request,
+        correlation_id=correlation_id,
+    )
+    await session.commit()
+
+    if doc.source_type == "url" and doc.external_url:
+        return {"redirectUrl": doc.external_url, "filename": doc.filename}
+
+    if not doc.data_base64:
+        raise HTTPException(status_code=404, detail={"error": "not_found", "message": "File content not available"})
+
+    try:
+        raw = base64.b64decode(doc.data_base64)
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail={"error": "invalid_file", "message": "Stored file is invalid"}) from exc
+
+    media = doc.mime_type or "application/octet-stream"
+    return Response(
+        content=raw,
+        media_type=media,
+        headers={"Content-Disposition": f'attachment; filename="{doc.filename}"'},
+    )
 
 
 @router.post("/link", operation_id="addDocumentLink", status_code=201)

@@ -39,19 +39,19 @@ export function PlatformUsersPage() {
     if (USE_MOCK_AUTH || !token) {
       setTenants([
         {
-          id: 'tenant-rolling-meadows',
-          legalName: 'Rolling Meadows Human Services',
-          shortCode: 'RMHS',
+          id: 'tenant-demo',
+          legalName: 'Demo Human Services Agency',
+          shortCode: 'DEMO',
           status: 'Active',
           branding: {
-            displayName: 'Rolling Meadows Human Services',
+            displayName: 'Demo Human Services Agency',
             primaryColor: '#1a5f4a',
             secondaryColor: '#0f2340',
             accentColor: '#43a047',
           },
         },
       ]);
-      setTenantId('tenant-rolling-meadows');
+      setTenantId('tenant-demo');
       setLoading(false);
       return;
     }
@@ -86,7 +86,7 @@ export function PlatformUsersPage() {
       setUsers([
         {
           id: 'usr-org-admin',
-          email: 'org.admin@demo.rmhs.app',
+          email: 'org.admin@demo.example.com',
           name: 'Organization Administrator',
           role: 'organization_admin',
           status: 'Active',

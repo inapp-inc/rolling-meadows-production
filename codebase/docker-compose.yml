@@ -1,4 +1,4 @@
-# Rolling Meadows — local Docker stack (React + FastAPI + PostgreSQL)
+# Case Management Platform — local Docker stack (React + FastAPI + PostgreSQL)
 
 services:
   postgres:
@@ -6,13 +6,13 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: rolling_meadows
-      POSTGRES_PASSWORD: rolling_meadows
-      POSTGRES_DB: rolling_meadows
+      POSTGRES_USER: case_management
+      POSTGRES_PASSWORD: case_management
+      POSTGRES_DB: case_management
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U rolling_meadows -d rolling_meadows"]
+      test: ["CMD-SHELL", "pg_isready -U case_management -d case_management"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -24,13 +24,13 @@ services:
     ports:
       - "8000:8000"
     environment:
-      DATABASE_URL: postgresql+asyncpg://rolling_meadows:rolling_meadows@postgres:5432/rolling_meadows
+      DATABASE_URL: postgresql+asyncpg://case_management:case_management@postgres:5432/case_management
       API_ENABLED_MODULES: health,auth,admin,platform,clients,catalog,cases,enrollments,liaison,workflow,documents,reports
       JWT_SECRET: ${JWT_SECRET:-dev-change-me-in-production}
       JWT_EXPIRES_MINUTES: ${JWT_EXPIRES_MINUTES:-480}
       CORS_ORIGINS: http://localhost:8081,http://localhost:5173
       SEED_USER_PASSWORD: ${SEED_USER_PASSWORD:-ChangeMe123!}
-      DEFAULT_TENANT_ID: tenant-rolling-meadows
+      DEFAULT_TENANT_ID: tenant-demo
     volumes:
       - branding_data:/app/branding
     depends_on:

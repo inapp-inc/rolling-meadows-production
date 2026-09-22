@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Define multi-tenant platform behaviour: tenant lifecycle, isolation, platform console, and offboarding for the Rolling Meadows Case Management Platform.
+Define multi-tenant platform behaviour: tenant lifecycle, isolation, platform console, and offboarding for the Case Management Platform.
 
 ## Requirements
 

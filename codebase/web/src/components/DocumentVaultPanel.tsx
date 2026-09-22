@@ -6,6 +6,7 @@ import { documentsForClient } from '../mock/caseService';
 import {
   ACCEPTED_FILE_TYPES,
   buildSampleDocument,
+  downloadDocument,
   linkDisplayName,
   MAX_UPLOAD_BYTES,
   normalizeUrl,
@@ -225,6 +226,19 @@ export function DocumentVaultPanel({
     }
   }
 
+  async function handleDownload(doc: MockDocument) {
+    if (USE_MOCK_AUTH) {
+      downloadDocument(doc);
+      return;
+    }
+    if (!token) return;
+    try {
+      await documentsApi.download(token, doc.id, doc.name);
+    } catch (err) {
+      showToast(err instanceof Error ? err.message : t('documents.downloadError'), 'error');
+    }
+  }
+
   function handleDelete(documentId: string) {
     if (readOnly || !USE_MOCK_AUTH) return;
     setBusy(true);
@@ -311,7 +325,11 @@ export function DocumentVaultPanel({
         onDelete={handleDelete}
       />
 
-      <FilePreviewModal doc={previewDoc} onClose={() => setPreviewDoc(null)} />
+      <FilePreviewModal
+        doc={previewDoc}
+        onClose={() => setPreviewDoc(null)}
+        onDownload={handleDownload}
+      />
     </div>
   );
 }

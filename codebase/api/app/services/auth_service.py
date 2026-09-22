@@ -1,4 +1,4 @@
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from typing import Any
 
 from fastapi import HTTPException, status
@@ -7,11 +7,15 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 from app.core.roles import ORGANIZATION_ADMIN, PLATFORM_ADMIN, TENANT_ADMIN
-
-PRODUCT_NAME = "CommunityOne"
 from app.models.tenant import Tenant
 from app.models.user import User
+from app.services.admin_audit import write_admin_audit
 from app.services.branding import serialize_branding
+from app.services.session_policy import get_max_failed_logins
+
+PRODUCT_NAME = "Case Management Platform"
+
+LOCKOUT_MINUTES = 30
 
 
 async def load_tenant_summary(session: AsyncSession, tenant_id: str | None) -> dict | None:
@@ -68,7 +72,7 @@ async def load_branding_by_email(session: AsyncSession, email: str) -> dict | No
 
 
 async def load_login_preview(session: AsyncSession, email: str) -> dict:
-    """Login screen scope: CommunityOne (platform/product) vs tenant organization branding."""
+    """Login screen scope: platform product vs tenant organization branding."""
     email_lower = email.strip().lower()
     if not email_lower or "@" not in email_lower:
         return {"scope": "product", "productName": PRODUCT_NAME}
@@ -106,6 +110,27 @@ async def load_public_branding(session: AsyncSession, organization_code: str) ->
     }
 
 
+async def find_active_users_by_email(session: AsyncSession, email: str) -> list[User]:
+    email_lower = email.lower()
+    result = await session.execute(
+        select(User)
+        .options(selectinload(User.tenant))
+        .where(User.email == email_lower, User.status == "Active")
+    )
+    return list(result.scalars().all())
+
+
+def assert_account_not_locked(user: User) -> None:
+    if user.locked_until and user.locked_until > datetime.now(UTC):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail={
+                "error": "account_locked",
+                "message": "Account is temporarily locked after too many failed sign-in attempts. Try again later or contact your administrator.",
+            },
+        )
+
+
 async def resolve_user_for_login(
     session: AsyncSession,
     email: str,
@@ -114,15 +139,12 @@ async def resolve_user_for_login(
     verify_password_fn,
 ) -> User | None:
     """Resolve the user (and their organization) from email + password."""
-    email_lower = email.lower()
-    result = await session.execute(
-        select(User)
-        .options(selectinload(User.tenant))
-        .where(User.email == email_lower, User.status == "Active")
-    )
-    matches = list(result.scalars().all())
+    matches = await find_active_users_by_email(session, email)
     if not matches:
         return None
+
+    for user in matches:
+        assert_account_not_locked(user)
 
     verified = [user for user in matches if verify_password_fn(password, user.password_hash)]
     if not verified:
@@ -132,6 +154,44 @@ async def resolve_user_for_login(
 
     # Same email/password in multiple organizations — refuse ambiguous login.
     return None
+
+
+async def record_failed_login_attempt(
+    session: AsyncSession,
+    email: str,
+    *,
+    correlation_id: str | None = None,
+) -> None:
+    matches = await find_active_users_by_email(session, email)
+    max_failed = await get_max_failed_logins(session)
+    now = datetime.now(UTC)
+
+    if matches:
+        for user in matches:
+            user.failed_login_count = (user.failed_login_count or 0) + 1
+            if user.failed_login_count >= max_failed:
+                user.locked_until = now + timedelta(minutes=LOCKOUT_MINUTES)
+            session.add(user)
+            await write_admin_audit(
+                session,
+                action="login_failed",
+                actor_id=user.id,
+                resource_type="user",
+                resource_id=user.id,
+                tenant_id=user.tenant_id,
+                detail={"reason": "invalid_password", "correlationId": correlation_id},
+            )
+    else:
+        await write_admin_audit(
+            session,
+            action="login_failed",
+            actor_id="anonymous",
+            resource_type="user",
+            resource_id=email.lower(),
+            tenant_id=None,
+            detail={"reason": "unknown_email", "correlationId": correlation_id},
+        )
+    await session.commit()
 
 
 async def assert_tenant_login_allowed(session: AsyncSession, user: User) -> None:
@@ -169,17 +229,40 @@ async def assert_tenant_login_allowed(session: AsyncSession, user: User) -> None
         )
 
 
-async def record_login(session: AsyncSession, user: User) -> None:
+async def record_login(
+    session: AsyncSession,
+    user: User,
+    *,
+    correlation_id: str | None = None,
+) -> None:
     user.last_login_at = datetime.now(UTC)
+    user.failed_login_count = 0
+    user.locked_until = None
     session.add(user)
+    await write_admin_audit(
+        session,
+        action="login_success",
+        actor_id=user.id,
+        resource_type="user",
+        resource_id=user.id,
+        tenant_id=user.tenant_id,
+        detail={"correlationId": correlation_id},
+    )
     await session.commit()
 
 
-async def update_user_password(session: AsyncSession, user_id: str, password_hash: str) -> None:
+async def update_user_password(
+    session: AsyncSession,
+    user_id: str,
+    password_hash: str,
+    *,
+    plain_password: str,
+) -> None:
     result = await session.execute(select(User).where(User.id == user_id))
     user = result.scalar_one_or_none()
     if not user:
         return
-    user.password_hash = password_hash
-    session.add(user)
+    from app.services.password_rotation import apply_password_update
+
+    await apply_password_update(session, user, password_hash, plain_password=plain_password)
     await session.commit()

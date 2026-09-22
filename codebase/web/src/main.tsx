@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import { AuthProvider } from './auth/AuthContext';
+import { SessionIdleMonitor } from './auth/SessionIdleMonitor';
 import { ToastProvider } from './components/ToastContext';
 import { I18nProvider } from './i18n/I18nContext';
 import { MockDataProvider } from './mock/MockDataContext';
@@ -16,6 +17,7 @@ createRoot(document.getElementById('root')!).render(
       <I18nProvider>
         <MockDataProvider>
           <AuthProvider>
+            <SessionIdleMonitor />
             <BrandingProvider>
               <ToastProvider>
                 <App />

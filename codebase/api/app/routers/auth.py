@@ -8,6 +8,7 @@ from app.core.config import settings
 from app.core.deps import get_correlation_id, get_current_user_doc
 from app.core.security import create_access_token, hash_password, verify_password
 from app.db.session import get_session
+from app.models.user import User
 from app.seed.users import user_model_to_dict, user_to_profile
 from app.services.auth_service import (
     assert_tenant_login_allowed,
@@ -15,10 +16,15 @@ from app.services.auth_service import (
     load_login_preview,
     load_public_branding,
     load_tenant_summary,
+    record_failed_login_attempt,
     record_login,
     resolve_user_for_login,
     update_user_password,
 )
+from app.services.admin_audit import write_admin_audit
+from app.services.password_policy import validate_password
+from app.services.password_rotation import get_password_max_age_days, password_rotation_status
+from app.services.session_policy import get_password_min_length, get_session_policy
 from app.services.i18n import get_platform_translation_bundle, list_active_locales
 
 router = APIRouter(prefix="/auth", tags=["auth"])
@@ -35,10 +41,16 @@ class ChangePasswordRequest(BaseModel):
     newPassword: str = Field(min_length=8)
 
 
+class SessionPolicyResponse(BaseModel):
+    absoluteTimeoutMinutes: int
+    idleTimeoutMinutes: int
+
+
 class LoginResponse(BaseModel):
     accessToken: str
     tokenType: str = "bearer"
     expiresIn: int
+    sessionPolicy: SessionPolicyResponse
     user: dict
 
 
@@ -62,7 +74,7 @@ async def get_login_preview(
     session: Annotated[AsyncSession, Depends(get_session)],
     email: EmailStr = "",
 ):
-    """Login hero scope: CommunityOne for super admin, tenant branding for org users."""
+    """Login hero scope: platform product branding for super admin, tenant branding for org users."""
     return await load_login_preview(session, str(email))
 
 
@@ -106,26 +118,36 @@ async def login(
         verify_password_fn=verify_password,
     )
     if not user:
+        await record_failed_login_attempt(session, body.email, correlation_id=correlation_id)
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail={"error": "invalid_credentials", "message": "Invalid email or password"},
         )
 
     await assert_tenant_login_allowed(session, user)
-    await record_login(session, user)
+    await record_login(session, user, correlation_id=correlation_id)
 
+    session_policy = await get_session_policy(session, user.tenant_id)
     token = create_access_token(
         user.id,
         {"tenant_id": user.tenant_id, "role": user.role},
+        expires_minutes=session_policy["absoluteTimeoutMinutes"],
     )
     profile = user_to_profile(user_model_to_dict(user))
     profile["tenant"] = await load_tenant_summary(session, user.tenant_id)
+    profile["sessionPolicy"] = session_policy
+    max_age = await get_password_max_age_days(session, user.tenant_id)
+    rotation = password_rotation_status(user, max_age)
+    profile["passwordChangeRequired"] = rotation["mustChange"]
+    profile["passwordExpiresAt"] = rotation.get("passwordExpiresAt")
+    profile["passwordDaysRemaining"] = rotation.get("daysRemaining")
     if correlation_id:
         profile["correlationId"] = correlation_id
 
     return LoginResponse(
         accessToken=token,
-        expiresIn=settings.jwt_expires_minutes * 60,
+        expiresIn=session_policy["absoluteTimeoutMinutes"] * 60,
+        sessionPolicy=SessionPolicyResponse(**session_policy),
         user=profile,
     )
 
@@ -138,6 +160,14 @@ async def get_me(
 ):
     profile = user_to_profile(user)
     profile["tenant"] = await load_tenant_summary(session, user.get("tenant_id"))
+    profile["sessionPolicy"] = await get_session_policy(session, user.get("tenant_id"))
+    user_row = await session.get(User, user["_id"])
+    if user_row:
+        max_age = await get_password_max_age_days(session, user_row.tenant_id)
+        rotation = password_rotation_status(user_row, max_age)
+        profile["passwordChangeRequired"] = rotation["mustChange"]
+        profile["passwordExpiresAt"] = rotation.get("passwordExpiresAt")
+        profile["passwordDaysRemaining"] = rotation.get("daysRemaining")
     if correlation_id:
         profile["correlationId"] = correlation_id
     return profile
@@ -154,10 +184,31 @@ async def change_password(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail={"error": "invalid_password", "message": "Current password is incorrect"},
         )
-    await update_user_password(session, user["_id"], hash_password(body.newPassword))
+    min_len = await get_password_min_length(session, user.get("tenant_id"))
+    validate_password(body.newPassword, min_length=min_len)
+    await update_user_password(
+        session,
+        user["_id"],
+        hash_password(body.newPassword),
+        plain_password=body.newPassword,
+    )
     return {"ok": True}
 
 
 @router.post("/logout", operation_id="logout", status_code=status.HTTP_204_NO_CONTENT)
-async def logout(_user: Annotated[dict, Depends(get_current_user_doc)]):
+async def logout(
+    user: Annotated[dict, Depends(get_current_user_doc)],
+    session: Annotated[AsyncSession, Depends(get_session)],
+    correlation_id: Annotated[str | None, Depends(get_correlation_id)],
+):
+    await write_admin_audit(
+        session,
+        action="logout",
+        actor_id=user["_id"],
+        resource_type="user",
+        resource_id=user["_id"],
+        tenant_id=user.get("tenant_id"),
+        detail={"correlationId": correlation_id},
+    )
+    await session.commit()
     return None

@@ -22,7 +22,7 @@ async def init_db() -> None:
     from sqlalchemy import text
 
     from app.db.base import Base
-    from app.models import case, catalog, client, custom_report, document, i18n, platform, tenant, user  # noqa: F401
+    from app.models import case, catalog, client, custom_report, document, i18n, phi_access, platform, tenant, user  # noqa: F401
 
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
@@ -37,6 +37,20 @@ async def init_db() -> None:
         )
         await conn.execute(
             text("ALTER TABLE users ADD COLUMN IF NOT EXISTS created_by VARCHAR(64)")
+        )
+        await conn.execute(
+            text("ALTER TABLE users ADD COLUMN IF NOT EXISTS failed_login_count INTEGER NOT NULL DEFAULT 0")
+        )
+        await conn.execute(
+            text("ALTER TABLE users ADD COLUMN IF NOT EXISTS locked_until TIMESTAMPTZ")
+        )
+        await conn.execute(
+            text("ALTER TABLE users ADD COLUMN IF NOT EXISTS password_changed_at TIMESTAMPTZ")
+        )
+        await conn.execute(
+            text(
+                "ALTER TABLE users ADD COLUMN IF NOT EXISTS password_history JSONB NOT NULL DEFAULT '[]'::jsonb"
+            )
         )
 
 

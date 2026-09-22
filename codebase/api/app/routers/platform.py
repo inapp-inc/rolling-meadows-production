@@ -12,6 +12,8 @@ from app.services.branding import merge_branding, normalize_branding_input, save
 from app.core.deps import require_roles
 from app.core.roles import ORGANIZATION_ADMIN, PLATFORM_ADMIN
 from app.core.security import hash_password
+from app.services.password_policy import validate_password
+from app.services.session_policy import get_password_min_length
 from app.db.session import get_session
 from app.models.case import Case
 from app.models.client import Client
@@ -247,6 +249,9 @@ async def create_tenant(
     )
     session.add(tenant)
 
+    min_len = await get_password_min_length(session, tenant_id)
+    validate_password(body.adminPassword, min_length=min_len)
+
     admin_id = f"usr-{uuid.uuid4().hex[:12]}"
     session.add(
         User(
@@ -349,6 +354,9 @@ async def create_tenant_admin_user(
         )
         session.add(tenant)
 
+    min_len = await get_password_min_length(session, tenant_id)
+    validate_password(body.password, min_length=min_len)
+
     user_id = f"usr-{uuid.uuid4().hex[:12]}"
     new_user = User(
         id=user_id,
@@ -443,8 +451,14 @@ async def reset_tenant_org_admin_password(
             status_code=404,
             detail={"error": "not_found", "message": "No active organization administrator found for this tenant"},
         )
-    org_admin.password_hash = hash_password(body.newPassword)
-    session.add(org_admin)
+    from app.services.password_rotation import apply_password_update
+
+    await apply_password_update(
+        session,
+        org_admin,
+        hash_password(body.newPassword),
+        plain_password=body.newPassword,
+    )
     await write_admin_audit(
         session,
         action="platform.user.password_reset",

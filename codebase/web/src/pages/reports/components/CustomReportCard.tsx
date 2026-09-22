@@ -2,7 +2,8 @@ import { Link } from 'react-router-dom';
 import type { CustomReportItem } from '../../../api/client';
 import { DownloadComboButton } from '../../../components/UiIcon';
 import { useI18n } from '../../../i18n/I18nContext';
-import { downloadChartPreviewPng, downloadReportCsv } from '../../../utils/reportExport';
+import { USE_MOCK_AUTH, useAuth } from '../../../auth/AuthContext';
+import { auditedDownloadChartPreviewPng, auditedDownloadReportCsv, downloadChartPreviewPng, downloadReportCsv } from '../../../utils/reportExport';
 import { CustomReportPreview } from './CustomReportPreview';
 import { ReportSubscribeButton } from './ReportSubscribeButton';
 
@@ -17,6 +18,7 @@ type CustomReportCardProps = {
 
 export function CustomReportCard({ report, focused }: CustomReportCardProps) {
   const { t } = useI18n();
+  const { token } = useAuth();
   const slug = domIdForReport(report.id);
   const builderUrl = `/reports/custom/builder?id=${encodeURIComponent(report.id)}`;
   const isChart = report.reportType === 'chart';
@@ -25,11 +27,21 @@ export function CustomReportCard({ report, focused }: CustomReportCardProps) {
   const editHint = t('pages.reports.editInBuilderHint');
 
   function handleCsvExport() {
-    if (preview) downloadReportCsv(report.name, preview);
+    if (!preview) return;
+    if (USE_MOCK_AUTH) {
+      downloadReportCsv(report.name, preview);
+      return;
+    }
+    void auditedDownloadReportCsv(token, { resourceType: 'custom_report', resourceId: report.id }, report.name, preview);
   }
 
   function handleImageExport() {
-    if (preview) downloadChartPreviewPng(report.name, preview);
+    if (!preview) return;
+    if (USE_MOCK_AUTH) {
+      downloadChartPreviewPng(report.name, preview);
+      return;
+    }
+    void auditedDownloadChartPreviewPng(token, { resourceType: 'custom_report', resourceId: report.id }, report.name, preview);
   }
 
   return (

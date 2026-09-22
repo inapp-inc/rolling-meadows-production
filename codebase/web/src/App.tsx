@@ -4,6 +4,7 @@ import { RequireRole } from './auth/RequireRole';
 import { AppShell } from './components/AppShell';
 import { LoginPage } from './pages/LoginPage';
 import { AdminUsersPage } from './pages/admin/AdminUsersPage';
+import { AdminAuditPage } from './pages/admin/AdminAuditPage';
 import { RestrictPlatformAdminScope } from './auth/RestrictPlatformAdminScope';
 import { PlatformTenantsPage } from './pages/platform/PlatformTenantsPage';
 import { PlatformTenantConfigurePage } from './pages/platform/PlatformTenantConfigurePage';
@@ -26,7 +27,10 @@ import { BulkEnrollmentPage } from './pages/services/BulkEnrollmentPage';
 import { ServicesHubPage } from './pages/services/ServicesHubPage';
 import { WorkflowHubPage } from './pages/workflow/WorkflowHubPage';
 import { DashboardPage } from './pages/dashboard/DashboardPage';
+import { AccountChangePasswordPage } from './pages/account/AccountChangePasswordPage';
+import { AdminConfigPage } from './pages/admin/AdminConfigPage';
 
+import { CHANGE_PASSWORD_PATH, mustChangePassword } from './auth/accountPaths';
 import { useAuth } from './auth/AuthContext';
 
 function HomeRedirect() {
@@ -36,6 +40,9 @@ function HomeRedirect() {
   }
   if (!user) {
     return <Navigate to="/login" replace />;
+  }
+  if (mustChangePassword(user)) {
+    return <Navigate to={CHANGE_PASSWORD_PATH} replace />;
   }
   return <Navigate to={user.landingPath} replace />;
 }
@@ -50,6 +57,7 @@ export default function App() {
       </Route>
 
       <Route element={<ProtectedRoute />}>
+        <Route path={CHANGE_PASSWORD_PATH} element={<AccountChangePasswordPage />} />
         <Route element={<AppShell />}>
           <Route element={<RestrictPlatformAdminScope />}>
             <Route path="/reports" element={<ReportsPage />} />
@@ -66,9 +74,9 @@ export default function App() {
             <Route element={<RequireRole roles={['tenant_admin', 'organization_admin']} />}>
               <Route path="/admin" element={<Navigate to="/admin/users" replace />} />
               <Route path="/admin/users" element={<AdminUsersPage />} />
-              <Route path="/admin/config" element={<Navigate to="/admin/users" replace />} />
+              <Route path="/admin/config" element={<AdminConfigPage />} />
               <Route path="/admin/labels" element={<Navigate to="/admin/users" replace />} />
-              <Route path="/admin/audit" element={<Navigate to="/admin/users" replace />} />
+              <Route path="/admin/audit" element={<AdminAuditPage />} />
             </Route>
 
           <Route element={<RequireRole capability="viewCaseDetail" />}>

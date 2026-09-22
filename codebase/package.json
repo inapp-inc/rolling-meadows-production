@@ -1,8 +1,8 @@
 {
-  "name": "rolling-meadows",
+  "name": "case-management",
   "version": "0.1.0",
   "private": true,
-  "description": "Rolling Meadows — React + FastAPI + PostgreSQL (Docker)",
+  "description": "Case Management Platform — React + FastAPI + PostgreSQL (Docker)",
   "scripts": {
     "docker:up": "docker compose up --build",
     "docker:down": "docker compose down",

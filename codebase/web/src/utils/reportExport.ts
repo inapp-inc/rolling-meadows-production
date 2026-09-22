@@ -1,4 +1,7 @@
 import type { CustomReportPreviewData } from '../api/client';
+import { USE_MOCK_AUTH } from '../auth/AuthContext';
+import type { PhiExportPayload } from '../api/complianceApi';
+import { logPhiExport } from './phiExportLog';
 
 export function downloadReportCsv(
   filename: string,
@@ -218,4 +221,141 @@ function triggerDownload(blob: Blob, filename: string): void {
   link.download = filename;
   link.click();
   URL.revokeObjectURL(url);
+}
+
+export async function auditedDownloadReportCsv(
+  token: string | null | undefined,
+  audit: Omit<PhiExportPayload, 'exportFormat'>,
+  filename: string,
+  preview: CustomReportPreviewData,
+): Promise<void> {
+  await logPhiExport(token, { ...audit, exportFormat: 'csv' });
+  downloadReportCsv(filename, preview);
+}
+
+export async function auditedDownloadChartPreviewPng(
+  token: string | null | undefined,
+  audit: Omit<PhiExportPayload, 'exportFormat'>,
+  filename: string,
+  preview: CustomReportPreviewData,
+): Promise<void> {
+  await logPhiExport(token, { ...audit, exportFormat: 'png' });
+  downloadChartPreviewPng(filename, preview);
+}
+
+export async function auditedDownloadTableCsv(
+  token: string | null | undefined,
+  audit: Omit<PhiExportPayload, 'exportFormat'>,
+  filename: string,
+  columns: { key: string; label: string }[],
+  rows: Record<string, unknown>[],
+): Promise<void> {
+  await logPhiExport(token, { ...audit, exportFormat: 'csv' });
+  downloadTableCsv(filename, columns, rows);
+}
+
+export async function auditedDownloadBarChartPng(
+  token: string | null | undefined,
+  audit: Omit<PhiExportPayload, 'exportFormat'>,
+  filename: string,
+  title: string,
+  points: { label: string; value: number; color?: string }[],
+): Promise<void> {
+  await logPhiExport(token, { ...audit, exportFormat: 'png' });
+  downloadBarChartPng(filename, title, points);
+}
+
+type ExportColumn = { key: string; label: string };
+
+export function exportTierTable(
+  token: string | null | undefined,
+  resourceId: string,
+  filename: string,
+  columns: ExportColumn[],
+  rows: Record<string, unknown>[],
+): void {
+  const audit = { resourceType: 'report' as const, resourceId };
+  if (USE_MOCK_AUTH) {
+    downloadTableCsv(filename, columns, rows);
+    return;
+  }
+  void auditedDownloadTableCsv(token, audit, filename, columns, rows);
+}
+
+export function exportTierChartPng(
+  token: string | null | undefined,
+  resourceId: string,
+  filename: string,
+  title: string,
+  points: { label: string; value: number; color?: string }[],
+): void {
+  const audit = { resourceType: 'report' as const, resourceId };
+  if (USE_MOCK_AUTH) {
+    downloadBarChartPng(filename, title, points);
+    return;
+  }
+  void auditedDownloadBarChartPng(token, audit, filename, title, points);
+}
+
+export function exportCaseloadChartPng(
+  token: string | null | undefined,
+  resourceId: string,
+  filename: string,
+  title: string,
+  points: { label: string; value: number; color?: string }[],
+): void {
+  const audit = { resourceType: 'caseload' as const, resourceId };
+  if (USE_MOCK_AUTH) {
+    downloadBarChartPng(filename, title, points);
+    return;
+  }
+  void auditedDownloadBarChartPng(token, audit, filename, title, points);
+}
+
+export function exportCaseloadTable(
+  token: string | null | undefined,
+  resourceId: string,
+  filename: string,
+  columns: ExportColumn[],
+  rows: Record<string, unknown>[],
+): void {
+  const audit = { resourceType: 'caseload' as const, resourceId };
+  if (USE_MOCK_AUTH) {
+    downloadTableCsv(filename, columns, rows);
+    return;
+  }
+  void auditedDownloadTableCsv(token, audit, filename, columns, rows);
+}
+
+export function exportCaseloadTablePng<T extends object>(
+  token: string | null | undefined,
+  resourceId: string,
+  filename: string,
+  title: string,
+  columns: ExportColumn[],
+  rows: T[],
+  subtitle?: string,
+): void {
+  if (USE_MOCK_AUTH) {
+    downloadTablePng(filename, title, columns, rows, subtitle);
+    return;
+  }
+  void logPhiExport(token, { resourceType: 'caseload', resourceId, exportFormat: 'png' }).then(() => {
+    downloadTablePng(filename, title, columns, rows, subtitle);
+  });
+}
+
+export function exportDashboardTable(
+  token: string | null | undefined,
+  resourceId: string,
+  filename: string,
+  columns: ExportColumn[],
+  rows: Record<string, unknown>[],
+): void {
+  const audit = { resourceType: 'dashboard' as const, resourceId };
+  if (USE_MOCK_AUTH) {
+    downloadTableCsv(filename, columns, rows);
+    return;
+  }
+  void auditedDownloadTableCsv(token, audit, filename, columns, rows);
 }

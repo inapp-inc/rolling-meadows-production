@@ -33,6 +33,17 @@ export interface AuditEntry {
   detail?: Record<string, unknown>;
 }
 
+export interface PhiAccessEntry {
+  action: string;
+  actorId?: string;
+  timestamp?: string;
+  resourceType?: string;
+  resourceId?: string;
+  ipAddress?: string;
+  correlationId?: string;
+  detail?: Record<string, unknown>;
+}
+
 export const adminApi = {
   dashboard(token: string) {
     return apiRequest<{ userCount: number; openCaseCount: number; recentAudit: AuditEntry[] }>(
@@ -143,6 +154,9 @@ export const adminApi = {
   },
   auditLog(token: string, limit = 50) {
     return apiRequest<{ items: AuditEntry[] }>(`/admin/audit-log?limit=${limit}`, {}, token);
+  },
+  phiAccessLog(token: string, limit = 100) {
+    return apiRequest<{ items: PhiAccessEntry[] }>(`/admin/phi-access-log?limit=${limit}`, {}, token);
   },
   getTenantTranslationBundle(token: string, locale: string) {
     return apiRequest<{ locale: string; entries: Record<string, string> }>(

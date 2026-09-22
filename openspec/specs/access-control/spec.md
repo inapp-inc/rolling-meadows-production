@@ -36,6 +36,26 @@ Access SHALL be denied at the service layer, not only hidden in navigation.
 - **WHEN** the liaison calls an API to fetch case clinical detail
 - **THEN** the API returns HTTP 403 Forbidden
 
+### Requirement: PHI access audit
+
+The system SHALL append an audit record when authenticated users read, list, or search tenant client or case records. Audit payloads SHALL NOT contain clinical or demographic field values.
+
+#### Scenario: Client profile viewed
+
+- **GIVEN** an authenticated case manager
+- **WHEN** a client profile is retrieved by id
+- **THEN** a PHI access log entry is stored with actor, tenant, resource type, resource id, and timestamp
+
+### Requirement: Session timeout
+
+Authenticated sessions SHALL expire after a configurable absolute lifetime and the web client SHALL sign the user out after a configurable idle period.
+
+#### Scenario: Idle timeout
+
+- **GIVEN** an authenticated session with a 15-minute idle policy
+- **WHEN** no user activity occurs for 15 minutes
+- **THEN** the client ends the session and requires sign-in again
+
 ### Requirement: Role landing pages
 
 Each role SHALL land on its designated page after sign-in per the permission matrix.

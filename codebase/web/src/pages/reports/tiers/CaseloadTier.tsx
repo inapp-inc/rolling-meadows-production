@@ -9,9 +9,9 @@ import { ReportBarChart } from '../../../components/ReportBarChart';
 import { RiskBadge } from '../../../components/RiskBadge';
 import { SideDrawer } from '../../../components/SideDrawer';
 import {
-  downloadBarChartPng,
-  downloadTableCsv,
-  downloadTablePng,
+  exportCaseloadChartPng,
+  exportCaseloadTable,
+  exportCaseloadTablePng,
 } from '../../../utils/reportExport';
 import { ClientChipList } from '../components/ClientChipList';
 import { ClientDrawerBody, type DrawerMetaRow, type DrawerSection } from '../components/ClientDrawerBody';
@@ -173,7 +173,9 @@ export function CaseloadTier({ filters, onFiltersChange }: CaseloadTierProps) {
           subscribeKind="catalog"
           lead="Unique people with an open case in each program. Select a bar to list the people behind it."
           onDownloadImage={() =>
-            downloadBarChartPng(
+            exportCaseloadChartPng(
+              token,
+              'caseload/people-by-program',
               'people-by-program',
               'People by Program',
               data.peopleByProgram.map((row) => ({
@@ -184,7 +186,9 @@ export function CaseloadTier({ filters, onFiltersChange }: CaseloadTierProps) {
             )
           }
           onDownloadTable={() =>
-            downloadTableCsv(
+            exportCaseloadTable(
+              token,
+              'caseload/people-by-program',
               'people-by-program',
               [
                 { key: 'programLabel', label: 'Program' },
@@ -224,7 +228,9 @@ export function CaseloadTier({ filters, onFiltersChange }: CaseloadTierProps) {
           subscribeKind="catalog"
           lead="People with open cases in more than one program. Select a bar to filter the list below."
           onDownloadImage={() =>
-            downloadBarChartPng(
+            exportCaseloadChartPng(
+              token,
+              'caseload/multi-program-enrollment',
               'multi-program-enrollment',
               'Multi-Program Enrollment',
               data.multiProgram.distribution.map((row) => ({
@@ -235,7 +241,9 @@ export function CaseloadTier({ filters, onFiltersChange }: CaseloadTierProps) {
             )
           }
           onDownloadTable={() =>
-            downloadTableCsv(
+            exportCaseloadTable(
+              token,
+              'caseload/multi-program-enrollment',
               'multi-program-enrollment',
               [
                 { key: 'clientName', label: 'Client' },
@@ -305,7 +313,9 @@ export function CaseloadTier({ filters, onFiltersChange }: CaseloadTierProps) {
           subscribeKind="catalog"
           lead="Open cases grouped by latest assessed risk level. Select a row to see who is in each band."
           onDownloadImage={() =>
-            downloadBarChartPng(
+            exportCaseloadChartPng(
+              token,
+              'caseload/caseload-by-risk',
               'caseload-by-risk',
               'Caseload by Risk Level',
               data.caseloadByRisk.map((row) => ({
@@ -316,7 +326,9 @@ export function CaseloadTier({ filters, onFiltersChange }: CaseloadTierProps) {
             )
           }
           onDownloadTable={() =>
-            downloadTableCsv(
+            exportCaseloadTable(
+              token,
+              'caseload/caseload-by-risk-detail',
               'caseload-by-risk-detail',
               [
                 { key: 'name', label: 'Client' },
@@ -363,7 +375,9 @@ export function CaseloadTier({ filters, onFiltersChange }: CaseloadTierProps) {
           subscribeKind="catalog"
           lead="Use the report filters above to narrow by enrollment period and event."
           onDownloadImage={() =>
-            downloadTablePng(
+            exportCaseloadTablePng(
+              token,
+              'caseload/event-enrollment',
               'event-enrollment',
               'Clients Enrolled in Event',
               [
@@ -378,7 +392,9 @@ export function CaseloadTier({ filters, onFiltersChange }: CaseloadTierProps) {
             )
           }
           onDownloadTable={() =>
-            downloadTableCsv(
+            exportCaseloadTable(
+              token,
+              'caseload/event-enrollment',
               'event-enrollment',
               [
                 { key: 'clientName', label: 'Client' },
@@ -453,7 +469,9 @@ export function CaseloadTier({ filters, onFiltersChange }: CaseloadTierProps) {
           subscribeKind="catalog"
           lead="Cases past their follow-up cadence. Select a row to review the last contact."
           onDownloadImage={() =>
-            downloadTablePng(
+            exportCaseloadTablePng(
+              token,
+              'caseload/overdue-followups',
               'overdue-followups',
               'Overdue Follow-ups',
               [
@@ -466,7 +484,9 @@ export function CaseloadTier({ filters, onFiltersChange }: CaseloadTierProps) {
             )
           }
           onDownloadTable={() =>
-            downloadTableCsv(
+            exportCaseloadTable(
+              token,
+              'caseload/overdue-followups',
               'overdue-followups',
               [
                 { key: 'clientName', label: 'Client' },
@@ -539,7 +559,9 @@ export function CaseloadTier({ filters, onFiltersChange }: CaseloadTierProps) {
           subscribeKind="catalog"
           lead="Referrals to community-based organizations awaiting confirmation."
           onDownloadImage={() =>
-            downloadTablePng(
+            exportCaseloadTablePng(
+              token,
+              'caseload/open-cbo-referrals',
               'open-cbo-referrals',
               'Open CBO Referrals',
               [
@@ -552,7 +574,9 @@ export function CaseloadTier({ filters, onFiltersChange }: CaseloadTierProps) {
             )
           }
           onDownloadTable={() =>
-            downloadTableCsv(
+            exportCaseloadTable(
+              token,
+              'caseload/open-cbo-referrals',
               'open-cbo-referrals',
               [
                 { key: 'clientName', label: 'Client' },

@@ -23,6 +23,7 @@ from app.models.client import Client
 from app.models.i18n import TranslationEntry, TranslationLocale
 from app.models.custom_report import CustomReport
 from app.models.document import Document
+from app.models.phi_access import PhiAccessLogEntry
 from app.models.platform import AdminAuditEntry, PlatformSettings
 from app.models.tenant import Tenant
 from app.models.user import User
@@ -54,4 +55,5 @@ __all__ = [
     "CustomReport",
     "PlatformSettings",
     "AdminAuditEntry",
+    "PhiAccessLogEntry",
 ]

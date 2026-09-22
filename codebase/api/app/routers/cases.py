@@ -2,16 +2,17 @@ import uuid
 from datetime import date, datetime, timezone
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from pydantic import BaseModel
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.catalog.categories import program_for_subcategory
-from app.core.deps import get_current_user_doc
+from app.core.deps import get_correlation_id, get_current_user_doc
 from app.db.session import get_session
 from app.models.case import AssignmentHistory, Case, CaseIntake, CaseReferral
 from app.services.case_access import assert_case_access, assert_caseload
+from app.services.phi_access import record_phi_access
 from app.services.case_store import (
     audit,
     get_case,
@@ -167,9 +168,23 @@ async def get_workspace(
     case_id: str,
     user: Annotated[dict, Depends(get_current_user_doc)],
     session: Annotated[AsyncSession, Depends(get_session)],
+    request: Request,
+    correlation_id: Annotated[str | None, Depends(get_correlation_id)],
 ):
     assert_case_access(user)
-    return await _workspace(session, case_id, user)
+    payload = await _workspace(session, case_id, user)
+    await record_phi_access(
+        session,
+        tenant_id=user["tenant_id"],
+        actor_id=user["_id"],
+        action="read",
+        resource_type="case",
+        resource_id=case_id,
+        request=request,
+        correlation_id=correlation_id,
+    )
+    await session.commit()
+    return payload
 
 
 @router.put("/{case_id}/intake", operation_id="saveCaseIntake")

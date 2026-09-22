@@ -30,6 +30,11 @@ export interface TenantInfo {
   branding?: TenantBranding;
 }
 
+export interface SessionPolicy {
+  absoluteTimeoutMinutes: number;
+  idleTimeoutMinutes: number;
+}
+
 export interface UserProfile {
   id: string;
   email: string;
@@ -40,12 +45,17 @@ export interface UserProfile {
   status: string;
   landingPath: string;
   tenant?: TenantInfo | null;
+  sessionPolicy?: SessionPolicy;
+  passwordChangeRequired?: boolean;
+  passwordExpiresAt?: string | null;
+  passwordDaysRemaining?: number | null;
 }
 
 export interface LoginResponse {
   accessToken: string;
   tokenType: string;
   expiresIn: number;
+  sessionPolicy: SessionPolicy;
   user: UserProfile;
 }
 
@@ -118,9 +128,20 @@ export const api = {
   logout(token: string) {
     return request<void>('/auth/logout', { method: 'POST' }, token);
   },
+  changePassword(token: string, currentPassword: string, newPassword: string) {
+    return request<{ ok: boolean }>(
+      '/auth/change-password',
+      {
+        method: 'POST',
+        body: JSON.stringify({ currentPassword, newPassword }),
+      },
+      token,
+    );
+  },
 };
 
-export const TOKEN_KEY = 'rm.accessToken';
+export const TOKEN_KEY = 'cms.accessToken';
+export const LEGACY_TOKEN_KEY = 'rm.accessToken';
 
 export interface ClientSummary {
   id: string;
@@ -857,5 +878,48 @@ export const documentsApi = {
       method: 'POST',
       body: JSON.stringify(payload),
     });
+  },
+  async download(token: string, documentId: string, fallbackFilename: string): Promise<void> {
+    const headers: Record<string, string> = {
+      'x-correlation-id': correlationId(),
+      Authorization: `Bearer ${token}`,
+    };
+    const response = await fetch(`${API_BASE}/documents/${encodeURIComponent(documentId)}/download`, {
+      headers,
+    });
+    if (!response.ok) {
+      let body: unknown;
+      try {
+        body = await response.json();
+      } catch {
+        body = undefined;
+      }
+      const message =
+        typeof body === 'object' && body && 'detail' in body
+          ? typeof (body as { detail: { message?: string } }).detail === 'object' &&
+              (body as { detail: { message?: string } }).detail?.message
+            ? String((body as { detail: { message: string } }).detail.message)
+            : response.statusText
+          : response.statusText;
+      throw new ApiError(message, response.status, body);
+    }
+    const contentType = response.headers.get('content-type') ?? '';
+    if (contentType.includes('application/json')) {
+      const data = (await response.json()) as { redirectUrl?: string };
+      if (data.redirectUrl) {
+        window.open(data.redirectUrl, '_blank', 'noopener,noreferrer');
+        return;
+      }
+    }
+    const disposition = response.headers.get('Content-Disposition') ?? '';
+    const match = /filename="([^"]+)"/i.exec(disposition);
+    const filename = match?.[1] ?? fallbackFilename;
+    const blob = await response.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
   },
 };

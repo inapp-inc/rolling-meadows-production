@@ -11,8 +11,8 @@ class PlatformSettings(Base):
     __tablename__ = "platform_settings"
 
     id: Mapped[str] = mapped_column(String(32), primary_key=True, default="default")
-    default_password_min_length: Mapped[int] = mapped_column(Integer, default=8, nullable=False)
-    default_session_timeout_minutes: Mapped[int] = mapped_column(Integer, default=480, nullable=False)
+    default_password_min_length: Mapped[int] = mapped_column(Integer, default=12, nullable=False)
+    default_session_timeout_minutes: Mapped[int] = mapped_column(Integer, default=30, nullable=False)
     max_failed_logins: Mapped[int] = mapped_column(Integer, default=5, nullable=False)
 
 

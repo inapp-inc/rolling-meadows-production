@@ -1,11 +1,11 @@
-# Production: single-port Rolling Meadows (React SPA + FastAPI API)
+# Production: single-port Case Management Platform (React SPA + FastAPI API)
 FROM node:20-alpine AS web-build
 WORKDIR /app
 COPY web/package.json ./
 RUN npm install
 COPY web/ .
-ARG VITE_API_BASE_URL=/rolling-meadows/api
-ARG VITE_BASE_PATH=/rolling-meadows
+ARG VITE_API_BASE_URL=/case-management/api
+ARG VITE_BASE_PATH=/case-management
 ARG VITE_USE_MOCK_AUTH=false
 ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
 ENV VITE_BASE_PATH=$VITE_BASE_PATH
@@ -30,10 +30,10 @@ COPY api/app ./app
 COPY web/src/i18n/locales/en.json ./seed-data/en.json
 COPY --from=web-build /app/dist ./static
 
-ENV APP_BASE_PATH=/rolling-meadows
+ENV APP_BASE_PATH=/case-management
 ENV STATIC_DIR=/app/static
 ENV BRANDING_DIR=/app/branding
-ENV PUBLIC_URL=https://foundry.inapp.com/rolling-meadows
+ENV PUBLIC_URL=http://localhost:4510/case-management
 
 EXPOSE 4510
 

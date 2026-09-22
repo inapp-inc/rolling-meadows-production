@@ -1,16 +1,17 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from sqlalchemy import or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.catalog.risk_domains import PROGRAM_LABELS
-from app.core.deps import get_current_user_doc
+from app.core.deps import get_correlation_id, get_current_user_doc
 from app.db.session import get_session
 from app.models.case import Case
 from app.models.client import Client
 from app.models.user import User
 from app.seed.users import user_model_to_dict
+from app.services.phi_access import record_phi_access
 
 router = APIRouter(prefix="/liaison", tags=["liaison"])
 
@@ -21,6 +22,8 @@ LIAISON_ROLES = {"cross_program_liaison", "supervisor", "tenant_admin"}
 async def liaison_lookup(
     user: Annotated[dict, Depends(get_current_user_doc)],
     session: Annotated[AsyncSession, Depends(get_session)],
+    request: Request,
+    correlation_id: Annotated[str | None, Depends(get_correlation_id)],
     q: str = Query(default="", min_length=0),
 ):
     if user.get("role") not in LIAISON_ROLES:
@@ -78,4 +81,15 @@ async def liaison_lookup(
         )
 
     rows.sort(key=lambda row: row["clientName"] or "")
+    await record_phi_access(
+        session,
+        tenant_id=tenant_id,
+        actor_id=user["_id"],
+        action="search",
+        resource_type="client",
+        detail={"count": len(rows), "hasQuery": True},
+        request=request,
+        correlation_id=correlation_id,
+    )
+    await session.commit()
     return {"items": rows}

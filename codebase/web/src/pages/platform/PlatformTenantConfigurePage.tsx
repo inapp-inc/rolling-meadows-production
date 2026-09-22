@@ -45,11 +45,11 @@ export function PlatformTenantConfigurePage() {
     if (USE_MOCK_AUTH) {
       setTenant({
         id: tenantId,
-        legalName: 'Rolling Meadows Human Services',
-        shortCode: 'RMHS',
+        legalName: 'Demo Human Services Agency',
+        shortCode: 'DEMO',
         status: 'Active',
         branding: {
-          displayName: 'Rolling Meadows Human Services',
+          displayName: 'Demo Human Services Agency',
           primaryColor: '#1a5f4a',
           secondaryColor: '#0f2340',
           accentColor: '#43a047',

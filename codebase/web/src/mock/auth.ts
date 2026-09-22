@@ -6,13 +6,13 @@ import type { MockStore } from './types';
 const MOCK_USER_KEY = 'rm.mock.userId';
 
 const MOCK_EMAILS: Record<string, string> = {
-  'usr-platform-admin': 'platform.admin@demo.rmhs.app',
-  'usr-tenant-admin': 'tenant.admin@demo.rmhs.app',
-  'usr-case-manager': 'case.manager@demo.rmhs.app',
-  'usr-supervisor': 'supervisor@demo.rmhs.app',
-  'usr-cross-program-liaison': 'liaison@demo.rmhs.app',
-  'usr-liaison': 'liaison@demo.rmhs.app',
-  'usr-auditor': 'auditor@demo.rmhs.app',
+  'usr-platform-admin': 'platform.admin@demo.example.com',
+  'usr-tenant-admin': 'tenant.admin@demo.example.com',
+  'usr-case-manager': 'case.manager@demo.example.com',
+  'usr-supervisor': 'supervisor@demo.example.com',
+  'usr-cross-program-liaison': 'liaison@demo.example.com',
+  'usr-liaison': 'liaison@demo.example.com',
+  'usr-auditor': 'auditor@demo.example.com',
 };
 
 export function mockUserToProfile(store: MockStore, userId: string): UserProfile | null {
@@ -20,10 +20,10 @@ export function mockUserToProfile(store: MockStore, userId: string): UserProfile
   if (!user) return null;
   return {
     id: user.id,
-    email: MOCK_EMAILS[userId] ?? `${user.role.replace(/_/g, '.')}@demo.rmhs.app`,
+    email: MOCK_EMAILS[userId] ?? `${user.role.replace(/_/g, '.')}@demo.example.com`,
     name: user.name,
     role: user.role,
-    tenantId: user.role === 'platform_admin' ? null : 'tenant-rolling-meadows',
+    tenantId: user.role === 'platform_admin' ? null : 'tenant-demo',
     programId: user.programId,
     status: user.status,
     landingPath: landingPathForRole(user.role),
@@ -31,18 +31,18 @@ export function mockUserToProfile(store: MockStore, userId: string): UserProfile
       user.role === 'platform_admin'
         ? null
         : {
-            id: 'tenant-rolling-meadows',
-            legalName: 'Rolling Meadows Human Services',
-            shortCode: 'RMHS',
+            id: 'tenant-demo',
+            legalName: 'Demo Human Services Agency',
+            shortCode: 'DEMO',
             status: 'Active',
-            displayName: 'Rolling Meadows Human Services',
+            displayName: 'Demo Human Services Agency',
             branding: {
-              displayName: 'Rolling Meadows Human Services',
+              displayName: 'Demo Human Services Agency',
               primaryColor: '#1a5f4a',
               secondaryColor: '#0f2340',
               accentColor: '#43a047',
-              footerText: '© Rolling Meadows Human Services',
-              loginTagline: 'Human services case management for the City of Rolling Meadows.',
+              footerText: '© Demo Human Services Agency',
+              loginTagline: 'Human services case management for your agency workspace.',
               logoUrl: '/assets/logo.svg',
             },
           },

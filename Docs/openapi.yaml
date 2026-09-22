@@ -1,14 +1,14 @@
 openapi: 3.0.3
 info:
-  title: Rolling Meadows Case Management API
+  title: Case Management API
   version: 0.1.0
   description: |
-    Canonical API contract for the Rolling Meadows multi-tenant case management platform.
+    Canonical API contract for the multi-tenant case management platform.
     Stack: React frontend + Python FastAPI backend + MongoDB.
     Edit this file before changing API shapes.
 
 servers:
-  - url: https://foundry.inapp.com/rolling-meadows/api
+  - url: https://your-host.example.com/case-management/api
     description: Production (single port behind nginx)
   - url: http://localhost:8000
     description: Local FastAPI (Docker or direct)
@@ -467,7 +467,7 @@ components:
         email:
           type: string
           format: email
-          example: case.manager@demo.rmhs.app
+          example: case.manager@demo.example.com
         password:
           type: string
           format: password

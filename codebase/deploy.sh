@@ -12,12 +12,12 @@ if [[ -f .env ]]; then
 fi
 
 APP_PORT="${APP_PORT:-4510}"
-APP_BASE_PATH="${APP_BASE_PATH:-/rolling-meadows}"
-PUBLIC_URL="${PUBLIC_URL:-https://foundry.inapp.com/rolling-meadows}"
-IMAGE="rolling-meadows-app:latest"
+APP_BASE_PATH="${APP_BASE_PATH:-/case-management}"
+PUBLIC_URL="${PUBLIC_URL:-http://localhost:4510/case-management}"
+IMAGE="case-management-app:latest"
 COMPOSE_FILE="docker-compose.prod.yml"
 
-echo "=== Rolling Meadows deploy ==="
+echo "=== Case Management Platform deploy ==="
 echo "Public URL: ${PUBLIC_URL}"
 echo "Listen port: ${APP_PORT}"
 echo
@@ -36,9 +36,9 @@ if ! command -v docker >/dev/null 2>&1; then
   exit 1
 fi
 
-if [[ -f rolling-meadows-app.tar ]]; then
-  echo "Loading Docker image from rolling-meadows-app.tar..."
-  docker load -i rolling-meadows-app.tar
+if [[ -f case-management-app.tar ]]; then
+  echo "Loading Docker image from case-management-app.tar..."
+  docker load -i case-management-app.tar
 else
   echo "No tarball found — building image on server..."
   docker compose -f "$COMPOSE_FILE" build

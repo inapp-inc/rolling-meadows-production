@@ -17,7 +17,7 @@ import {
 import { useMockData } from '../../../mock/MockDataContext';
 import { useI18n } from '../../../i18n/I18nContext';
 import { resolveActiveNav } from '../../../navigation/modules';
-import { downloadChartPreviewPng, downloadReportCsv } from '../../../utils/reportExport';
+import { auditedDownloadChartPreviewPng, auditedDownloadReportCsv, downloadChartPreviewPng, downloadReportCsv } from '../../../utils/reportExport';
 import { CustomReportPreview } from '../components/CustomReportPreview';
 import {
   DEFAULT_CASELOAD_FILTERS,
@@ -231,8 +231,15 @@ export function ReportBuilderPage() {
 
   function handleExport() {
     if (!preview) return;
-    if (preview.reportType === 'chart') downloadChartPreviewPng(config.name || 'report', preview);
-    else downloadReportCsv(config.name || 'report', preview);
+    const name = config.name || 'report';
+    const audit = { resourceType: 'custom_report' as const, resourceId: config.id ?? reportId ?? undefined };
+    if (USE_MOCK_AUTH) {
+      if (preview.reportType === 'chart') downloadChartPreviewPng(name, preview);
+      else downloadReportCsv(name, preview);
+      return;
+    }
+    if (preview.reportType === 'chart') void auditedDownloadChartPreviewPng(token, audit, name, preview);
+    else void auditedDownloadReportCsv(token, audit, name, preview);
   }
 
   const grainLabel = entityLabel(t, config.primaryEntity);

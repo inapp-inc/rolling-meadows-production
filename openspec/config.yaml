@@ -1,7 +1,7 @@
 schema: spec-driven
 
 context: |
-  Project: Rolling Meadows Case Management Platform (multi-tenant human services)
+  Project: Case Management Platform (multi-tenant human services)
   BRD: Docs/project.md (BRD-RM-6.1)
   FSD: Docs/FSD-Rolling-Meadows.md
   UI reference (operational screens): Docs/ui/ (Demo v8 prototype — layouts, fields, validations)

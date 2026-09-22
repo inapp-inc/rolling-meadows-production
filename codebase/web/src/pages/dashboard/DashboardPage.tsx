@@ -21,7 +21,7 @@ import {
 import { useMockData } from '../../mock/MockDataContext';
 import type { CaseloadView } from '../../mock/types';
 import { cadenceForRisk, getStatus } from '../../mock/workflow';
-import { downloadTableCsv, type ExportColumn } from '../../utils/reportExport';
+import { exportDashboardTable, type ExportColumn } from '../../utils/reportExport';
 import { ReportSubscribeButton } from '../reports/components/ReportSubscribeButton';
 import { CaseloadChipList } from './CaseloadChipList';
 import { DashboardStatCard } from './DashboardStatCard';
@@ -46,7 +46,7 @@ type OverdueEntry = { daysOverdue: number; cadence: string };
 const RISK_ORDER = ['High', 'Medium', 'Moderate', 'Low', 'Unknown'];
 
 export function DashboardPage() {
-  const { user } = useAuth();
+  const { user, token } = useAuth();
   const { store } = useMockData();
   const i18n = useI18n();
   const { t } = i18n;
@@ -152,12 +152,17 @@ export function DashboardPage() {
     caseloadSection.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
-  function exportRows<T extends object>(filename: string, columns: ExportColumn[], rows: T[]) {
+  function exportRows<T extends object>(
+    resourceId: string,
+    filename: string,
+    columns: ExportColumn[],
+    rows: T[],
+  ) {
     if (!rows.length) {
       showToast(t('components.noDataExport'), 'warning');
       return;
     }
-    downloadTableCsv(filename, columns, rows);
+    exportDashboardTable(token, resourceId, filename, columns, rows as Record<string, unknown>[]);
   }
 
   const activeRiskLevel = drawer?.kind === 'risk' ? drawer.level : null;
@@ -280,6 +285,7 @@ export function DashboardPage() {
                   label={t('export.downloadXlsx')}
                   onClick={() =>
                     exportRows(
+                      'program-overview-risk-detail',
                       t('export.caseloadRiskDetailTitle'),
                       [
                         { key: 'clientName', label: t('common.client') },
@@ -395,6 +401,7 @@ export function DashboardPage() {
                   label={t('export.downloadXlsx')}
                   onClick={() =>
                     exportRows(
+                      'full-caseload-detail',
                       t('export.fullCaseloadDetailTitle'),
                       [
                         { key: 'clientName', label: t('common.client') },

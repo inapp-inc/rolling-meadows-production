@@ -61,11 +61,11 @@ export function AdminUsersPage() {
 
   const load = useCallback(async () => {
     if (USE_MOCK_AUTH) {
-      const tenantId = currentUser?.tenantId ?? 'tenant-rolling-meadows';
+      const tenantId = currentUser?.tenantId ?? 'tenant-demo';
       const mockUsers: AdminUser[] = [
-        { id: 'usr-org-admin', email: 'org.admin@demo.rmhs.app', name: 'Organization Administrator', role: 'organization_admin', status: 'Active', tenantId },
-        { id: 'usr-case-manager', email: 'case.manager@demo.rmhs.app', name: 'Case Manager', role: 'case_manager', status: 'Active', tenantId },
-        { id: 'usr-supervisor', email: 'supervisor@demo.rmhs.app', name: 'Supervisor', role: 'supervisor', status: 'Active', tenantId },
+        { id: 'usr-org-admin', email: 'org.admin@demo.example.com', name: 'Organization Administrator', role: 'organization_admin', status: 'Active', tenantId },
+        { id: 'usr-case-manager', email: 'case.manager@demo.example.com', name: 'Case Manager', role: 'case_manager', status: 'Active', tenantId },
+        { id: 'usr-supervisor', email: 'supervisor@demo.example.com', name: 'Supervisor', role: 'supervisor', status: 'Active', tenantId },
       ];
       const operational = new Set<UserRole>(['supervisor', 'case_manager', 'cross_program_liaison', 'auditor']);
       const scoped = mockUsers.filter((u) => u.tenantId === tenantId && operational.has(u.role as UserRole));

@@ -11,4 +11,4 @@ dist
 **/*.pyc
 **/.pytest_cache
 coverage
-dist/rolling-meadows-deploy
+dist/case-management-deploy

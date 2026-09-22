@@ -2,6 +2,7 @@ import { FormEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { authApi } from '../api/authApi';
 import type { TenantBranding } from '../api/client';
+import { CHANGE_PASSWORD_PATH, mustChangePassword } from '../auth/accountPaths';
 import { useAuth } from '../auth/AuthContext';
 import { applyBranding, clearBranding } from '../branding/applyBranding';
 import { PRODUCT_BRANDING, PRODUCT_NAME, productLogoUrl } from '../branding/productBranding';
@@ -75,7 +76,7 @@ export function LoginPage() {
     setLoading(true);
     try {
       const user = await login(email.trim(), password);
-      navigate(user.landingPath, { replace: true });
+      navigate(mustChangePassword(user) ? CHANGE_PASSWORD_PATH : user.landingPath, { replace: true });
     } catch (err) {
       setError(err instanceof Error ? err.message : t('signIn.loginFailed'));
     } finally {

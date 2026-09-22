@@ -25,7 +25,7 @@ async def health(
 
     body = {
         "ok": database_ok,
-        "service": "rolling-meadows-api",
+        "service": "case-management-api",
         "database": "postgres",
         "databaseOk": database_ok,
         "modules": sorted(settings.enabled_modules),

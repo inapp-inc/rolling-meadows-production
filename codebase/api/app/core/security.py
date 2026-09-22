@@ -25,8 +25,9 @@ def verify_password(plain: str, hashed: str) -> bool:
     return bcrypt.checkpw(plain.encode("utf-8"), hashed.encode("utf-8"))
 
 
-def create_access_token(subject: str, claims: dict[str, Any]) -> str:
-    expire = datetime.now(UTC) + timedelta(minutes=settings.jwt_expires_minutes)
+def create_access_token(subject: str, claims: dict[str, Any], *, expires_minutes: int | None = None) -> str:
+    ttl = expires_minutes if expires_minutes is not None else settings.jwt_expires_minutes
+    expire = datetime.now(UTC) + timedelta(minutes=ttl)
     payload = {**claims, "sub": subject, "exp": expire}
     return jwt.encode(payload, settings.jwt_secret, algorithm=settings.jwt_algorithm)
 

@@ -58,7 +58,7 @@
     "navFooterCopy": "© Organization",
     "language": "Language",
     "platformScope": "Platform Administration",
-    "platformBrand": "CommunityOne",
+    "platformBrand": "Case Management Platform",
     "platformFooterCopy": "© {product} platform administration",
     "organization": "Organization"
   },
@@ -72,8 +72,11 @@
     "auditor": "Auditor",
     "auditorSignIn": "Auditor (Aggregate reports only)"
   },
+  "auth": {
+    "sessionExpired": "Your session ended due to inactivity. Sign in again to continue."
+  },
   "signIn": {
-    "pageTitle": "Sign In — CommunityOne",
+    "pageTitle": "Sign In — Case Management Platform",
     "title": "Sign in",
     "subtitle": "Select your role to continue",
     "subtitleCredentials": "Enter your credentials to continue",
@@ -81,14 +84,14 @@
     "emailLabel": "Email",
     "passwordLabel": "Password",
     "organizationCodeLabel": "Organization code",
-    "organizationCodePlaceholder": "e.g. RMHS",
+    "organizationCodePlaceholder": "e.g. DEMO",
     "defaultOrgName": "your organization",
     "heroTitleForOrg": "{org}",
     "heroTitleProduct": "Welcome to {product}",
     "heroTaglineProduct": "Unified case management for human services agencies — clients, workflows, and reporting in one place.",
     "heroTaglineOrg": "Sign in to access your agency workspace.",
-    "heroTaglinePlatform": "Sign in to manage tenant organizations, branding, and platform settings for CommunityOne.",
-    "subtitlePlatformAdmin": "CommunityOne platform administrator sign-in",
+    "heroTaglinePlatform": "Sign in to manage tenant organizations, branding, and platform settings.",
+    "subtitlePlatformAdmin": "Platform administrator sign-in",
     "poweredBy": "Powered by {product}",
     "signInButton": "Sign in",
     "signingIn": "Signing in…",
@@ -1771,15 +1774,16 @@
     "manageInWorkspace": "Add or manage in workspace",
     "manageInWorkspaceProfile": "Manage in workspace",
     "downloadAria": "Download {filename}",
+    "downloadError": "Could not download document.",
     "linkPreviewLead": "This document is stored externally. Open it in a new tab to view the file on the linked drive or site.",
     "locationLabel": "Location:",
     "previewUnavailable": "Preview is not available for this file type.",
     "consentFilename": "Intake Consent Form — {name}.svg",
     "assessmentFilename": "Home Safety Assessment — {name}.svg",
-    "svgOrgTitle": "Rolling Meadows Senior Services",
+    "svgOrgTitle": "Demo Agency Senior Services",
     "svgConsentTitle": "Client Intake Consent Form",
     "svgClientName": "Client name:",
-    "svgAuthorizeIntro": "I authorize Rolling Meadows Senior Services to:",
+    "svgAuthorizeIntro": "I authorize Demo Agency Senior Services to:",
     "svgAuthorize1": "Coordinate in-home support and community referrals",
     "svgAuthorize2": "Share limited information with partner agencies for care planning",
     "svgAuthorize3": "Contact my emergency contact regarding service delivery",
@@ -1787,7 +1791,7 @@
     "svgSignature": "Client / representative signature:",
     "svgDateSigned": "Date signed:",
     "svgWitness": "Case manager witness:",
-    "svgDemoFooter": "Demo document — Rolling Meadows Case Management prototype",
+    "svgDemoFooter": "Demo document — case management platform prototype",
     "svgAssessmentTitle": "Home Safety Assessment Summary",
     "svgAssessmentClient": "Client:",
     "svgAssessmentDate": "Date:",
@@ -1808,6 +1812,20 @@
     "demoUser": "Demo user"
   },
   "pages": {
+    "account": {
+      "changePassword": {
+        "title": "Change password",
+        "requiredLead": "Your password must be updated before you can continue.",
+        "expiresIn": "Your password expires in {days} days. Update it now to avoid interruption.",
+        "current": "Current password",
+        "new": "New password",
+        "confirm": "Confirm new password",
+        "submit": "Update password",
+        "success": "Password updated.",
+        "error": "Could not update password.",
+        "mismatch": "New passwords do not match."
+      }
+    },
     "reports": {
       "clientsByProgram": "People by Program",
       "clientsByProgramHint": "Unique people with an open case in each program. Registration-only clients (no open case) are shown separately.",
@@ -2791,6 +2809,12 @@
         "defaultLocale": "Default locale",
         "duplicateThreshold": "Duplicate detection threshold (%)",
         "retentionYears": "Document retention (years)",
+        "securitySection": "Session & password policy",
+        "securityLead": "Controls sign-in session length, idle timeout, and password rules for this organization.",
+        "sessionTimeoutMinutes": "Maximum session length (minutes)",
+        "idleTimeoutMinutes": "Idle timeout (minutes)",
+        "passwordMinLength": "Minimum password length",
+        "passwordMaxAgeDays": "Password maximum age (days, 0 = no expiry)",
         "saved": "Tenant settings saved.",
         "saveError": "Could not save settings.",
         "mockSaved": "Settings preview only in demo mode."
@@ -2846,12 +2870,17 @@
         "editTranslationAria": "Edit translation for {key}"
       },
       "audit": {
-        "title": "Audit Log",
+        "title": "Audit & access logs",
+        "lead": "Review PHI access and security events for compliance. Logs do not contain clinical content.",
+        "phiSectionTitle": "PHI access",
+        "securitySectionTitle": "Security & administration",
         "colTime": "Time",
         "colAction": "Action",
         "colResource": "Resource",
         "colActor": "Actor",
-        "empty": "No admin audit entries yet."
+        "colIp": "IP address",
+        "empty": "No security audit entries yet.",
+        "phiEmpty": "No PHI access logged yet."
       }
     },
     "adminDuplicates": {
@@ -2934,7 +2963,7 @@
     }
   },
   "htmlTitle": {
-    "suffix": " — CommunityOne",
+    "suffix": " — Case Management Platform",
     "dashboard": "Homepage",
     "caseSearch": "Case Search",
     "caseCreation": "Case Creation",

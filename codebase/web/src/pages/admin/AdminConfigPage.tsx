@@ -24,6 +24,10 @@ export function AdminConfigPage() {
     defaultLocale: 'en',
     duplicateThreshold: 25,
     retentionYears: 7,
+    sessionTimeoutMinutes: 30,
+    idleTimeoutMinutes: 15,
+    passwordMinLength: 12,
+    passwordMaxAgeDays: 90,
   });
 
   const load = useCallback(async () => {
@@ -40,11 +44,16 @@ export function AdminConfigPage() {
         defaultLocale: 'en',
         duplicateThreshold: 25,
         retentionYears: 7,
+        sessionTimeoutMinutes: 30,
+        idleTimeoutMinutes: 15,
+        passwordMinLength: 12,
+        passwordMaxAgeDays: 90,
       });
       return;
     }
     if (!token) return;
     const data = await adminApi.getConfig(token);
+    const cfg = data.config ?? {};
     setConfig({
       displayName: data.branding?.display_name ?? data.legalName,
       primaryColor: data.branding?.primary_color ?? '#1a3560',
@@ -54,8 +63,12 @@ export function AdminConfigPage() {
       loginTagline: data.branding?.login_tagline ?? '',
       logoUrl: data.branding?.logo_url ?? '',
       defaultLocale: data.defaultLocale,
-      duplicateThreshold: (data.config?.duplicate_threshold as number) ?? 25,
-      retentionYears: (data.config?.retention_years as number) ?? 7,
+      duplicateThreshold: (cfg.duplicate_threshold as number) ?? 25,
+      retentionYears: (cfg.retention_years as number) ?? 7,
+      sessionTimeoutMinutes: (cfg.session_timeout_minutes as number) ?? 30,
+      idleTimeoutMinutes: (cfg.idle_timeout_minutes as number) ?? 15,
+      passwordMinLength: (cfg.password_min_length as number) ?? 12,
+      passwordMaxAgeDays: (cfg.password_max_age_days as number) ?? 90,
     });
   }, [token, user]);
 
@@ -126,6 +139,10 @@ export function AdminConfigPage() {
         defaultLocale: config.defaultLocale,
         duplicateThreshold: config.duplicateThreshold,
         retentionYears: config.retentionYears,
+        sessionTimeoutMinutes: config.sessionTimeoutMinutes,
+        idleTimeoutMinutes: config.idleTimeoutMinutes,
+        passwordMinLength: config.passwordMinLength,
+        passwordMaxAgeDays: config.passwordMaxAgeDays,
       });
       await refreshUser();
       applyBranding({
@@ -196,6 +213,54 @@ export function AdminConfigPage() {
           <label>{t('pages.admin.config.retentionYears')}</label>
           <input type="number" min={1} max={30} value={config.retentionYears} onChange={(e) => setConfig({ ...config, retentionYears: Number(e.target.value) })} />
         </div>
+
+        <h3 className="form-section-title">{t('pages.admin.config.securitySection')}</h3>
+        <p className="muted form-lead">{t('pages.admin.config.securityLead')}</p>
+        <div className="form-row">
+          <div className="form-group">
+            <label>{t('pages.admin.config.sessionTimeoutMinutes')}</label>
+            <input
+              type="number"
+              min={5}
+              max={480}
+              value={config.sessionTimeoutMinutes}
+              onChange={(e) => setConfig({ ...config, sessionTimeoutMinutes: Number(e.target.value) })}
+            />
+          </div>
+          <div className="form-group">
+            <label>{t('pages.admin.config.idleTimeoutMinutes')}</label>
+            <input
+              type="number"
+              min={5}
+              max={120}
+              value={config.idleTimeoutMinutes}
+              onChange={(e) => setConfig({ ...config, idleTimeoutMinutes: Number(e.target.value) })}
+            />
+          </div>
+        </div>
+        <div className="form-row">
+          <div className="form-group">
+            <label>{t('pages.admin.config.passwordMinLength')}</label>
+            <input
+              type="number"
+              min={12}
+              max={128}
+              value={config.passwordMinLength}
+              onChange={(e) => setConfig({ ...config, passwordMinLength: Number(e.target.value) })}
+            />
+          </div>
+          <div className="form-group">
+            <label>{t('pages.admin.config.passwordMaxAgeDays')}</label>
+            <input
+              type="number"
+              min={0}
+              max={365}
+              value={config.passwordMaxAgeDays}
+              onChange={(e) => setConfig({ ...config, passwordMaxAgeDays: Number(e.target.value) })}
+            />
+          </div>
+        </div>
+
         <div className="form-actions">
           <button type="submit" className="btn btn-primary">{t('common.save')}</button>
         </div>

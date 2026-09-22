@@ -17,7 +17,7 @@ from app.models.user import User
 SEED_USERS = [
     {
         "id": "usr-platform-admin",
-        "email": "platform.admin@demo.rmhs.app",
+        "email": "platform.admin@demo.example.com",
         "name": "Platform Administrator",
         "role": "platform_admin",
         "program_id": None,
@@ -25,7 +25,7 @@ SEED_USERS = [
     },
     {
         "id": "usr-org-admin",
-        "email": "org.admin@demo.rmhs.app",
+        "email": "org.admin@demo.example.com",
         "name": "Organization Administrator",
         "role": "organization_admin",
         "program_id": None,
@@ -33,7 +33,7 @@ SEED_USERS = [
     },
     {
         "id": "usr-case-manager",
-        "email": "case.manager@demo.rmhs.app",
+        "email": "case.manager@demo.example.com",
         "name": "Case Manager",
         "role": "case_manager",
         "program_id": "prog-senior-services",
@@ -41,7 +41,7 @@ SEED_USERS = [
     },
     {
         "id": "usr-supervisor",
-        "email": "supervisor@demo.rmhs.app",
+        "email": "supervisor@demo.example.com",
         "name": "Supervisor / Dept Admin",
         "role": "supervisor",
         "program_id": "prog-senior-services",
@@ -49,7 +49,7 @@ SEED_USERS = [
     },
     {
         "id": "usr-liaison",
-        "email": "liaison@demo.rmhs.app",
+        "email": "liaison@demo.example.com",
         "name": "Cross-Program Liaison",
         "role": "cross_program_liaison",
         "program_id": None,
@@ -57,7 +57,7 @@ SEED_USERS = [
     },
     {
         "id": "usr-auditor",
-        "email": "auditor@demo.rmhs.app",
+        "email": "auditor@demo.example.com",
         "name": "Auditor",
         "role": "auditor",
         "program_id": None,
@@ -149,26 +149,30 @@ async def seed_auth_data_if_empty(session: AsyncSession) -> None:
         session.add(
             Tenant(
                 id=settings.default_tenant_id,
-                legal_name="Rolling Meadows Human Services",
-                short_code="RMHS",
+                legal_name="Demo Human Services Agency",
+                short_code="DEMO",
                 status="Active",
                 default_locale="en",
                 enabled_locales=["en", "es"],
                 timezone="America/Chicago",
                 branding={
-                    "display_name": "Rolling Meadows Human Services",
+                    "display_name": "Demo Human Services Agency",
                     "primary_color": "#1a5f4a",
                     "secondary_color": "#0f2340",
                     "accent_color": "#43a047",
-                    "footer_text": "© Rolling Meadows Human Services",
+                    "footer_text": "© Demo Human Services Agency",
                     "logo_url": "/assets/logo.svg",
-                    "login_tagline": "Human services case management for the City of Rolling Meadows.",
+                    "login_tagline": "Human services case management for your agency workspace.",
                 },
                 config={
                     "duplicate_threshold": 25,
                     "follow_up_cadence": {"High": 14, "Medium": 30, "Low": 90},
                     "retention_years": 7,
                     "support_access_policy": "per_session",
+                    "session_timeout_minutes": 30,
+                    "idle_timeout_minutes": 15,
+                    "password_min_length": 12,
+                    "password_max_age_days": 90,
                 },
                 provisioned_at=datetime.now(timezone.utc),
                 activated_at=datetime.now(timezone.utc),
@@ -197,11 +201,17 @@ async def seed_auth_data_if_empty(session: AsyncSession) -> None:
                 status="Active",
                 password_hash=password_hash,
                 created_by=seed_user.get("created_by"),
+                password_changed_at=datetime.now(timezone.utc),
             )
         )
     await session.commit()
 
     await _backfill_created_by(session)
+    backfill_users = await session.execute(select(User).where(User.password_changed_at.is_(None)))
+    for row in backfill_users.scalars().all():
+        row.password_changed_at = datetime.now(timezone.utc)
+        session.add(row)
+    await session.commit()
 
     for loc in DEFAULT_LOCALE_SEED:
         result = await session.execute(
@@ -242,7 +252,14 @@ async def seed_auth_data_if_empty(session: AsyncSession) -> None:
         select(PlatformSettings).where(PlatformSettings.id == "default")
     )
     if not settings_result.scalar_one_or_none():
-        session.add(PlatformSettings(id="default"))
+        session.add(
+            PlatformSettings(
+                id="default",
+                default_password_min_length=12,
+                default_session_timeout_minutes=30,
+                max_failed_logins=5,
+            )
+        )
         await session.commit()
 
 

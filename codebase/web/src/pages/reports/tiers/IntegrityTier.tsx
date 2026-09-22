@@ -6,7 +6,7 @@ import { integrityClient, integrityReport } from '../../../mock/reportEngine';
 import { reportFilterOptions, toReportI18n } from '../../../mock/customReportService';
 import { useMockData } from '../../../mock/MockDataContext';
 import { SideDrawer } from '../../../components/SideDrawer';
-import { downloadTableCsv } from '../../../utils/reportExport';
+import { exportTierTable } from '../../../utils/reportExport';
 import { buildClientCaseDrawerContent } from '../components/clientCaseDrawerContent';
 import { ClientDrawerBody } from '../components/ClientDrawerBody';
 import { ReportCard } from '../components/ReportCard';
@@ -85,7 +85,9 @@ export function IntegrityTier({ filters, onFiltersChange }: IntegrityTierProps) 
           subscribeKey="integrity-client-data-integrity"
           lead="Duplicate, intake, and registration data quality issues. Select a row to open the client record."
           onDownloadTable={() =>
-            downloadTableCsv(
+            exportTierTable(
+              token,
+              'integrity/data-integrity',
               'data-integrity',
               [
                 { key: 'issueType', label: t('pages.reports.issueType') },
@@ -138,7 +140,9 @@ export function IntegrityTier({ filters, onFiltersChange }: IntegrityTierProps) 
           subscribeKey="integrity-system-audit-log"
           lead="Recent platform actions for compliance review."
           onDownloadTable={() =>
-            downloadTableCsv(
+            exportTierTable(
+              token,
+              'integrity/audit-log',
               'audit-log',
               [
                 { key: 'timestamp', label: t('pages.reports.timestamp') },

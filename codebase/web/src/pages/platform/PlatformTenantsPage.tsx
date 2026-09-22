@@ -27,7 +27,7 @@ const DEFAULT_SETTINGS = {
 };
 
 /** Demo tenant seeded in API — not deletable */
-const PROTECTED_TENANT_ID = 'tenant-rolling-meadows';
+const PROTECTED_TENANT_ID = 'tenant-demo';
 
 function emptyCreateForm() {
   return {
@@ -57,12 +57,12 @@ export function PlatformTenantsPage() {
     if (USE_MOCK_AUTH || !token) {
       setTenants([
         {
-          id: 'tenant-rolling-meadows',
-          legalName: 'Rolling Meadows Human Services',
-          shortCode: 'RMHS',
+          id: 'tenant-demo',
+          legalName: 'Demo Human Services Agency',
+          shortCode: 'DEMO',
           status: 'Active',
           branding: {
-            displayName: 'Rolling Meadows Human Services',
+            displayName: 'Demo Human Services Agency',
             primaryColor: '#1a5f4a',
             secondaryColor: '#0f2340',
             accentColor: '#43a047',
@@ -201,7 +201,7 @@ export function PlatformTenantsPage() {
   return (
     <AppLayout
       title={t('pages.platform.administration.title')}
-      lead={t('pages.platform.administration.lead', { product: 'CommunityOne' })}
+      lead={t('pages.platform.administration.lead', { product: t('shell.platformBrand') })}
       navId="platform-tenants"
     >
       <div className="page-toolbar">

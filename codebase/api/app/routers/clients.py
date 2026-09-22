@@ -1,11 +1,11 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from pydantic import BaseModel
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.deps import get_current_user_doc
+from app.core.deps import get_correlation_id, get_current_user_doc
 from app.db.session import get_session
 from app.models.client import Client
 from app.services.clients import (
@@ -18,6 +18,7 @@ from app.services.clients import (
     validate_create,
 )
 from app.services.deduplication import pairs_among
+from app.services.phi_access import record_phi_access
 
 router = APIRouter(prefix="/clients", tags=["clients"])
 
@@ -69,6 +70,8 @@ def _parse_dob(value: str | None):
 async def list_clients(
     user: Annotated[dict, Depends(get_current_user_doc)],
     session: Annotated[AsyncSession, Depends(get_session)],
+    request: Request,
+    correlation_id: Annotated[str | None, Depends(get_correlation_id)],
     q: str | None = Query(default=None),
 ):
     if user.get("role") in CLIENT_DENIED_ROLES:
@@ -77,7 +80,19 @@ async def list_clients(
     clients = await tenant_clients(session, user["tenant_id"])
     if q:
         clients = search_clients(clients, q)
-    return {"items": [client_to_summary(c) for c in clients]}
+    summaries = [client_to_summary(c) for c in clients]
+    await record_phi_access(
+        session,
+        tenant_id=user["tenant_id"],
+        actor_id=user["_id"],
+        action="list",
+        resource_type="client",
+        detail={"count": len(summaries), "hasQuery": bool(q and q.strip())},
+        request=request,
+        correlation_id=correlation_id,
+    )
+    await session.commit()
+    return {"items": summaries}
 
 
 @router.post("", operation_id="createClient", status_code=status.HTTP_201_CREATED)
@@ -203,6 +218,8 @@ async def get_client(
     client_id: str,
     user: Annotated[dict, Depends(get_current_user_doc)],
     session: Annotated[AsyncSession, Depends(get_session)],
+    request: Request,
+    correlation_id: Annotated[str | None, Depends(get_correlation_id)],
 ):
     if user.get("role") in CLIENT_DENIED_ROLES:
         raise HTTPException(status_code=403, detail={"error": "forbidden", "message": "Access denied"})
@@ -217,4 +234,15 @@ async def get_client(
     client = result.scalar_one_or_none()
     if not client:
         raise HTTPException(status_code=404, detail={"error": "not_found", "message": "Client not found"})
+    await record_phi_access(
+        session,
+        tenant_id=user["tenant_id"],
+        actor_id=user["_id"],
+        action="read",
+        resource_type="client",
+        resource_id=client_id,
+        request=request,
+        correlation_id=correlation_id,
+    )
+    await session.commit()
     return client_to_detail(client_model_to_dict(client))
